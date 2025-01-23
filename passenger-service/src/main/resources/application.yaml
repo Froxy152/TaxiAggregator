@@ -4,15 +4,12 @@ spring:
   application:
     name: passenger-service
   datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/PassengerDB
-    username: root
-    password: 123
+    driver-class-name: ${DB-DRIVER}
+    url: ${ DB-URL }
+    username: ${DB-USERNAME}
+    password: ${DB-PASSWORD}
   jpa:
-    database: postgresql
+    database: ${DB}
     hibernate:
       ddl-auto: update
 
-
-  liquibase:
-    change-log: classpath:/db/changelog/db.changelog-master.yaml
