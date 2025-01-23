@@ -24,7 +24,7 @@ public class PassengerDto {
 
     @NotNull(message = ValidationConstants.MANDATORY_SECOND_NAME_FIELD)
     @NotBlank(message = ValidationConstants.MANDATORY_SECOND_NAME_FIELD)
-    private String secondName;
+    private String lastName;
 
     @NotNull(message = ValidationConstants.MANDATORY_EMAIL_FIELD)
     @Email(regexp = ValidationConstants.EMAIL_REGEXP, message = ValidationConstants.MANDATORY_EMAIL_FIELD)

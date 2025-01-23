@@ -2,7 +2,6 @@ package by.shestakov.passenger_service.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 @Table(name =  "passengers")
@@ -20,8 +19,8 @@ public class Passenger {
     @Column(name = "name",nullable = false)
     private String name;
 
-    @Column(name = "second_name",nullable = false)
-    private String secondName;
+    @Column(name = "last_name",nullable = false)
+    private String lastName;
 
     @Column(name = "email",nullable = false, unique = true)
     private String email;
