@@ -1,4 +1,4 @@
-package by.shestakov.passenger_service.exception;
+package by.shestakov.passengerservice.exception;
 
 public class NotFoundException extends RuntimeException{
     public NotFoundException(String message){

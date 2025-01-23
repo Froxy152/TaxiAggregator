@@ -1,6 +1,6 @@
-package by.shestakov.passenger_service.repository;
+package by.shestakov.passengerservice.repository;
 
-import by.shestakov.passenger_service.entity.Passenger;
+import by.shestakov.passengerservice.entity.Passenger;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

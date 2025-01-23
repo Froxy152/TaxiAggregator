@@ -1,4 +1,4 @@
-package by.shestakov.passenger_service.exception;
+package by.shestakov.passengerservice.exception;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;

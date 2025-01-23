@@ -1,4 +1,4 @@
-package by.shestakov.passenger_service;
+package by.shestakov.passengerservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

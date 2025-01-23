@@ -1,7 +1,10 @@
-package by.shestakov.passenger_service.entity;
+package by.shestakov.passengerservice.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name =  "passengers")
@@ -29,6 +32,6 @@ public class Passenger {
     private String phoneNumber;
 
     @Column(name = "is_deleted")
-    private boolean is_deleted = false;
+    private boolean isDeleted = false;
 
 }

@@ -1,4 +1,4 @@
-package by.shestakov.passenger_service.exception;
+package by.shestakov.passengerservice.exception;
 
 public class BadRequestException extends RuntimeException{
    public BadRequestException(String message){

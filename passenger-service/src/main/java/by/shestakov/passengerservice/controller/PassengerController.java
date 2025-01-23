@@ -1,19 +1,17 @@
-package by.shestakov.passenger_service.controller;
+package by.shestakov.passengerservice.controller;
 
-import by.shestakov.passenger_service.dto.PassengerDto;
-import by.shestakov.passenger_service.service.PassengerService;
+import by.shestakov.passengerservice.dto.PassengerDto;
+import by.shestakov.passengerservice.service.PassengerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/passenger")
 public class PassengerController {
@@ -63,9 +61,10 @@ public class PassengerController {
             @ApiResponse(responseCode = "404", description = "Passenger not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
+    public ResponseEntity<PassengerDto> delete(@PathVariable Long id){
         passengerService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

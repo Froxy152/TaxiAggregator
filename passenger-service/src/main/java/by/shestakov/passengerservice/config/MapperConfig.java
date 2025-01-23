@@ -1,4 +1,4 @@
-package by.shestakov.passenger_service.config;
+package by.shestakov.passengerservice.config;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
