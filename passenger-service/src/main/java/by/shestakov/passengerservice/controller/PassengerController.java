@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/passenger")
+@RequestMapping("api/v1/passengers")
 public class PassengerController {
 
     private final PassengerService passengerService;
@@ -30,7 +30,7 @@ public class PassengerController {
         return new ResponseEntity<>(passengerService.getById(id),HttpStatus.OK);
     }
 
-    @Operation(summary = "create passengers")
+    @Operation(summary = "create passenger")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Passenger created"),
             @ApiResponse(responseCode = "400", description = "Passenger is deleted"),

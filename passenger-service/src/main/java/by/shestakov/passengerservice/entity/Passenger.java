@@ -17,7 +17,7 @@ public class Passenger {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",nullable = false)
-    private long id;
+    private Long id;
 
     @Column(name = "name",nullable = false)
     private String name;
@@ -32,6 +32,6 @@ public class Passenger {
     private String phoneNumber;
 
     @Column(name = "is_deleted")
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
 }

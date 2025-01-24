@@ -23,7 +23,7 @@ public class PassengerService {
     public PassengerDto getById(Long id){
       Passenger foundPassenger = passengerRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format(RequestMessageConstants.NOT_FOUND_MESSAGE,id)));
-        if (foundPassenger.isDeleted()) {
+        if (foundPassenger.getIsDeleted()) {
             throw new BadRequestException(String.format(RequestMessageConstants.BAD_REQUEST_MESSAGE, id));
         }
         return passengerMapper.toDto(foundPassenger);
@@ -42,7 +42,7 @@ public class PassengerService {
     public PassengerDto updateByID(PassengerDto passengerDto, Long id){
         Passenger foundPassenger = passengerRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format(RequestMessageConstants.NOT_FOUND_MESSAGE, id)));
-        if (foundPassenger.isDeleted()) {
+        if (foundPassenger.getIsDeleted()) {
             throw new BadRequestException(String.format(RequestMessageConstants.BAD_REQUEST_MESSAGE, id));
         }
         if(passengerRepository.existsByEmailOrPhoneNumber(passengerDto.email(),passengerDto.phoneNumber())){
@@ -57,10 +57,10 @@ public class PassengerService {
     public void delete(long id){
         Passenger foundPassenger = passengerRepository.findById(id).orElseThrow(() ->
                 new NotFoundException((String.format(RequestMessageConstants.NOT_FOUND_MESSAGE,id))));
-        if(foundPassenger.isDeleted()){
+        if(foundPassenger.getIsDeleted()){
             throw new BadRequestException(String.format(RequestMessageConstants.BAD_REQUEST_MESSAGE,id));
         }
-        foundPassenger.setDeleted(true);
+        foundPassenger.setIsDeleted(true);
         passengerRepository.save(foundPassenger);
     }
 }
