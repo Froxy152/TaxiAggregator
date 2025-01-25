@@ -13,9 +13,16 @@ public record DriverDto(
 
         String email,
 
-        Gender gender,
-
-        List<Car> cars
+        Gender gender
 
 ) {
+    @Override
+    public String toString() {
+        return "DriverDto{" +
+                "name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", gender=" + gender +
+                '}';
+    }
 }

@@ -1,11 +1,30 @@
 package by.shestakov.driverservice.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "cars")
 public class Car {
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", carBrand='" + carBrand + '\'' +
+                ", car_Number='" + car_Number + '\'' +
+                ", carColor='" + carColor + '\'' +
+                ", driver=" + driver +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +39,10 @@ public class Car {
 
     @Column(name = "car_color", nullable = false)
     private String carColor;
+
+    @ManyToOne
+    @JoinColumn(name ="driver_id", referencedColumnName = "id",nullable = false)
+    private Driver driver;
+
+    private Boolean isDeleted;
 }
