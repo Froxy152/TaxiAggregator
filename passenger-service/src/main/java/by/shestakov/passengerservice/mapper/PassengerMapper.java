@@ -1,14 +1,13 @@
 package by.shestakov.passengerservice.mapper;
 
-import by.shestakov.passengerservice.dto.request.PassengerDtoRequest;
-import by.shestakov.passengerservice.dto.response.PassengerDtoResponse;
+import by.shestakov.passengerservice.dto.PassengerDto;
 import by.shestakov.passengerservice.entity.Passenger;
 
 public interface PassengerMapper {
-    public PassengerDtoResponse toDto(Passenger passenger);
+    public PassengerDto toDto(Passenger passenger);
 
-    public Passenger toEntity(PassengerDtoRequest passengerDtoRequest);
+    public Passenger toEntity(PassengerDto passengerDto);
 
-    public void toUpdateExists(PassengerDtoRequest passengerDtoRequest, Passenger passenger);
+    public void toUpdateExists(PassengerDto passengerDto, Passenger passenger);
 
 }

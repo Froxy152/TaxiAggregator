@@ -1,7 +1,6 @@
 package by.shestakov.passengerservice.service.impl;
 
-import by.shestakov.passengerservice.dto.request.PassengerDtoRequest;
-import by.shestakov.passengerservice.dto.response.PassengerDtoResponse;
+import by.shestakov.passengerservice.dto.PassengerDto;
 import by.shestakov.passengerservice.entity.Passenger;
 import by.shestakov.passengerservice.exception.AlreadyExistsException;
 import by.shestakov.passengerservice.exception.BadRequestException;
@@ -22,7 +21,7 @@ public class PassengerServiceImpl implements PassengerService {
     private final PassengerRepository passengerRepository;
     private final PassengerMapper passengerMapper;
 
-    public PassengerDtoResponse getById(Long id){
+    public PassengerDto getById(Long id){
       Passenger foundPassenger = passengerRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format(RequestMessageConstants.NOT_FOUND_MESSAGE,id)));
         if (foundPassenger.getIsDeleted()) {
@@ -32,27 +31,27 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Transactional
-    public PassengerDtoResponse create(PassengerDtoRequest passengerDtoRequest){
-        if(passengerRepository.existsByEmailOrPhoneNumber(passengerDtoRequest.email(), passengerDtoRequest.phoneNumber())){
-            throw new AlreadyExistsException(String.format(RequestMessageConstants.CONFLICT_MESSAGE, passengerDtoRequest.email(), passengerDtoRequest.phoneNumber()));
+    public PassengerDto create(PassengerDto passengerDto){
+        if(passengerRepository.existsByEmailOrPhoneNumber(passengerDto.email(),passengerDto.phoneNumber())){
+            throw new AlreadyExistsException(String.format(RequestMessageConstants.CONFLICT_MESSAGE,passengerDto.email(),passengerDto.phoneNumber()));
         }
-        Passenger savedPassenger = passengerRepository.save(passengerMapper.toEntity(passengerDtoRequest));
-        return passengerMapper.toDto(savedPassenger);
+        passengerRepository.save(passengerMapper.toEntity(passengerDto));
+        return passengerDto;
     }
 
     @Transactional
-    public PassengerDtoResponse updateById(PassengerDtoRequest passengerDtoRequest, Long id){
+    public PassengerDto updateById(PassengerDto passengerDto, Long id){
         Passenger foundPassenger = passengerRepository.findById(id).orElseThrow(() ->
                 new NotFoundException(String.format(RequestMessageConstants.NOT_FOUND_MESSAGE, id)));
         if (foundPassenger.getIsDeleted()) {
             throw new BadRequestException(String.format(RequestMessageConstants.BAD_REQUEST_MESSAGE, id));
         }
-        if(passengerRepository.existsByEmailOrPhoneNumber(passengerDtoRequest.email(), passengerDtoRequest.phoneNumber())){
-            throw new AlreadyExistsException(String.format(RequestMessageConstants.CONFLICT_MESSAGE, passengerDtoRequest.email(), passengerDtoRequest.phoneNumber()));
+        if(passengerRepository.existsByEmailOrPhoneNumber(passengerDto.email(),passengerDto.phoneNumber())){
+            throw new AlreadyExistsException(String.format(RequestMessageConstants.CONFLICT_MESSAGE,passengerDto.email(),passengerDto.phoneNumber()));
         }
-        passengerMapper.toUpdateExists(passengerDtoRequest,foundPassenger);
+        passengerMapper.toUpdateExists(passengerDto,foundPassenger);
         passengerRepository.save(foundPassenger);
-        return passengerMapper.toDto(foundPassenger);
+        return passengerDto;
     }
 
     @Transactional
