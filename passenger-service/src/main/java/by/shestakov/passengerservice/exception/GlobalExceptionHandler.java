@@ -1,5 +1,6 @@
 package by.shestakov.passengerservice.exception;
 
+import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -45,13 +46,19 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationException(MethodArgumentNotValidException e){
+    public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException e){
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach((error) ->
         { String fieldName = ((FieldError) error).getField();
             String errorResponse = error.getDefaultMessage();
             errors.put(fieldName,errorResponse);
         });
-        return errors;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionResponse.builder()
+                       .status(HttpStatus.BAD_REQUEST)
+                       .time(LocalDateTime.now())
+                       .message(e.getMessage())
+                        .errors(errors)
+               .build());
+
     }
 }

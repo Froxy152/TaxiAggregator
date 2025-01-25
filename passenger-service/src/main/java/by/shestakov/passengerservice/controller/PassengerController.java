@@ -50,9 +50,9 @@ public class PassengerController {
             @ApiResponse(responseCode = "409", description = "Passenger with this number or email exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<PassengerDto> update(@RequestBody @Valid PassengerDto passengerDto,@PathVariable Long id){
-        return new ResponseEntity<>(passengerService.updateByID(passengerDto,id),HttpStatus.OK);
+        return new ResponseEntity<>(passengerService.updateById(passengerDto,id),HttpStatus.OK);
     }
     @Operation(summary = "soft delete passengers")
     @ApiResponses(value = {
