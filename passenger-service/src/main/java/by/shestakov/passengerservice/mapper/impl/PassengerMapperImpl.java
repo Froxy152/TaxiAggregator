@@ -1,6 +1,7 @@
 package by.shestakov.passengerservice.mapper.impl;
 
-import by.shestakov.passengerservice.dto.PassengerDto;
+import by.shestakov.passengerservice.dto.request.PassengerDtoRequest;
+import by.shestakov.passengerservice.dto.response.PassengerDtoResponse;
 import by.shestakov.passengerservice.entity.Passenger;
 import by.shestakov.passengerservice.mapper.PassengerMapper;
 import lombok.RequiredArgsConstructor;
@@ -13,16 +14,16 @@ public class PassengerMapperImpl implements PassengerMapper {
 
     private final ModelMapper modelMapper;
 
-    public PassengerDto toDto(Passenger passenger){
-        return modelMapper.map(passenger, PassengerDto.class);
+    public PassengerDtoResponse toDto(Passenger passenger){
+        return modelMapper.map(passenger, PassengerDtoResponse.class);
     }
 
-    public Passenger toEntity(PassengerDto passengerDto){
-        return modelMapper.map(passengerDto, Passenger.class);
+    public Passenger toEntity(PassengerDtoRequest passengerDtoRequest){
+        return modelMapper.map(passengerDtoRequest, Passenger.class);
     }
 
-    public void toUpdateExists(PassengerDto passengerDto, Passenger passenger){
-        modelMapper.map(passengerDto,passenger);
+    public void toUpdateExists(PassengerDtoRequest passengerDtoRequest, Passenger passenger){
+        modelMapper.map(passengerDtoRequest,passenger);
     }
 
 

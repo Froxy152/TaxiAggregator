@@ -1,6 +1,7 @@
 package by.shestakov.passengerservice.controller;
 
-import by.shestakov.passengerservice.dto.PassengerDto;
+import by.shestakov.passengerservice.dto.request.PassengerDtoRequest;
+import by.shestakov.passengerservice.dto.response.PassengerDtoResponse;
 import by.shestakov.passengerservice.service.PassengerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +27,7 @@ public class PassengerController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<PassengerDto> getById(@PathVariable Long id){
+    public ResponseEntity<PassengerDtoResponse> getById(@PathVariable Long id){
         return new ResponseEntity<>(passengerService.getById(id),HttpStatus.OK);
     }
 
@@ -39,8 +40,8 @@ public class PassengerController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping
-    public ResponseEntity<PassengerDto> create(@RequestBody @Valid PassengerDto passengerDto){
-        return new ResponseEntity<>(passengerService.create(passengerDto),HttpStatus.CREATED);
+    public ResponseEntity<PassengerDtoResponse> create(@RequestBody @Valid PassengerDtoRequest passengerDtoRequest){
+        return new ResponseEntity<>(passengerService.create(passengerDtoRequest),HttpStatus.CREATED);
     }
     @Operation(summary = "update passenger")
     @ApiResponses(value = {
@@ -51,8 +52,8 @@ public class PassengerController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<PassengerDto> update(@RequestBody @Valid PassengerDto passengerDto,@PathVariable Long id){
-        return new ResponseEntity<>(passengerService.updateById(passengerDto,id),HttpStatus.OK);
+    public ResponseEntity<PassengerDtoResponse> update(@RequestBody @Valid PassengerDtoRequest passengerDtoRequest, @PathVariable Long id){
+        return new ResponseEntity<>(passengerService.updateById(passengerDtoRequest,id),HttpStatus.OK);
     }
     @Operation(summary = "soft delete passengers")
     @ApiResponses(value = {
@@ -63,7 +64,7 @@ public class PassengerController {
     })
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<PassengerDto> delete(@PathVariable Long id){
+    public ResponseEntity<PassengerDtoResponse> delete(@PathVariable Long id){
         passengerService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
