@@ -1,4 +1,4 @@
-package by.shestakov.passengerservice.dto;
+package by.shestakov.passengerservice.dto.request;
 
 import by.shestakov.passengerservice.util.ValidationConstants;
 import jakarta.validation.Valid;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Pattern;
 
 
 @Valid
-public record PassengerDto(
+public record PassengerDtoRequest(
 
     @NotNull(message = ValidationConstants.MANDATORY_NAME_FIELD)
     @NotBlank(message = ValidationConstants.MANDATORY_NAME_FIELD)
