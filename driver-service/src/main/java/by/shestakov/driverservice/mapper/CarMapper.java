@@ -1,13 +1,14 @@
 package by.shestakov.driverservice.mapper;
 
-import by.shestakov.driverservice.dto.CarDto;
+import by.shestakov.driverservice.dto.request.CarDtoRequest;
+import by.shestakov.driverservice.dto.response.CarDtoResponse;
 import by.shestakov.driverservice.entity.Car;
 
 public interface CarMapper {
 
-    public CarDto toDto(Car car);
+    public CarDtoResponse toDto(Car car);
 
-    public Car toEntity(CarDto carDto);
+    public Car toEntity(CarDtoRequest carDtoRequest);
 
-    public void updateToExists(CarDto carDto, Car car);
+    public void updateToExists(CarDtoRequest carDtoRequest, Car car);
 }

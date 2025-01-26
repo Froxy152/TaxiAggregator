@@ -1,12 +1,12 @@
 package by.shestakov.driverservice.service;
 
-import by.shestakov.driverservice.dto.DriverDto;
-import by.shestakov.driverservice.entity.Driver;
+import by.shestakov.driverservice.dto.request.DriverDtoRequest;
+import by.shestakov.driverservice.dto.response.DriverDtoResponse;
 
 public interface DriverService {
-    public DriverDto createDriver(DriverDto driverDto);
+    public DriverDtoResponse createDriver(DriverDtoRequest driverDtoRequest);
 
-    public DriverDto updateDriver(DriverDto driverDto, Long id);
+    public DriverDtoResponse updateDriver(DriverDtoRequest driverDtoRequest, Long id);
 
     public void deleteDriver(Long id);
 }

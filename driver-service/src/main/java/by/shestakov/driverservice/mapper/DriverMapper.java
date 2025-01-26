@@ -1,14 +1,15 @@
 package by.shestakov.driverservice.mapper;
 
-import by.shestakov.driverservice.dto.DriverDto;
+import by.shestakov.driverservice.dto.request.DriverDtoRequest;
+import by.shestakov.driverservice.dto.response.DriverDtoResponse;
 import by.shestakov.driverservice.entity.Driver;
 
 public interface DriverMapper {
 
-    public DriverDto toDto(Driver driver);
+    public DriverDtoResponse toDto(Driver driver);
 
-    public Driver toEntity(DriverDto driverDto);
+    public Driver toEntity(DriverDtoRequest driverDtoRequest);
 
-    public void updateToExists(DriverDto driverDto, Driver driver);
+    public void updateToExists(DriverDtoRequest driverDtoRequest, Driver driver);
 
 }

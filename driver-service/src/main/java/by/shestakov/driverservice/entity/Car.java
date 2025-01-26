@@ -19,7 +19,7 @@ public class Car {
         return "Car{" +
                 "id=" + id +
                 ", carBrand='" + carBrand + '\'' +
-                ", car_Number='" + car_Number + '\'' +
+                ", car_Number='" + carNumber + '\'' +
                 ", carColor='" + carColor + '\'' +
                 ", driver=" + driver +
                 ", isDeleted=" + isDeleted +
@@ -35,7 +35,7 @@ public class Car {
     private String carBrand;
 
     @Column(name = "car_number", nullable = false, unique = true)
-    private String car_Number;
+    private String carNumber;
 
     @Column(name = "car_color", nullable = false)
     private String carColor;
