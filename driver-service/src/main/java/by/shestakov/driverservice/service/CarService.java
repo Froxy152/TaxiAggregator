@@ -1,11 +1,12 @@
 package by.shestakov.driverservice.service;
 
-import by.shestakov.driverservice.dto.CarDto;
+import by.shestakov.driverservice.dto.request.CarDtoRequest;
+import by.shestakov.driverservice.dto.response.CarDtoResponse;
 
 public interface CarService {
-    public CarDto createCar(CarDto carDto, Long id);
+    public CarDtoResponse createCar(CarDtoRequest carDtoRequest, Long id);
 
-    public CarDto updateCar(CarDto carDto, Long id);
+    public CarDtoResponse updateCar(CarDtoRequest carDtoRequest, Long id);
 
-    public CarDto deleteCar(Long id);
+    public void deleteCar(Long id);
 }

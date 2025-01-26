@@ -1,8 +1,8 @@
 package by.shestakov.driverservice.controller;
 
-import by.shestakov.driverservice.dto.DriverDto;
+import by.shestakov.driverservice.dto.request.DriverDtoRequest;
+import by.shestakov.driverservice.dto.response.DriverDtoResponse;
 import by.shestakov.driverservice.service.DriverService;
-import by.shestakov.driverservice.service.impl.DriverServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class DriverController {
    private final DriverService driverService;
 
    @PostMapping
-   public ResponseEntity<DriverDto> create(@RequestBody DriverDto driverDto){
-      return new ResponseEntity<>(driverService.createDriver(driverDto), HttpStatus.CREATED);
+   public ResponseEntity<DriverDtoResponse> create(@RequestBody DriverDtoRequest driverDtoRequest){
+      return new ResponseEntity<>(driverService.createDriver(driverDtoRequest), HttpStatus.CREATED);
    }
 }

@@ -1,9 +1,11 @@
 package by.shestakov.driverservice.service.impl;
 
-import by.shestakov.driverservice.dto.CarDto;
+import by.shestakov.driverservice.dto.request.CarDtoRequest;
+import by.shestakov.driverservice.dto.response.CarDtoResponse;
 import by.shestakov.driverservice.entity.Car;
 import by.shestakov.driverservice.entity.Driver;
 import by.shestakov.driverservice.mapper.CarMapper;
+import by.shestakov.driverservice.mapper.impl.CarStructMapper;
 import by.shestakov.driverservice.repository.CarRepository;
 import by.shestakov.driverservice.repository.DriverRepository;
 import by.shestakov.driverservice.service.CarService;
@@ -15,27 +17,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CarServiceImpl implements CarService {
     private final CarRepository carRepository;
-    private final CarMapper carMapper;
+    private final CarStructMapper carMapper;
     private final DriverRepository driverRepository;
     @Transactional
     @Override
-    public CarDto createCar(CarDto carDto, Long driverId) {
-        Car newCar = carMapper.toEntity(carDto);
+    public CarDtoResponse createCar(CarDtoRequest carDtoRequest, Long driverId) {
+        Car newCar = carMapper.toEntity(carDtoRequest);
         Driver driver = driverRepository.findById(driverId).orElseThrow();
         newCar.setDriver(driver);
         carRepository.save(newCar);
-        return carDto;
+        return carMapper.toDto(newCar);
     }
     @Transactional
     @Override
-    public CarDto updateCar(CarDto carDto, Long id) {
+    public CarDtoResponse updateCar(CarDtoRequest carDtoRequest, Long id) {
         return null;
     }
 
     @Transactional
     @Override
-    public CarDto deleteCar(Long id) {
-        return null;
+    public void deleteCar(Long id) {
+
     }
 
 }

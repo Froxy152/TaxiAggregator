@@ -1,11 +1,8 @@
-package by.shestakov.driverservice.dto;
+package by.shestakov.driverservice.dto.request;
 
-import by.shestakov.driverservice.entity.Car;
 import by.shestakov.driverservice.entity.Gender;
 
-import java.util.List;
-
-public record DriverDto(
+public record DriverDtoRequest(
 
         String name,
 
