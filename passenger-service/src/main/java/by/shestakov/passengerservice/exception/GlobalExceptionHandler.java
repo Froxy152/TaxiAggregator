@@ -20,16 +20,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<ExceptionResponse> handleAlreadyExistsException(AlreadyExistsException e){
        return ResponseEntity.status(HttpStatus.CONFLICT).body(ExceptionResponse.builder()
+                        .errors(Map.of("message", e.getMessage()))
                         .status(HttpStatus.CONFLICT)
                         .time(LocalDateTime.now())
-                        .message(e.getMessage())
                .build());
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionResponse.builder()
-                        .message(e.getMessage())
+                        .errors(Map.of("message", e.getMessage()))
                         .time(LocalDateTime.now())
                         .status(HttpStatus.NOT_FOUND)
                 .build());
@@ -38,9 +38,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ExceptionResponse> handleBadRequestException(BadRequestException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionResponse.builder()
+                        .errors(Map.of("message", e.getMessage()))
                         .status(HttpStatus.BAD_REQUEST)
                         .time(LocalDateTime.now())
-                        .message(e.getMessage())
                 .build());
     }
 
@@ -56,8 +56,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionResponse.builder()
                        .status(HttpStatus.BAD_REQUEST)
                        .time(LocalDateTime.now())
-                       .message(e.getMessage())
-                        .errors(errors)
+                .errors(errors)
                .build());
 
     }

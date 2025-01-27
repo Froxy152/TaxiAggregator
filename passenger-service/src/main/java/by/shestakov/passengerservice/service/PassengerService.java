@@ -1,14 +1,14 @@
 package by.shestakov.passengerservice.service;
 
-import by.shestakov.passengerservice.dto.request.PassengerDtoRequest;
-import by.shestakov.passengerservice.dto.response.PassengerDtoResponse;
+import by.shestakov.passengerservice.dto.request.PassengerRequest;
+import by.shestakov.passengerservice.dto.response.PassengerResponse;
 
 public interface PassengerService {
-    public PassengerDtoResponse getById(Long id);
+    public PassengerResponse getById(Long id);
 
-    public PassengerDtoResponse create(PassengerDtoRequest passengerDtoRequest);
+    public PassengerResponse create(PassengerRequest passengerRequest);
 
-    public PassengerDtoResponse updateById(PassengerDtoRequest passengerDtoRequest, Long id);
+    public PassengerResponse updateById(PassengerRequest passengerRequest, Long id);
 
     public void delete(Long id);
 

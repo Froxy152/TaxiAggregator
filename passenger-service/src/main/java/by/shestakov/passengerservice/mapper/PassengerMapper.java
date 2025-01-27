@@ -1,14 +1,19 @@
 package by.shestakov.passengerservice.mapper;
 
-import by.shestakov.passengerservice.dto.request.PassengerDtoRequest;
-import by.shestakov.passengerservice.dto.response.PassengerDtoResponse;
+import by.shestakov.passengerservice.dto.request.PassengerRequest;
+import by.shestakov.passengerservice.dto.response.PassengerResponse;
 import by.shestakov.passengerservice.entity.Passenger;
+import org.mapstruct.*;
 
+@Mapper(componentModel = "spring",
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface PassengerMapper {
-    public PassengerDtoResponse toDto(Passenger passenger);
 
-    public Passenger toEntity(PassengerDtoRequest passengerDtoRequest);
+    public PassengerResponse toDto(Passenger passenger);
 
-    public void toUpdateExists(PassengerDtoRequest passengerDtoRequest, Passenger passenger);
+    public Passenger toEntity(PassengerRequest passengerRequest);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    public void toUpdateExists(PassengerRequest passengerRequest, @MappingTarget Passenger passenger);
 
 }
