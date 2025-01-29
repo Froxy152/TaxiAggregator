@@ -54,7 +54,7 @@ public class CarServiceImpl implements CarService {
     @Transactional
     @Override
     public CarResponse updateCar(CarRequest carRequest, Long id) {
-        Car existsCar = carRepository.findById(id).orElseThrow(() -> new CarNotFoundException(""));
+        Car existsCar = carRepository.findById(id).orElseThrow(() -> new CarNotFoundException(String.format(ExceptionMessages.NOT_FOUND_MESSAGE,"car", id)));
         if(existsCar.getIsDeleted()){
             throw new CarWasDeletedException(String.format(ExceptionMessages.BAD_REQUEST_MESSAGE,"car"));
         }

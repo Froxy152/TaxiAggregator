@@ -24,6 +24,7 @@ public class DriverServiceImpl implements DriverService {
     private final DriverRepository driverRepository;
     private final DriverMapper driverMapper;
 
+    @Override
     public List<DriverResponse> getAllDrivers(){
         return driverRepository.findAll().stream().map(driverMapper::toDto).collect(Collectors.toList());
     }
