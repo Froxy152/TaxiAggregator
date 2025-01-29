@@ -1,14 +1,15 @@
 package by.shestakov.driverservice.dto.response;
 
-import by.shestakov.driverservice.entity.Driver;
 
-public record CarDtoResponse(
+
+
+public record CarResponse(
 
         Long id,
         String carBrand,
         String carNumber,
         String carColor,
-        Long driverId,
+        Long driver,
         Boolean isDeleted
 ) {
 }

@@ -1,17 +1,20 @@
 package by.shestakov.driverservice.dto.response;
 
-import by.shestakov.driverservice.entity.Car;
+import by.shestakov.driverservice.dto.request.CarRequest;
 import by.shestakov.driverservice.entity.Gender;
 
 import java.util.List;
 
-public record DriverDtoResponse(
+
+public record DriverResponse(
         Long id,
         String name,
         String lastName,
         String email,
         String phoneNumber,
         Gender gender,
-        List<Car> cars
+        Boolean isDeleted,
+        List<CarRequest> cars
+
 ) {
 }

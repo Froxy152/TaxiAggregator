@@ -1,5 +1,6 @@
 package by.shestakov.driverservice.entity;
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,18 +14,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "cars")
 public class Car {
-
-    @Override
-    public String toString() {
-        return "Car{" +
-                "id=" + id +
-                ", carBrand='" + carBrand + '\'' +
-                ", car_Number='" + carNumber + '\'' +
-                ", carColor='" + carColor + '\'' +
-                ", driver=" + driver +
-                ", isDeleted=" + isDeleted +
-                '}';
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +29,12 @@ public class Car {
     @Column(name = "car_color", nullable = false)
     private String carColor;
 
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted;
+
     @ManyToOne
     @JoinColumn(name ="driver_id", referencedColumnName = "id",nullable = false)
     private Driver driver;
 
-    private Boolean isDeleted;
+
 }
