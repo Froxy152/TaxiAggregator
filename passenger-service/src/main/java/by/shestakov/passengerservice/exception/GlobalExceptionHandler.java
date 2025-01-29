@@ -1,6 +1,5 @@
 package by.shestakov.passengerservice.exception;
 
-import org.springframework.context.annotation.EnableLoadTimeWeaving;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -17,8 +16,8 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<ExceptionResponse> handleAlreadyExistsException(AlreadyExistsException e){
+    @ExceptionHandler(PassengerAlreadyExistsException.class)
+    public ResponseEntity<ExceptionResponse> handleAlreadyExistsException(PassengerAlreadyExistsException e){
        return ResponseEntity.status(HttpStatus.CONFLICT).body(ExceptionResponse.builder()
                         .errors(Map.of("message", e.getMessage()))
                         .status(HttpStatus.CONFLICT)
@@ -26,8 +25,8 @@ public class GlobalExceptionHandler {
                .build());
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleNotFoundException(NotFoundException e){
+    @ExceptionHandler(PassengerNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleNotFoundException(PassengerNotFoundException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionResponse.builder()
                         .errors(Map.of("message", e.getMessage()))
                         .time(LocalDateTime.now())
@@ -35,8 +34,8 @@ public class GlobalExceptionHandler {
                 .build());
     }
 
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ExceptionResponse> handleBadRequestException(BadRequestException e){
+    @ExceptionHandler(PassengerWasDeletedException.class)
+    public ResponseEntity<ExceptionResponse> handleBadRequestException(PassengerWasDeletedException e){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionResponse.builder()
                         .errors(Map.of("message", e.getMessage()))
                         .status(HttpStatus.BAD_REQUEST)

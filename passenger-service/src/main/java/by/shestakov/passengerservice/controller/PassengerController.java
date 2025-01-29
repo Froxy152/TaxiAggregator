@@ -12,12 +12,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/v1/passengers")
 public class PassengerController {
 
     private final PassengerService passengerService;
+
+    @Operation(summary = "get all passengers")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Passengers found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping
+    public ResponseEntity<List<PassengerResponse>> getAll(){
+        return new ResponseEntity<>(passengerService.getAllPassengers(), HttpStatus.OK);
+    }
 
     @Operation(summary = "get passenger by id")
     @ApiResponses(value = {
@@ -28,7 +40,7 @@ public class PassengerController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<PassengerResponse> getById(@PathVariable Long id){
-        return new ResponseEntity<>(passengerService.getById(id),HttpStatus.OK);
+        return new ResponseEntity<>(passengerService.getPassengerById(id),HttpStatus.OK);
     }
 
     @Operation(summary = "create passenger")
@@ -41,7 +53,7 @@ public class PassengerController {
     })
     @PostMapping
     public ResponseEntity<PassengerResponse> create(@RequestBody @Valid PassengerRequest passengerRequest){
-        return new ResponseEntity<>(passengerService.create(passengerRequest),HttpStatus.CREATED);
+        return new ResponseEntity<>(passengerService.createPassenger(passengerRequest),HttpStatus.CREATED);
     }
     @Operation(summary = "update passenger")
     @ApiResponses(value = {
@@ -53,7 +65,7 @@ public class PassengerController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<PassengerResponse> update(@RequestBody @Valid PassengerRequest passengerRequest, @PathVariable Long id){
-        return new ResponseEntity<>(passengerService.updateById(passengerRequest,id),HttpStatus.OK);
+        return new ResponseEntity<>(passengerService.updatePassengerById(passengerRequest,id),HttpStatus.OK);
     }
     @Operation(summary = "soft delete passengers")
     @ApiResponses(value = {
@@ -65,7 +77,7 @@ public class PassengerController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<PassengerResponse> delete(@PathVariable Long id){
-        passengerService.delete(id);
+        passengerService.softDeletePassenger(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

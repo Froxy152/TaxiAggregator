@@ -3,13 +3,17 @@ package by.shestakov.passengerservice.service;
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 
+import java.util.List;
+
 public interface PassengerService {
-    public PassengerResponse getById(Long id);
+    public List<PassengerResponse> getAllPassengers();
 
-    public PassengerResponse create(PassengerRequest passengerRequest);
+    public PassengerResponse getPassengerById(Long id);
 
-    public PassengerResponse updateById(PassengerRequest passengerRequest, Long id);
+    public PassengerResponse createPassenger(PassengerRequest passengerRequest);
 
-    public void delete(Long id);
+    public PassengerResponse updatePassengerById(PassengerRequest passengerRequest, Long id);
+
+    public void softDeletePassenger(Long id);
 
 }
