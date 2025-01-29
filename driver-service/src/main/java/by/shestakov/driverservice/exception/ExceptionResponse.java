@@ -8,10 +8,11 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Builder
-@Data
-public class ExceptionResponse {
-    String message;
-    HttpStatus httpStatus;
-    LocalDateTime time;
-    Map<String,String> errors;
+public record ExceptionResponse (
+        HttpStatus status,
+        Map<String,String> errors,
+        LocalDateTime time
+){
+
 }
+

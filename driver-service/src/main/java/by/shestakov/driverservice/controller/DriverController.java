@@ -1,15 +1,14 @@
 package by.shestakov.driverservice.controller;
 
-import by.shestakov.driverservice.dto.request.DriverDtoRequest;
-import by.shestakov.driverservice.dto.response.DriverDtoResponse;
+import by.shestakov.driverservice.dto.request.DriverRequest;
+import by.shestakov.driverservice.dto.response.DriverResponse;
 import by.shestakov.driverservice.service.DriverService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,8 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class DriverController {
    private final DriverService driverService;
 
+   @GetMapping
+   public ResponseEntity<List<DriverResponse>> getAll(){
+      return new ResponseEntity<>(driverService.getAllDrivers(), HttpStatus.OK);
+   }
    @PostMapping
-   public ResponseEntity<DriverDtoResponse> create(@RequestBody DriverDtoRequest driverDtoRequest){
-      return new ResponseEntity<>(driverService.createDriver(driverDtoRequest), HttpStatus.CREATED);
+   public ResponseEntity<DriverResponse> create(@RequestBody DriverRequest driverRequest){
+      return new ResponseEntity<>(driverService.createDriver(driverRequest), HttpStatus.CREATED);
    }
 }

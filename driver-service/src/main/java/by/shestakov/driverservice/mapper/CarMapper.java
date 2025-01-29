@@ -1,14 +1,22 @@
 package by.shestakov.driverservice.mapper;
 
-import by.shestakov.driverservice.dto.request.CarDtoRequest;
-import by.shestakov.driverservice.dto.response.CarDtoResponse;
+import by.shestakov.driverservice.dto.request.CarRequest;
+import by.shestakov.driverservice.dto.response.CarResponse;
 import by.shestakov.driverservice.entity.Car;
+import org.mapstruct.*;
 
+@Mapper(componentModel = "spring",
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface CarMapper {
+    @Mapping(target = "driver", source = "driver.id")
+    public CarResponse toDto(Car car);
 
-    public CarDtoResponse toDto(Car car);
+    @Mapping(target = "driver", ignore = true)
+    public Car toEntity(CarRequest carRequest);
 
-    public Car toEntity(CarDtoRequest carDtoRequest);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "driver", ignore = true)
+    public void updateToExists(CarRequest carRequest, @MappingTarget Car car);
 
-    public void updateToExists(CarDtoRequest carDtoRequest, Car car);
+
 }
