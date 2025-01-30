@@ -14,6 +14,6 @@ public interface PassengerMapper {
     public Passenger toEntity(PassengerRequest passengerRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public void toUpdateExists(PassengerRequest passengerRequest, @MappingTarget Passenger passenger);
+    public void update(PassengerRequest passengerRequest, @MappingTarget Passenger passenger);
 
 }

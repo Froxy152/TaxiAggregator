@@ -47,9 +47,11 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     @Transactional
     public PassengerResponse createPassenger(PassengerRequest passengerRequest) {
-        if (passengerRepository.existsByEmailOrPhoneNumber(passengerRequest.email(), passengerRequest.phoneNumber())) {
+        String email = passengerRequest.email();
+        String phoneNumber = passengerRequest.phoneNumber();
+        if (passengerRepository.existsByEmailOrPhoneNumber(email, phoneNumber)) {
             throw new PassengerAlreadyExistsException(
-                    String.format(ExceptionConstants.CONFLICT_MESSAGE, passengerRequest.email(), passengerRequest.phoneNumber()));
+                    String.format(ExceptionConstants.CONFLICT_MESSAGE, email, phoneNumber));
         }
         Passenger savedPassenger = passengerMapper.toEntity(passengerRequest);
         passengerRepository.save(savedPassenger);
@@ -63,11 +65,13 @@ public class PassengerServiceImpl implements PassengerService {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new PassengerNotFoundException(
                         String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
-        if (passengerRepository.existsByEmailOrPhoneNumber(passengerRequest.email(), passengerRequest.phoneNumber())) {
+        String email = passengerRequest.email();
+        String phoneNumber = passengerRequest.phoneNumber();
+        if (passengerRepository.existsByEmailOrPhoneNumber(email, phoneNumber)) {
             throw new PassengerAlreadyExistsException(
-                    String.format(ExceptionConstants.CONFLICT_MESSAGE, passengerRequest.email(), passengerRequest.phoneNumber()));
+                    String.format(ExceptionConstants.CONFLICT_MESSAGE, email, phoneNumber));
         }
-        passengerMapper.toUpdateExists(passengerRequest, foundPassenger);
+        passengerMapper.update(passengerRequest, foundPassenger);
         passengerRepository.save(foundPassenger);
 
         return passengerMapper.toDto(foundPassenger);
