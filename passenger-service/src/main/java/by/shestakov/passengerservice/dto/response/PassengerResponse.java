@@ -12,6 +12,5 @@ public record PassengerResponse(
         String email,
         String phoneNumber,
         Boolean isDeleted
-
-){
+) {
 }

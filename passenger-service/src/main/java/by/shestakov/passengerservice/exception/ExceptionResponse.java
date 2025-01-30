@@ -8,9 +8,9 @@ import java.util.Map;
 
 
 @Builder
-public record ExceptionResponse (
-    HttpStatus status,
-    LocalDateTime time,
-    Map<String, String> errors) {
+public record ExceptionResponse(
+        HttpStatus status,
+        LocalDateTime time,
+        Map<String, String> errors) {
 }
 

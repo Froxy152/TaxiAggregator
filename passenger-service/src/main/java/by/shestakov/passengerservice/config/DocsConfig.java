@@ -6,9 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DocsConfig{
+public class DocsConfig {
     @Bean
-    public OpenAPI SwaggerConfig(){
+    public OpenAPI SwaggerConfig() {
         return new OpenAPI()
                 .info(
                         new Info().title("this is the REST API for passenger-service")

@@ -1,12 +1,11 @@
 package by.shestakov.passengerservice.service;
 
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
+import by.shestakov.passengerservice.dto.response.PageResponse;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 
-import java.util.List;
-
 public interface PassengerService {
-    public List<PassengerResponse> getAllPassengers();
+    public PageResponse<PassengerResponse> getAllPassengers(Integer offset, Integer limit);
 
     public PassengerResponse getPassengerById(Long id);
 

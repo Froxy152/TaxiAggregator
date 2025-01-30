@@ -17,46 +17,38 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(PassengerAlreadyExistsException.class)
-    public ResponseEntity<ExceptionResponse> handleAlreadyExistsException(PassengerAlreadyExistsException e){
-       return ResponseEntity.status(HttpStatus.CONFLICT).body(ExceptionResponse.builder()
-                        .errors(Map.of("message", e.getMessage()))
-                        .status(HttpStatus.CONFLICT)
-                        .time(LocalDateTime.now())
-               .build());
-    }
-
-    @ExceptionHandler(PassengerNotFoundException.class)
-    public ResponseEntity<ExceptionResponse> handleNotFoundException(PassengerNotFoundException e){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionResponse.builder()
-                        .errors(Map.of("message", e.getMessage()))
-                        .time(LocalDateTime.now())
-                        .status(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ExceptionResponse> handleAlreadyExistsException(PassengerAlreadyExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ExceptionResponse.builder()
+                .errors(Map.of("message", e.getMessage()))
+                .status(HttpStatus.CONFLICT)
+                .time(LocalDateTime.now())
                 .build());
     }
 
-    @ExceptionHandler(PassengerWasDeletedException.class)
-    public ResponseEntity<ExceptionResponse> handleBadRequestException(PassengerWasDeletedException e){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionResponse.builder()
-                        .errors(Map.of("message", e.getMessage()))
-                        .status(HttpStatus.BAD_REQUEST)
-                        .time(LocalDateTime.now())
+    @ExceptionHandler(PassengerNotFoundException.class)
+    public ResponseEntity<ExceptionResponse> handleNotFoundException(PassengerNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionResponse.builder()
+                .errors(Map.of("message", e.getMessage()))
+                .time(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND)
                 .build());
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException e){
+    public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach((error) ->
-        { String fieldName = ((FieldError) error).getField();
+        {
+            String fieldName = ((FieldError) error).getField();
             String errorResponse = error.getDefaultMessage();
-            errors.put(fieldName,errorResponse);
+            errors.put(fieldName, errorResponse);
         });
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionResponse.builder()
-                       .status(HttpStatus.BAD_REQUEST)
-                       .time(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST)
+                .time(LocalDateTime.now())
                 .errors(errors)
-               .build());
+                .build());
 
     }
 }
