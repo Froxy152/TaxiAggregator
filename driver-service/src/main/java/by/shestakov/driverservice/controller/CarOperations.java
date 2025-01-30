@@ -2,33 +2,23 @@ package by.shestakov.driverservice.controller;
 
 import by.shestakov.driverservice.dto.request.CarRequest;
 import by.shestakov.driverservice.dto.response.CarResponse;
-import by.shestakov.driverservice.service.CarService;
+import by.shestakov.driverservice.dto.response.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RequiredArgsConstructor
-@RestController
-@RequestMapping("api/v1/cars")
-public class CarController {
-    private final CarService carService;
-
+public interface CarOperations {
     @Operation(summary = "get all cars")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cars found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping
-    public ResponseEntity<List<CarResponse>> getAllCars(){
-        return new ResponseEntity<>(carService.getAllCars(), HttpStatus.OK);
-    }
+    public ResponseEntity<PageResponse<CarResponse>> getAllCars(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                                                                @RequestParam(value = "limit", defaultValue = "5") Integer limit);
 
     @Operation(summary = "create new car")
     @ApiResponses(value = {
@@ -38,9 +28,7 @@ public class CarController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PostMapping("/{id}")
-    public ResponseEntity<CarResponse> createCar(@RequestBody @Valid CarRequest carRequest, @PathVariable Long id){
-        return new ResponseEntity<>(carService.createCar(carRequest,id), HttpStatus.CREATED);
-    }
+    public ResponseEntity<CarResponse> createCar(@RequestBody @Valid CarRequest carRequest, @PathVariable Long id);
 
     @Operation(summary = "update car")
     @ApiResponses(value = {
@@ -51,9 +39,7 @@ public class CarController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<CarResponse> updateCar(@RequestBody @Valid CarRequest carRequest, @PathVariable Long id){
-        return new ResponseEntity<>(carService.updateCar(carRequest, id), HttpStatus.OK);
-    }
+    public ResponseEntity<CarResponse> updateCar(@RequestBody @Valid CarRequest carRequest, @PathVariable Long id);
 
     @Operation(summary = "soft delete car")
     @ApiResponses(value = {
@@ -62,9 +48,5 @@ public class CarController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCar(@PathVariable Long id){
-        carService.deleteCar(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
+    public ResponseEntity<Void> deleteCar(@PathVariable Long id);
 }

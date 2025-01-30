@@ -2,11 +2,10 @@ package by.shestakov.driverservice.service;
 
 import by.shestakov.driverservice.dto.request.CarRequest;
 import by.shestakov.driverservice.dto.response.CarResponse;
-
-import java.util.List;
+import by.shestakov.driverservice.dto.response.PageResponse;
 
 public interface CarService {
-    public List<CarResponse> getAllCars();
+    public PageResponse<CarResponse> getAllCars(Integer offset, Integer limit);
 
     public CarResponse createCar(CarRequest carRequest, Long id);
 
