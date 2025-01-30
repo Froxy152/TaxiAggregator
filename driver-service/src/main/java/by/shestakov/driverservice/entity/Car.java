@@ -33,7 +33,7 @@ public class Car {
     private Boolean isDeleted;
 
     @ManyToOne
-    @JoinColumn(name ="driver_id", referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "driver_id", referencedColumnName = "id", nullable = false)
     private Driver driver;
 
 

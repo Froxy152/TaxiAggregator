@@ -1,6 +1,7 @@
 package by.shestakov.driverservice.dto.request;
 
 import by.shestakov.driverservice.entity.Gender;
+import by.shestakov.driverservice.util.RegexpConstants;
 import by.shestakov.driverservice.util.ValidationConstants;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -25,7 +26,7 @@ public record DriverRequest(
 
         @NotNull(message = ValidationConstants.MANDATORY_PHONE_FIELD)
         @NotBlank(message = ValidationConstants.MANDATORY_PHONE_FIELD)
-        @Pattern(regexp = ValidationConstants.PHONE_NUMBER_REGEXP)
+        @Pattern(regexp = RegexpConstants.PHONE_NUMBER_REGEXP)
         String phoneNumber,
 
         @NotNull(message = ValidationConstants.MANDATORY_GENDER_FIELD)

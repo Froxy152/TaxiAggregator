@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: driver-service
+  datasource:
+      driver-class-name: ${DB-DRIVER:org.postgresql.Driver}
+      url: ${DB-URL:jdbc:postgresql://localhost:5432/DriverDB}
+      username: ${DB-USERNAME:postgres}
+      password: ${DB-PASSWORD:postgres}
+  jpa:
+    database: ${DB:postgresql}
+    hibernate:
+      ddl-auto: update
+
