@@ -33,14 +33,14 @@ public class Driver {
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "driverId", cascade = CascadeType.ALL)
     private List<Car> cars;
 
 

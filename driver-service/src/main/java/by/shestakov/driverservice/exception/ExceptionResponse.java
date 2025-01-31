@@ -12,6 +12,5 @@ public record ExceptionResponse(
         Map<String, String> errors,
         LocalDateTime time
 ) {
-
 }
 

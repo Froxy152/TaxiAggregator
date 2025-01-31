@@ -39,7 +39,7 @@ public class DriverServiceImpl implements DriverService {
     public DriverResponse createDriver(DriverRequest driverRequest) {
         if (driverRepository.existsByEmailOrPhoneNumber(driverRequest.email(), driverRequest.phoneNumber())) {
             throw new DriverAlreadyExistsException(
-                    String.format(ExceptionMessages.CONFLICT_MESSAGE, "driver"));
+                    ExceptionMessages.CONFLICT_MESSAGE.formatted("driver"));
         }
         Driver newDriver = driverMapper.toEntity(driverRequest);
         newDriver.setIsDeleted(false);
@@ -52,11 +52,13 @@ public class DriverServiceImpl implements DriverService {
     @Override
     public DriverResponse updateDriver(DriverRequest driverRequest, Long id) {
         Driver existsDriver = driverRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new DriverNotFoundException(String.format(ExceptionMessages.NOT_FOUND_MESSAGE, "driver", id)));
+                .orElseThrow(() -> new DriverNotFoundException(
+                        ExceptionMessages.NOT_FOUND_MESSAGE.formatted("driver", id)));
         if (driverRepository.existsByEmailOrPhoneNumber(existsDriver.getEmail(), existsDriver.getPhoneNumber())) {
             throw new DriverAlreadyExistsException(
-                    String.format(ExceptionMessages.CONFLICT_MESSAGE, "driver"));
+                    ExceptionMessages.CONFLICT_MESSAGE.formatted("driver"));
         }
+
         driverMapper.updateToExists(driverRequest, existsDriver);
         driverRepository.save(existsDriver);
 
@@ -68,7 +70,7 @@ public class DriverServiceImpl implements DriverService {
     public void deleteDriver(Long id) {
         Driver existsDriver = driverRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new DriverNotFoundException(
-                        String.format(ExceptionMessages.NOT_FOUND_MESSAGE, "driver", id)));
+                        ExceptionMessages.NOT_FOUND_MESSAGE.formatted("driver", id)));
         existsDriver.setIsDeleted(true);
 
         driverRepository.save(existsDriver);

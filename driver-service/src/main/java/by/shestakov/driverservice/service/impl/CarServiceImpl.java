@@ -29,7 +29,6 @@ public class CarServiceImpl implements CarService {
     private final CarMapper carMapper;
     private final PageMapper pageMapper;
 
-
     @Override
     public PageResponse<CarResponse> getAllCars(Integer offset, Integer limit) {
         Page<CarResponse> carPageDto = carRepository
@@ -44,13 +43,13 @@ public class CarServiceImpl implements CarService {
     public CarResponse createCar(CarRequest carRequest, Long driverId) {
         if (carRepository.existsByCarNumber(carRequest.carNumber())) {
             throw new CarNumberAlreadyException(
-                    String.format(ExceptionMessages.CONFLICT_MESSAGE, "car"));
+                    ExceptionMessages.CONFLICT_MESSAGE.formatted("car"));
         }
         Car newCar = carMapper.toEntity(carRequest);
         Driver driver = driverRepository.findById(driverId)
                 .orElseThrow(() -> new DriverNotFoundException(
-                        String.format(ExceptionMessages.NOT_FOUND_MESSAGE, "driver", driverId)));
-        newCar.setDriver(driver);
+                        ExceptionMessages.NOT_FOUND_MESSAGE.formatted("driver", driverId)));
+        newCar.setDriverId(driver);
         driver.getCars().add(newCar);
         newCar.setIsDeleted(false);
 
@@ -65,11 +64,11 @@ public class CarServiceImpl implements CarService {
     public CarResponse updateCar(CarRequest carRequest, Long id) {
         Car existsCar = carRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new CarNotFoundException(
-                        String.format(ExceptionMessages.NOT_FOUND_MESSAGE, "car", id)));
+                        ExceptionMessages.NOT_FOUND_MESSAGE.formatted("car", id)));
 
         if (carRepository.existsByCarNumber(carRequest.carNumber())) {
             throw new CarNumberAlreadyException(
-                    String.format(ExceptionMessages.CONFLICT_MESSAGE, "car"));
+                    ExceptionMessages.CONFLICT_MESSAGE.formatted("car"));
         }
         carMapper.updateToExists(carRequest, existsCar);
         carRepository.save(existsCar);
@@ -77,13 +76,12 @@ public class CarServiceImpl implements CarService {
         return carMapper.toDto(existsCar);
     }
 
-
     @Transactional
     @Override
     public void deleteCar(Long id) {
         Car existsCar = carRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new CarNotFoundException(
-                        String.format(ExceptionMessages.NOT_FOUND_MESSAGE, "car", id)));
+                        ExceptionMessages.NOT_FOUND_MESSAGE.formatted("car", id)));
         existsCar.setIsDeleted(true);
 
         carRepository.save(existsCar);

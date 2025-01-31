@@ -4,7 +4,7 @@ name varchar(32) not null,
 last_name varchar(32) not null,
 email varchar(255) not null unique ,
 phone_number varchar(13) not null unique ,
-gender varchar not null,
+gender int not null,
 is_deleted boolean default false
 );
 
