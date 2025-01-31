@@ -22,13 +22,13 @@ public interface CarOperations {
 
     @Operation(summary = "create new car")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "car created"),
+            @ApiResponse(responseCode = "201", description = "Car created"),
             @ApiResponse(responseCode = "404", description = "Driver for this car not found"),
             @ApiResponse(responseCode = "409", description = "Car already exists"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    @PostMapping("/{id}")
-    public ResponseEntity<CarResponse> createCar(@RequestBody @Valid CarRequest carRequest, @PathVariable Long id);
+    @PostMapping
+    public ResponseEntity<CarResponse> createCar(@RequestBody @Valid CarRequest carRequest, @RequestParam Long id);
 
     @Operation(summary = "update car")
     @ApiResponses(value = {
@@ -39,7 +39,7 @@ public interface CarOperations {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @PutMapping("/{id}")
-    public ResponseEntity<CarResponse> updateCar(@RequestBody @Valid CarRequest carRequest, @PathVariable Long id);
+    public ResponseEntity<CarResponse> updateCar(@RequestBody @Valid CarRequest carRequest, @PathVariable Long driverId);
 
     @Operation(summary = "soft delete car")
     @ApiResponses(value = {

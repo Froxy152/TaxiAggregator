@@ -11,26 +11,21 @@ import jakarta.validation.constraints.Pattern;
 
 @Valid
 public record DriverRequest(
-        @NotNull(message = ValidationConstants.MANDATORY_NAME_FIELD)
         @NotBlank(message = ValidationConstants.MANDATORY_NAME_FIELD)
         String name,
 
-        @NotNull(message = ValidationConstants.MANDATORY_SECOND_NAME_FIELD)
         @NotBlank(message = ValidationConstants.MANDATORY_SECOND_NAME_FIELD)
         String lastName,
 
-        @NotNull(message = ValidationConstants.MANDATORY_EMAIL_FIELD)
         @NotBlank(message = ValidationConstants.MANDATORY_EMAIL_FIELD)
         @Email
         String email,
 
-        @NotNull(message = ValidationConstants.MANDATORY_PHONE_FIELD)
         @NotBlank(message = ValidationConstants.MANDATORY_PHONE_FIELD)
         @Pattern(regexp = RegexpConstants.PHONE_NUMBER_REGEXP)
         String phoneNumber,
 
         @NotNull(message = ValidationConstants.MANDATORY_GENDER_FIELD)
-        @NotBlank(message = ValidationConstants.MANDATORY_GENDER_FIELD)
         Gender gender
 ) {
 }

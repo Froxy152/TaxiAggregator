@@ -6,10 +6,10 @@ import by.shestakov.driverservice.entity.Driver;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR, uses = CarMapper.class)
 public interface DriverMapper {
+    @Mapping(target = "cars", source = "cars")
     public DriverResponse toDto(Driver driver);
-
 
     @Mapping(target = "cars", ignore = true)
     public Driver toEntity(DriverRequest driverRequest);

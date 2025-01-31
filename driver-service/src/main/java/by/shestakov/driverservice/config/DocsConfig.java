@@ -11,7 +11,7 @@ public class DocsConfig {
     public OpenAPI SwaggerConfig() {
         return new OpenAPI()
                 .info(
-                        new Info().title("this is the REST API for passenger-service")
+                        new Info().title("this is the REST API for driver-service")
                                 .version("0.0.1")
                 );
     }

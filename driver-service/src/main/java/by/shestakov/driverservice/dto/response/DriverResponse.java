@@ -1,10 +1,8 @@
 package by.shestakov.driverservice.dto.response;
 
-import by.shestakov.driverservice.dto.request.CarRequest;
 import by.shestakov.driverservice.entity.Gender;
 
 import java.util.List;
-
 
 public record DriverResponse(
         Long id,
@@ -14,7 +12,6 @@ public record DriverResponse(
         String phoneNumber,
         Gender gender,
         Boolean isDeleted,
-        List<CarRequest> cars
-
+        List<CarResponse> cars
 ) {
 }
