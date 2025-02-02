@@ -8,7 +8,6 @@ import jakarta.persistence.Convert;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 @Valid
@@ -28,7 +27,7 @@ public record DriverRequest(
         String phoneNumber,
 
         @Convert(converter = GenderConverter.class)
-        @NotNull(message = ValidationConstants.MANDATORY_GENDER_FIELD)
+        @NotBlank(message = ValidationConstants.MANDATORY_GENDER_FIELD)
         Integer gender
 ) {
 }
