@@ -6,8 +6,8 @@ spring:
   datasource:
       driver-class-name: ${DB-DRIVER:org.postgresql.Driver}
       url: ${DB-URL:jdbc:postgresql://localhost:5432/DriverDB}
-      username: ${DB-USERNAME:postgres}
-      password: ${DB-PASSWORD:postgres}
+      username: ${DB-USERNAME:root}
+      password: ${DB-PASSWORD:123}
   jpa:
     database: ${DB:postgresql}
     hibernate:

@@ -1,6 +1,15 @@
 package by.shestakov.driverservice.entity;
 
-import jakarta.persistence.*;
+import by.shestakov.driverservice.util.GenderConverter;
+import jakarta.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Convert;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,7 +42,7 @@ public class Driver {
     @Column(name = "phone_number", nullable = false, unique = true)
     private String phoneNumber;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = GenderConverter.class)
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
@@ -42,6 +51,4 @@ public class Driver {
 
     @OneToMany(mappedBy = "driverId", cascade = CascadeType.ALL)
     private List<Car> cars;
-
-
 }

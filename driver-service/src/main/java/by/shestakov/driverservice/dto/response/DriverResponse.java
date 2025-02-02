@@ -10,7 +10,7 @@ public record DriverResponse(
         String lastName,
         String email,
         String phoneNumber,
-        Gender gender,
+        Gender   gender,
         Boolean isDeleted,
         List<CarResponse> cars
 ) {
