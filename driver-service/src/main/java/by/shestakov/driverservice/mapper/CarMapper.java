@@ -3,7 +3,12 @@ package by.shestakov.driverservice.mapper;
 import by.shestakov.driverservice.dto.request.CarRequest;
 import by.shestakov.driverservice.dto.response.CarResponse;
 import by.shestakov.driverservice.entity.Car;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
