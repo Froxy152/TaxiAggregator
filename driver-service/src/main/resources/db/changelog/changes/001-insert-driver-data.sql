@@ -1,4 +1,3 @@
-
 INSERT INTO drivers (name, last_name, email, phone_number, gender, is_deleted) VALUES
 ('Иван', 'Иванов', 'ivan.ivanov@example.com', '89001234567', '1', false),
 ('Анна', 'Петрова', 'anna.petrova@example.com', '89007654321', '2', false),

@@ -11,5 +11,5 @@ spring:
   jpa:
     database: ${DB:postgresql}
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
 
