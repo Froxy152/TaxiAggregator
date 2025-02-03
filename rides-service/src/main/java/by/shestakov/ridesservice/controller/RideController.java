@@ -4,8 +4,6 @@ import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.request.RideStatusRequest;
 import by.shestakov.ridesservice.dto.response.PageResponse;
 import by.shestakov.ridesservice.dto.response.RideResponse;
-import by.shestakov.ridesservice.feign.RoutingFeign;
-import by.shestakov.ridesservice.repository.TestRepository;
 import by.shestakov.ridesservice.service.RideService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,17 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/v1/rides")
 @RequiredArgsConstructor
-public class RoutingController {
-    private final TestRepository testRepository;
-    private final RoutingFeign feign;
+public class RideController {
     private final RideService rideService;
-
-//    @GetMapping
-//    public ResponseEntity<?> listAll(@RequestBody RoutingRequest request){
-//        RoutingResponse response = feign.requestDistance(request.points(), request.calc_point(), request.key());
-//
-//        return ResponseEntity.ok(response.paths().getFirst());
-//    }
 
     @GetMapping
     public ResponseEntity<PageResponse<RideResponse>> getAll(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
@@ -36,22 +25,25 @@ public class RoutingController {
     }
 
     @PostMapping
-    public ResponseEntity<RideResponse> create(@RequestBody RideRequest rideRequest) {
-        return new ResponseEntity<>(rideService.createRide(rideRequest),
+    public ResponseEntity<RideResponse> create(@RequestBody RideRequest rideRequest,
+                                               @RequestParam(value = "key") String key) {
+        return new ResponseEntity<>(rideService.createRide(rideRequest, key),
                 HttpStatus.CREATED);
     }
 
-    @PutMapping
+    @PatchMapping
     public ResponseEntity<RideResponse> updateStatus(@RequestBody RideStatusRequest statusRequest,
                                                      @RequestParam(value = "rideId") String rideId) {
         return new ResponseEntity<>(rideService.changeStatus(statusRequest, rideId),
                 HttpStatus.OK);
     }
 
-
-//    @PostMapping
-//    public ResponseEntity<?> createTest(@RequestBody Test test){
-//        return ResponseEntity.ok(testRepository.save(test));
-//    }
+    @PutMapping
+    ResponseEntity<RideResponse> updateRide(@RequestBody RideRequest rideRequest,
+                                            @RequestParam(value = "rideId") String id,
+                                            @RequestParam(value = "key") String key) {
+        return new ResponseEntity<>(rideService.updateRide(rideRequest, id, key),
+                HttpStatus.OK);
+    }
 
 }

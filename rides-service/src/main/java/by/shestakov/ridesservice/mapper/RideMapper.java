@@ -3,7 +3,12 @@ package by.shestakov.ridesservice.mapper;
 import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.response.RideResponse;
 import by.shestakov.ridesservice.entity.Ride;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR
