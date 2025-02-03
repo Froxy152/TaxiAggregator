@@ -12,14 +12,12 @@ import by.shestakov.ridesservice.mapper.PageMapper;
 import by.shestakov.ridesservice.mapper.RideMapper;
 import by.shestakov.ridesservice.repository.RideRepository;
 import by.shestakov.ridesservice.service.RideService;
-import by.shestakov.ridesservice.util.constant.ApiConstant;
+import by.shestakov.ridesservice.util.constant.CalculatePrice;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,30 +38,23 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public RideResponse createRide(RideRequest rideRequest) {
+    public RideResponse createRide(RideRequest rideRequest, String key) {
 
+        RoutingResponse response = requestToRout(rideRequest.addressFrom(), rideRequest.addressDestination(), key);
 
-        RoutingRequest request = RoutingRequest.builder()
-                .points(List.of(rideRequest.addressFrom(), rideRequest.addressDestination()))
-                .calc_point(false)
-                .key(ApiConstant.)
-                .build();
-
-        System.out.println(request.toString());
-        RoutingResponse response = routingFeign.requestDistance(request.points(), request.calc_point(), request.key());
-
-        System.out.println(response.toString());
         Ride newRide = rideMapper.toEntity(rideRequest);
 
-        newRide.setDistance(response.paths().getFirst().distance());
-        newRide.setDuringRide(response.paths().getFirst().time());
+        Double distance = response.paths().getFirst().distance();
+        Integer time = CalculatePrice.msToMin(response.paths().getFirst().time());
+
+        newRide.setDistance(distance);
+        newRide.setDuringRide(time);
         newRide.setTime(LocalDateTime.now());
-        newRide.setPrice(1.2);
+        newRide.setPrice(CalculatePrice.mathPrice(distance, time));
 
         rideRepository.save(newRide);
         return rideMapper.toDto(newRide);
     }
-
 
     @Override
     public RideResponse changeStatus(RideStatusRequest statusRequest, String rideId) {
@@ -76,11 +67,27 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public RideResponse updateRide(RideRequest rideRequest, String rideId) {
+    public RideResponse updateRide(RideRequest rideRequest, String rideId, String key) {
         Ride existsRide = rideRepository.findById(rideId).orElseThrow();
 
+        RoutingResponse response = requestToRout(rideRequest.addressFrom(), rideRequest.addressDestination(), key);
+
         rideMapper.updateExists(rideRequest, existsRide);
+        existsRide.setDistance(response.paths().getFirst().distance());
+        existsRide.setDuringRide(response.paths().getFirst().time());
+
+        rideRepository.save(existsRide);
 
         return rideMapper.toDto(existsRide);
+    }
+
+    private RoutingResponse requestToRout(String addressFrom, String addressDestination, String key){
+        RoutingRequest request = RoutingRequest.builder()
+                .points(List.of(addressFrom, addressDestination))
+                .calc_point(false)
+                .key(key)
+                .build();
+
+        return routingFeign.requestDistance(request.points(), request.calc_point(), request.key());
     }
 }
