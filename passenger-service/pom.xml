@@ -20,6 +20,7 @@
 		<lombok.version>1.18.36</lombok.version>
 		<mapstruct.version>1.5.5.Final</mapstruct.version>
 		<maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
+		<checkstyle.tools.version>10.21.2</checkstyle.tools.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -116,7 +117,7 @@
 					<dependency>
 						<groupId>com.puppycrawl.tools</groupId>
 						<artifactId>checkstyle</artifactId>
-						<version>10.21.2</version>
+						<version>${checkstyle.tools.version}</version>
 					</dependency>
 				</dependencies>
 				<configuration>
