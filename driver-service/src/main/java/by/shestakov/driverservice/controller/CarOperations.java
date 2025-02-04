@@ -44,7 +44,7 @@ public interface CarOperations {
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PutMapping("/{id}")
     ResponseEntity<CarResponse> updateCar(@RequestBody @Valid CarRequest carRequest,
-                                                 @PathVariable Long driverId);
+                                          @PathVariable Long driverId);
 
     @Operation(summary = "soft delete car")
     @ApiResponses(
