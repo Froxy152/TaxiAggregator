@@ -6,11 +6,11 @@ import by.shestakov.driverservice.dto.response.PageResponse;
 
 public interface DriverService {
 
-    public PageResponse<DriverResponse> getAllDrivers(Integer offset, Integer limit);
+    PageResponse<DriverResponse> getAllDrivers(Integer offset, Integer limit);
 
-    public DriverResponse createDriver(DriverRequest driverRequest);
+    DriverResponse createDriver(DriverRequest driverRequest);
 
-    public DriverResponse updateDriver(DriverRequest driverRequest, Long id);
+    DriverResponse updateDriver(DriverRequest driverRequest, Long id);
 
-    public void deleteDriver(Long id);
+    void deleteDriver(Long id);
 }
