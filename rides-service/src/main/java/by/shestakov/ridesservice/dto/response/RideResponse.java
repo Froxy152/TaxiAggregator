@@ -1,7 +1,6 @@
 package by.shestakov.ridesservice.dto.response;
 
 import by.shestakov.ridesservice.entity.Status;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 

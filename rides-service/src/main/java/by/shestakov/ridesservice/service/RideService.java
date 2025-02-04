@@ -6,11 +6,11 @@ import by.shestakov.ridesservice.dto.response.PageResponse;
 import by.shestakov.ridesservice.dto.response.RideResponse;
 
 public interface RideService {
-    public PageResponse<RideResponse> getAll(Integer offset, Integer limit);
+    PageResponse<RideResponse> getAll(Integer offset, Integer limit);
 
-    public RideResponse createRide(RideRequest rideRequest);
+    RideResponse createRide(RideRequest rideRequest);
 
-    public RideResponse changeStatus(RideStatusRequest statusRequest, String rideId);
+    RideResponse changeStatus(RideStatusRequest statusRequest, String rideId);
 
-    public RideResponse updateRide(RideRequest rideRequest, String rideID);
+    RideResponse updateRide(RideRequest rideRequest, String rideId);
 }

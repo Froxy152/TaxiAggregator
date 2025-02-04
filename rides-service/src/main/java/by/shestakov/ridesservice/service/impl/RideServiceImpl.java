@@ -12,12 +12,12 @@ import by.shestakov.ridesservice.repository.RideRepository;
 import by.shestakov.ridesservice.service.RideService;
 import by.shestakov.ridesservice.service.RouteService;
 import by.shestakov.ridesservice.util.CalculatePrice;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Service
@@ -38,7 +38,8 @@ public class RideServiceImpl implements RideService {
     @Override
     public RideResponse createRide(RideRequest rideRequest) {
 
-        RoutingResponse response = routeService.createRequest(rideRequest.addressFrom(), rideRequest.addressDestination());
+        RoutingResponse response = routeService.createRequest(
+                rideRequest.pickUpAddress(), rideRequest.destinationAddress());
 
         Ride newRide = rideMapper.toEntity(rideRequest);
 
@@ -70,7 +71,8 @@ public class RideServiceImpl implements RideService {
     public RideResponse updateRide(RideRequest rideRequest, String rideId) {
         Ride existsRide = rideRepository.findById(rideId).orElseThrow();
 
-        RoutingResponse response = routeService.createRequest(rideRequest.addressFrom(), rideRequest.addressDestination());
+        RoutingResponse response = routeService.createRequest(
+                rideRequest.pickUpAddress(), rideRequest.destinationAddress());
 
         rideMapper.updateExists(rideRequest, existsRide);
         existsRide.setDistance(response.paths().getFirst().distance());
