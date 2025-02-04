@@ -1,11 +1,11 @@
 package by.shestakov.ridesservice.feign;
 
 import by.shestakov.ridesservice.dto.response.RoutingResponse;
+import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
 
 @FeignClient(name = "routing-service", url = "https://graphhopper.com/api/1")
 public interface RoutingFeign {

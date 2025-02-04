@@ -19,7 +19,7 @@ public enum Status {
 
     public static Status fromValue(int value) {
         for (Status status : Status.values()) {
-            if(status.getCode() == value){
+            if (status.getCode() == value) {
                 return status;
             }
         }

@@ -1,6 +1,6 @@
 package by.shestakov.ridesservice.entity;
 
-
+// На будующее
 public class Passenger {
 
     private Long id;

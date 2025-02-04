@@ -1,10 +1,9 @@
 package by.shestakov.ridesservice.exception;
 
-import lombok.Builder;
-import org.springframework.http.HttpStatus;
-
 import java.time.LocalDateTime;
 import java.util.Map;
+import lombok.Builder;
+import org.springframework.http.HttpStatus;
 
 @Builder
 public record ExceptionResponse(
@@ -12,6 +11,4 @@ public record ExceptionResponse(
         LocalDateTime time,
         HttpStatus status
 ) {
-
-
 }

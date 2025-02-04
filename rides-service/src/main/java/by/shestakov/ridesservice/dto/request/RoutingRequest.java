@@ -1,16 +1,12 @@
 package by.shestakov.ridesservice.dto.request;
 
-import lombok.Builder;
-import org.springframework.beans.factory.annotation.Value;
-
 import java.util.List;
+import lombok.Builder;
+
 
 @Builder
 public record RoutingRequest(
     List<String> points,
-
     String key,
-    Boolean calc_point
-
-    ) {
+    Boolean calcPoint) {
 }

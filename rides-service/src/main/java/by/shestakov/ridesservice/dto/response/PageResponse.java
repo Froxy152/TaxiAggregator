@@ -1,8 +1,7 @@
 package by.shestakov.ridesservice.dto.response;
 
-import lombok.Builder;
-
 import java.util.List;
+import lombok.Builder;
 
 
 @Builder

@@ -29,7 +29,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>${checkstyle.tools.version}</version>
+                        <version>10.21.2</version>
                     </dependency>
                 </dependencies>
                 <configuration>
