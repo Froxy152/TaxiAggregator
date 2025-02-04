@@ -29,7 +29,7 @@ public class PassengerServiceImpl implements PassengerService {
     @Override
     public PageResponse<PassengerResponse> getAllPassengers(Integer offset, Integer limit) {
         Page<PassengerResponse> passengerPageDto = passengerRepository
-                .findALlByIsDeletedFalse(PageRequest.of(offset, limit))
+                .findAllByIsDeletedFalse(PageRequest.of(offset, limit))
                 .map(passengerMapper::toDto);
 
         return pageMapper.toDto(passengerPageDto);

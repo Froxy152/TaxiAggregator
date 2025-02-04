@@ -1,5 +1,8 @@
 package by.shestakov.passengerservice.exception;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -7,11 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -38,8 +36,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach((error) ->
-        {
+        e.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorResponse = error.getDefaultMessage();
             errors.put(fieldName, errorResponse);
