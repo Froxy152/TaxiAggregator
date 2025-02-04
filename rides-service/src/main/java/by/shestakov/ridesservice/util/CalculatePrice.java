@@ -1,12 +1,13 @@
-package by.shestakov.ridesservice.util.constant;
+package by.shestakov.ridesservice.util;
 
+import by.shestakov.ridesservice.util.constant.PriceConstant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class CalculatePrice {
     public static Double mathPrice(Double distance, Integer duringTime){
-        return (PriceConstant.START_PRICE + (duringTime * PriceConstant.TIME_RATE_PER_MINUTE) + (distance * PriceConstant.DISTANCE_RATE_PER_KM));
+        return (PriceConstant.START_PRICE + ((duringTime * PriceConstant.TIME_RATE_PER_MINUTE) + (distance * PriceConstant.DISTANCE_RATE_PER_KM)));
     }
 
     public static Integer msToMin(Integer timeInMs){

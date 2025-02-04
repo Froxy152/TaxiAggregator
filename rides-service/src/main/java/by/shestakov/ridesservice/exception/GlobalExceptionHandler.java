@@ -12,7 +12,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionResponse> handleNotFoundException(RideNotFoundException e){
+    public ResponseEntity<ExceptionResponse> handleNotFoundException(DataNotFoundException e){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 ExceptionResponse.builder()
                         .time(LocalDateTime.now())

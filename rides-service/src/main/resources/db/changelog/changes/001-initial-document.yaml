@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: werdiens
+      changes:
+        - insert:
+            tableName: rides

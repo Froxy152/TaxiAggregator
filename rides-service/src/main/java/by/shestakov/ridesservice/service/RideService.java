@@ -8,9 +8,9 @@ import by.shestakov.ridesservice.dto.response.RideResponse;
 public interface RideService {
     public PageResponse<RideResponse> getAll(Integer offset, Integer limit);
 
-    public RideResponse createRide(RideRequest rideRequest, String key);
+    public RideResponse createRide(RideRequest rideRequest);
 
     public RideResponse changeStatus(RideStatusRequest statusRequest, String rideId);
 
-    public RideResponse updateRide(RideRequest rideRequest, String rideID, String key);
+    public RideResponse updateRide(RideRequest rideRequest, String rideID);
 }

@@ -25,9 +25,8 @@ public class RideController {
     }
 
     @PostMapping
-    public ResponseEntity<RideResponse> create(@RequestBody RideRequest rideRequest,
-                                               @RequestParam(value = "key") String key) {
-        return new ResponseEntity<>(rideService.createRide(rideRequest, key),
+    public ResponseEntity<RideResponse> create(@RequestBody RideRequest rideRequest) {
+        return new ResponseEntity<>(rideService.createRide(rideRequest),
                 HttpStatus.CREATED);
     }
 
@@ -40,9 +39,8 @@ public class RideController {
 
     @PutMapping
     ResponseEntity<RideResponse> updateRide(@RequestBody RideRequest rideRequest,
-                                            @RequestParam(value = "rideId") String id,
-                                            @RequestParam(value = "key") String key) {
-        return new ResponseEntity<>(rideService.updateRide(rideRequest, id, key),
+                                            @RequestParam(value = "rideId") String id) {
+        return new ResponseEntity<>(rideService.updateRide(rideRequest, id),
                 HttpStatus.OK);
     }
 
