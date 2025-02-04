@@ -1,7 +1,6 @@
 package by.shestakov.driverservice.dto.response;
 
 import by.shestakov.driverservice.entity.Gender;
-
 import java.util.List;
 
 public record DriverResponse(

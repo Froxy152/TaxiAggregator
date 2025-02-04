@@ -17,7 +17,7 @@ public class GenderConverter implements AttributeConverter<Gender, Integer> {
 
     @Override
     public Gender convertToEntityAttribute(Integer integer) {
-        if (integer == null){
+        if (integer == null) {
             return null;
         }
         return Gender.fromValue(integer);

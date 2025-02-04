@@ -4,6 +4,9 @@ import by.shestakov.driverservice.exception.car.CarNotFoundException;
 import by.shestakov.driverservice.exception.car.CarNumberAlreadyException;
 import by.shestakov.driverservice.exception.driver.DriverAlreadyExistsException;
 import by.shestakov.driverservice.exception.driver.DriverNotFoundException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -11,17 +14,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({
-            CarNumberAlreadyException.class,
-            DriverAlreadyExistsException.class
-    })
+    @ExceptionHandler({ CarNumberAlreadyException.class,
+                        DriverAlreadyExistsException.class})
     public ResponseEntity<ExceptionResponse> handleDriverAlReadyExistsException(Exception e) {
         return ResponseEntity.status(HttpStatus.CONFLICT.value()).body(
                 ExceptionResponse.builder()
@@ -32,10 +30,8 @@ public class GlobalExceptionHandler {
         );
     }
 
-    @ExceptionHandler({
-            DriverNotFoundException.class,
-            CarNotFoundException.class
-    })
+    @ExceptionHandler({ DriverNotFoundException.class,
+                        CarNotFoundException.class})
     public ResponseEntity<ExceptionResponse> handleDriverNotFoundException(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(
                 ExceptionResponse.builder()
@@ -49,8 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach((error) ->
-        {
+        e.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorResponse = error.getDefaultMessage();
             errors.put(fieldName, errorResponse);
