@@ -25,11 +25,11 @@ public class Ride {
     @Field(name = "passenger_id")
     private Long passengerId;
 
-    @Field(name = "address_from")
-    private String addressFrom;
+    @Field(name = "pickup_address")
+    private String pickUpAddress;
 
-    @Field(name = "address_destination")
-    private String addressDestination;
+    @Field(name = "destination_address")
+    private String destinationAddress;
 
     @Field(name = "status", targetType = FieldType.INT32)
     private Status status;
