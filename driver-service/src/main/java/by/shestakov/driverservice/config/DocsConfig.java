@@ -1,4 +1,4 @@
-package by.shestakov.passengerservice.config;
+package by.shestakov.driverservice.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -11,7 +11,7 @@ public class DocsConfig {
     public OpenAPI swaggerConfig() {
         return new OpenAPI()
                 .info(
-                        new Info().title("this is the REST API for passenger-service")
+                        new Info().title("this is the REST API for driver-service")
                                 .version("0.0.1")
                 );
     }
