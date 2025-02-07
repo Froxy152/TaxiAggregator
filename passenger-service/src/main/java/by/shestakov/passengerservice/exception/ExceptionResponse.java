@@ -13,4 +13,3 @@ public record ExceptionResponse(
         LocalDateTime time,
         Map<String, String> errors) {
 }
-
