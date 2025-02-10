@@ -1,6 +1,7 @@
 package by.shestakov.driverservice.mapper;
 
 import by.shestakov.driverservice.dto.request.CarRequest;
+import by.shestakov.driverservice.dto.request.CarUpdateRequest;
 import by.shestakov.driverservice.dto.response.CarResponse;
 import by.shestakov.driverservice.entity.Car;
 import org.mapstruct.BeanMapping;
@@ -21,7 +22,7 @@ public interface CarMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "driverId", ignore = true)
-    void updateToExists(CarRequest carRequest, @MappingTarget Car car);
+    void updateToExists(CarUpdateRequest carUpdateRequest, @MappingTarget Car car);
 
 
 }

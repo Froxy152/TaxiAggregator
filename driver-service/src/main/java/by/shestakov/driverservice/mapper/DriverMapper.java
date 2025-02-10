@@ -1,6 +1,7 @@
 package by.shestakov.driverservice.mapper;
 
 import by.shestakov.driverservice.dto.request.DriverRequest;
+import by.shestakov.driverservice.dto.request.DriverUpdateRequest;
 import by.shestakov.driverservice.dto.response.DriverResponse;
 import by.shestakov.driverservice.entity.Driver;
 import by.shestakov.driverservice.entity.Gender;
@@ -22,9 +23,13 @@ public interface DriverMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "cars", ignore = true)
-    void updateToExists(DriverRequest driverRequest, @MappingTarget Driver driver);
+    void updateToExists(DriverUpdateRequest driverUpdateRequest, @MappingTarget Driver driver);
 
-    default Gender map(Integer value) {
+    default Gender map(Integer code) {
+        return Gender.fromCode(code);
+    }
+
+    default Gender map(String value) {
         return Gender.fromValue(value);
     }
 }

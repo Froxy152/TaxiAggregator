@@ -2,6 +2,7 @@ package by.shestakov.driverservice.controller.impl;
 
 import by.shestakov.driverservice.controller.DriverOperations;
 import by.shestakov.driverservice.dto.request.DriverRequest;
+import by.shestakov.driverservice.dto.request.DriverUpdateRequest;
 import by.shestakov.driverservice.dto.response.DriverResponse;
 import by.shestakov.driverservice.dto.response.PageResponse;
 import by.shestakov.driverservice.service.DriverService;
@@ -40,9 +41,9 @@ public class DriverControllerImpl implements DriverOperations {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DriverResponse> updateDriver(@RequestBody @Valid DriverRequest driverRequest,
+    public ResponseEntity<DriverResponse> updateDriver(@RequestBody @Valid DriverUpdateRequest driverUpdateRequest,
                                                        @PathVariable Long id) {
-        return new ResponseEntity<>(driverService.updateDriver(driverRequest, id),
+        return new ResponseEntity<>(driverService.updateDriver(driverUpdateRequest, id),
                 HttpStatus.OK);
     }
 

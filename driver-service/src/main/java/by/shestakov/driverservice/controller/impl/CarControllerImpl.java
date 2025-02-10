@@ -2,6 +2,7 @@ package by.shestakov.driverservice.controller.impl;
 
 import by.shestakov.driverservice.controller.CarOperations;
 import by.shestakov.driverservice.dto.request.CarRequest;
+import by.shestakov.driverservice.dto.request.CarUpdateRequest;
 import by.shestakov.driverservice.dto.response.CarResponse;
 import by.shestakov.driverservice.dto.response.PageResponse;
 import by.shestakov.driverservice.service.CarService;
@@ -43,8 +44,8 @@ public class CarControllerImpl implements CarOperations {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CarResponse> updateCar(@RequestBody @Valid CarRequest carRequest, @PathVariable Long id) {
-        return new ResponseEntity<>(carService.updateCar(carRequest, id),
+    public ResponseEntity<CarResponse> updateCar(@RequestBody @Valid CarUpdateRequest carUpdateRequest, @PathVariable Long id) {
+        return new ResponseEntity<>(carService.updateCar(carUpdateRequest, id),
                 HttpStatus.OK);
     }
 

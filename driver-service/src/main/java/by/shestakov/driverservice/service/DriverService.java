@@ -1,6 +1,7 @@
 package by.shestakov.driverservice.service;
 
 import by.shestakov.driverservice.dto.request.DriverRequest;
+import by.shestakov.driverservice.dto.request.DriverUpdateRequest;
 import by.shestakov.driverservice.dto.response.DriverResponse;
 import by.shestakov.driverservice.dto.response.PageResponse;
 
@@ -10,7 +11,7 @@ public interface DriverService {
 
     DriverResponse createDriver(DriverRequest driverRequest);
 
-    DriverResponse updateDriver(DriverRequest driverRequest, Long id);
+    DriverResponse updateDriver(DriverUpdateRequest driverUpdateRequest, Long id);
 
     void deleteDriver(Long id);
 }

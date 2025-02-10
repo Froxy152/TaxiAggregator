@@ -1,6 +1,7 @@
 package by.shestakov.driverservice.service.impl;
 
 import by.shestakov.driverservice.dto.request.DriverRequest;
+import by.shestakov.driverservice.dto.request.DriverUpdateRequest;
 import by.shestakov.driverservice.dto.response.DriverResponse;
 import by.shestakov.driverservice.dto.response.PageResponse;
 import by.shestakov.driverservice.entity.Driver;
@@ -50,16 +51,18 @@ public class DriverServiceImpl implements DriverService {
 
     @Transactional
     @Override
-    public DriverResponse updateDriver(DriverRequest driverRequest, Long id) {
+    public DriverResponse updateDriver(DriverUpdateRequest driverUpdateRequest, Long id) {
         Driver existsDriver = driverRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new DriverNotFoundException(
                         ExceptionMessages.NOT_FOUND_MESSAGE.formatted("driver", id)));
-        if (driverRepository.existsByEmailOrPhoneNumber(existsDriver.getEmail(), existsDriver.getPhoneNumber())) {
+
+        if (driverRepository.existsByEmailOrPhoneNumber(driverUpdateRequest.email(),
+                                                        driverUpdateRequest.phoneNumber())) {
             throw new DriverAlreadyExistsException(
                     ExceptionMessages.CONFLICT_MESSAGE.formatted("driver"));
         }
 
-        driverMapper.updateToExists(driverRequest, existsDriver);
+        driverMapper.updateToExists(driverUpdateRequest, existsDriver);
         driverRepository.save(existsDriver);
 
         return driverMapper.toDto(existsDriver);
