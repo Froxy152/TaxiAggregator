@@ -24,7 +24,7 @@ public interface ControllerAction {
             value = { @ApiResponse(responseCode = "200", description = "Passengers found"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @GetMapping
-    public ResponseEntity<PageResponse<PassengerResponse>> getAll(
+    ResponseEntity<PageResponse<PassengerResponse>> getAll(
             @RequestParam(value = "offset", defaultValue = "0") @Min(0) Integer offset,
             @RequestParam(value = "limit", defaultValue = "5") @Min(1) Integer limit);
 
@@ -35,7 +35,7 @@ public interface ControllerAction {
                       @ApiResponse(responseCode = "404", description = "Passenger not found"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @GetMapping("/{id}")
-    public ResponseEntity<PassengerResponse> getById(@PathVariable Long id);
+    ResponseEntity<PassengerResponse> getById(@PathVariable Long id);
 
     @Operation(summary = "create passenger")
     @ApiResponses(
@@ -45,7 +45,7 @@ public interface ControllerAction {
                       @ApiResponse(responseCode = "409", description = "Passenger with this number or email exists"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping
-    public ResponseEntity<PassengerResponse> create(@RequestBody @Valid PassengerRequest passengerRequest);
+    ResponseEntity<PassengerResponse> create(@RequestBody @Valid PassengerRequest passengerRequest);
 
     @Operation(summary = "update passenger")
     @ApiResponses(
@@ -55,7 +55,7 @@ public interface ControllerAction {
                       @ApiResponse(responseCode = "409", description = "Passenger with this number or email exists"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PutMapping("/{id}")
-    public ResponseEntity<PassengerResponse> update(@RequestBody @Valid UpdatePassengerRequest updatePassengerRequest,
+    ResponseEntity<PassengerResponse> update(@RequestBody @Valid UpdatePassengerRequest updatePassengerRequest,
                                                     @PathVariable Long id);
 
     @Operation(summary = "soft delete passengers")
@@ -65,5 +65,5 @@ public interface ControllerAction {
                       @ApiResponse(responseCode = "404", description = "Passenger not found"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @DeleteMapping("/{id}")
-    public ResponseEntity<PassengerResponse> delete(@PathVariable Long id);
+    ResponseEntity<PassengerResponse> delete(@PathVariable Long id);
 }

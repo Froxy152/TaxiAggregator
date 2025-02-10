@@ -14,11 +14,11 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface PassengerMapper {
 
-    public PassengerResponse toDto(Passenger passenger);
+    PassengerResponse toDto(Passenger passenger);
 
-    public Passenger toEntity(PassengerRequest passengerRequest);
+    Passenger toEntity(PassengerRequest passengerRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public void update(UpdatePassengerRequest updatePassengerRequest, @MappingTarget Passenger passenger);
+    void update(UpdatePassengerRequest updatePassengerRequest, @MappingTarget Passenger passenger);
 
 }

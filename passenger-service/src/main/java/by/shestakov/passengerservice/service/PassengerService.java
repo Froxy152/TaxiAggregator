@@ -6,14 +6,14 @@ import by.shestakov.passengerservice.dto.response.PageResponse;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 
 public interface PassengerService {
-    public PageResponse<PassengerResponse> getAllPassengers(Integer offset, Integer limit);
+    PageResponse<PassengerResponse> getAllPassengers(Integer offset, Integer limit);
 
-    public PassengerResponse getPassengerById(Long id);
+    PassengerResponse getPassengerById(Long id);
 
-    public PassengerResponse createPassenger(PassengerRequest passengerRequest);
+    PassengerResponse createPassenger(PassengerRequest passengerRequest);
 
-    public PassengerResponse updatePassengerById(UpdatePassengerRequest updatePassengerRequest, Long id);
+    PassengerResponse updatePassengerById(UpdatePassengerRequest updatePassengerRequest, Long id);
 
-    public void softDeletePassenger(Long id);
+    void softDeletePassenger(Long id);
 
 }
