@@ -27,7 +27,7 @@ public class RatingControllerImpl implements RatingController {
     @PostMapping
     @Override
     public ResponseEntity<RatingResponse> createNewRating(@RequestBody RatingRequest ratingRequest) {
-        return new ResponseEntity<>(ratingService.addNewMarkOnRide(ratingRequest),
+        return new ResponseEntity<>(ratingService.addNewReviewOnRideByDriver(ratingRequest),
                 HttpStatus.CREATED);
     }
 

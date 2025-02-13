@@ -29,4 +29,13 @@ public class GlobalExceptionHandler {
                 .build());
     }
 
+    @ExceptionHandler(TestException.class)
+    public ResponseEntity<ExceptionResponse> handleTestException(Exception e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ExceptionResponse.builder()
+                .status(HttpStatus.CONFLICT)
+                .time(LocalDateTime.now())
+                .errors(Map.of("message", e.getMessage()))
+                .build());
+    }
+
 }

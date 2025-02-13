@@ -5,4 +5,7 @@ spring:
     mongodb:
       host: ${HOST_DB:localhost}
       port: ${PORT_DB:27017}
-      database: ${DB_NAME:ratingdb}
+      database: ${DB_NAME:RatingDB}
+      username: werdiens
+      password: haduken
+      authenticationDatabase: admin

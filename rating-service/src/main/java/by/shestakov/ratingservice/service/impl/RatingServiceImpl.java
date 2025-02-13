@@ -2,6 +2,7 @@ package by.shestakov.ratingservice.service.impl;
 
 import by.shestakov.ratingservice.dto.RatingRequest;
 import by.shestakov.ratingservice.dto.RatingResponse;
+import by.shestakov.ratingservice.dto.response.PassengerResponse;
 import by.shestakov.ratingservice.entity.Car;
 import by.shestakov.ratingservice.entity.Driver;
 import by.shestakov.ratingservice.entity.Passenger;
@@ -9,6 +10,8 @@ import by.shestakov.ratingservice.entity.Rating;
 import by.shestakov.ratingservice.entity.enums.Gender;
 import by.shestakov.ratingservice.exception.DataNotFoundException;
 import by.shestakov.ratingservice.exception.OnlyOneCommentOnRideException;
+import by.shestakov.ratingservice.feign.PassengerFeignClient;
+import by.shestakov.ratingservice.mapper.PassengerMapper;
 import by.shestakov.ratingservice.mapper.RatingMapper;
 import by.shestakov.ratingservice.repository.RatingRepository;
 import by.shestakov.ratingservice.service.RatingService;
@@ -21,9 +24,10 @@ import org.springframework.stereotype.Service;
 public class RatingServiceImpl implements RatingService {
     private final RatingRepository ratingRepository;
     private final RatingMapper ratingMapper;
+    private final PassengerFeignClient passengerClient;
+    private final PassengerMapper passengerMapper;
 
-    @Override
-    public RatingResponse addNewMarkOnRide(RatingRequest ratingRequest) {
+    public RatingResponse addNewReviewOnRideByDriver(RatingRequest ratingRequest) {
         // if get ride by id, on ride-service response error 400 bad request btw its maybe not realize
         if (ratingRepository.existsByRideId(ratingRequest.rideId())) {
             throw new OnlyOneCommentOnRideException();
@@ -49,16 +53,19 @@ public class RatingServiceImpl implements RatingService {
                         .build()))
                 .build();
 
+        PassengerResponse find = passengerClient.getById(ratingRequest.passengerId());
+        Passenger p = passengerMapper.toEntity(find);
         Passenger passenger = Passenger.builder()
                 .id(12L)
                 .name("abdul")
                 .lastName("ahmed")
                 .email("asd")
                 .phoneNumber("+375442895614")
+                .isDeleted(false)
                 .build();
 
         newRating.setDriver(driver);
-        newRating.setPassenger(passenger);
+        newRating.setPassenger(p);
 
         ratingRepository.save(newRating);
 
