@@ -19,6 +19,7 @@
 		<mapStruct.version>1.5.5.Final</mapStruct.version>
 		<feign.version>4.2.0</feign.version>
 		<lombok.version>1.18.36</lombok.version>
+		<lombok-mapstruct.version>0.2.0</lombok-mapstruct.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -64,7 +65,11 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok-mapstruct-binding</artifactId>
-			<version>0.2.0</version>
+			<version>${lombok-mapstruct.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -78,7 +83,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok-mapstruct-binding</artifactId>
-							<version>0.2.0</version>
+							<version>${lombok-mapstruct.version}</version>
 						</path>
 						<path>
 							<groupId>org.mapstruct</groupId>

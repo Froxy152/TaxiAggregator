@@ -2,7 +2,6 @@ package by.shestakov.ratingservice.exception;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,10 +28,10 @@ public class GlobalExceptionHandler {
                 .build());
     }
 
-    @ExceptionHandler(TestException.class)
-    public ResponseEntity<ExceptionResponse> handleTestException(Exception e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ExceptionResponse.builder()
-                .status(HttpStatus.CONFLICT)
+    @ExceptionHandler(FeignClientNotFoundDataException.class)
+    public ResponseEntity<ExceptionResponse> handleFeignClientNotFoundDataException(Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionResponse.builder()
+                .status(HttpStatus.NOT_FOUND)
                 .time(LocalDateTime.now())
                 .errors(Map.of("message", e.getMessage()))
                 .build());

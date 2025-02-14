@@ -1,10 +1,7 @@
 package by.shestakov.ratingservice.exception;
 
-import com.fasterxml.jackson.core.JsonParser;
 import feign.Response;
 import feign.codec.ErrorDecoder;
-import org.springframework.http.ResponseEntity;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,17 +17,12 @@ public class CustomErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String s, Response response) {
 
-        System.out.println(response.toString());
-
-        switch (response.status()) {
-            case 404:
-                return new TestException(extractBody(response));
-            case 500:
-                return new TestException("test");
-            default:
-                return defaultErrorDecoder.decode(s, response);
-        }
+        return switch (response.status()) {
+            case 404 -> new FeignClientNotFoundDataException(extractBody(response));
+            default -> defaultErrorDecoder.decode(s, response);
+        };
     }
+
 
     public String extractBody(Response response) {
 
@@ -42,21 +34,20 @@ public class CustomErrorDecoder implements ErrorDecoder {
                         .lines()
                         .collect(Collectors.joining());
 
-                if (responseBody.contains("message")) { // думаю это можно будет убрать
-                    String subString = responseBody.substring(responseBody.indexOf("message"));
-                    String regex = "message\":\"(.*?)\"";
-                    Pattern pattern = Pattern.compile(regex);
-                    Matcher matcher = pattern.matcher(subString);
-                    if (matcher.find()) {
-                        subString = matcher.group(1);
-                        return subString.trim();
-                    }
+                String subString = responseBody.substring(responseBody.indexOf("message"));
+                String regex = "message\":\"(.*?)\"";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(subString);
+                if (matcher.find()) {
+                    subString = matcher.group(1);
+                    return subString.trim();
                 }
             }
+
         } catch (IOException e) {
-            e.printStackTrace(); //todo переделать
+            e.printStackTrace();
         }
-        return ""; //todo тоже самое
+        return "";
     }
 }
 

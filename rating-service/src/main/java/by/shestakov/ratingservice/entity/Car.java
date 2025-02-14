@@ -1,9 +1,8 @@
 package by.shestakov.ratingservice.entity;
 
-import lombok.Builder;
 import lombok.Data;
 
-@Builder
+
 @Data
 public class Car {
     private Long id;

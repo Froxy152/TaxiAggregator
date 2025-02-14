@@ -1,15 +1,12 @@
 package by.shestakov.ratingservice.entity;
 
 import by.shestakov.ratingservice.entity.enums.Gender;
-
-import java.io.Serializable;
 import java.util.List;
-import lombok.Builder;
 import lombok.Data;
 
-@Builder
+
 @Data
-public class Driver implements Serializable {
+public class Driver {
     private Long id;
 
     private String name;

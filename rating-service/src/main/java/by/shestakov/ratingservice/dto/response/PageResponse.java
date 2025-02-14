@@ -1,8 +1,8 @@
 package by.shestakov.ratingservice.dto.response;
 
+import java.util.List;
 import lombok.Builder;
 
-import java.util.List;
 
 @Builder
 public record PageResponse<T>(
