@@ -1,10 +1,6 @@
 package by.shestakov.ridesservice.feign;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-public class DriverFeign {
+// на след пр для связи
+public interface DriverFeign {
 
 }

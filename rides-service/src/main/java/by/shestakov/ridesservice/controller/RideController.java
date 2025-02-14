@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 public interface RideController {
 
-    @Operation(summary = "get ride page")
+    @Operation(summary = "Get ride page")
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "Ride's found"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
@@ -26,10 +26,10 @@ public interface RideController {
             @RequestParam(value = "offset", defaultValue = "0") Integer offset,
             @RequestParam(value = "limit", defaultValue = "2") Integer limit);
 
-    @Operation(summary = "create a ride")
+    @Operation(summary = "Create a ride")
     @ApiResponses(
             value = { @ApiResponse(responseCode = "201", description = "Ride created"),
-                      @ApiResponse(responseCode = "400", description = "RideRequest has bad field"),
+                      @ApiResponse(responseCode = "400", description = "Validation failed"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PostMapping
     ResponseEntity<RideResponse> create(@RequestBody RideRequest rideRequest);
@@ -47,7 +47,7 @@ public interface RideController {
     @Operation(summary = "Update a ride")
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "Ride updated"),
-                      @ApiResponse(responseCode = "400", description = "RideRequest has bad field"),
+                      @ApiResponse(responseCode = "400", description = "Validation failed"),
                       @ApiResponse(responseCode = "404", description = "Ride not found"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PutMapping

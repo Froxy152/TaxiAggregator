@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 
 @Configuration
 public class MongoConfig {
+
     @Bean
     public MongoCustomConversions customConversions() {
         return new MongoCustomConversions(List.of(
