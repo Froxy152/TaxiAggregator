@@ -1,5 +1,6 @@
 package by.shestakov.ridesservice.entity;
 
+import by.shestakov.ridesservice.util.constant.ExceptionMessage;
 import lombok.Getter;
 
 @Getter
@@ -23,6 +24,6 @@ public enum Status {
                 return status;
             }
         }
-        throw new IllegalArgumentException("Invalid status code: " + value);
+        throw new IllegalArgumentException(ExceptionMessage.ILLEGAL_EXCEPTION.formatted(value));
     }
 }
