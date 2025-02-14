@@ -34,6 +34,12 @@ public class DriverControllerImpl implements DriverOperations {
                 HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<DriverResponse> getById(@PathVariable Long id){
+        return new ResponseEntity<>(driverService.getById(id),
+                HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<DriverResponse> create(@RequestBody @Valid DriverRequest driverRequest) {
         return new ResponseEntity<>(driverService.createDriver(driverRequest),

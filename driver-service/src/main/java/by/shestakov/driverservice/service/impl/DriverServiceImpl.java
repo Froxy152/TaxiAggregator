@@ -35,6 +35,15 @@ public class DriverServiceImpl implements DriverService {
         return pageMapper.toDto(driverPageDto);
     }
 
+    @Override
+    public DriverResponse getById(Long id) {
+        Driver existsDriver = driverRepository.findByIdAndIsDeletedFalse(id)
+                .orElseThrow(() -> new DriverNotFoundException(
+                        ExceptionMessages.NOT_FOUND_MESSAGE.formatted("driver", id)));
+
+        return driverMapper.toDto(existsDriver);
+    }
+
     @Transactional
     @Override
     public DriverResponse createDriver(DriverRequest driverRequest) {

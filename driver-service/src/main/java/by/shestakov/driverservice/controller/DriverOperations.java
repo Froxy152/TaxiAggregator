@@ -29,6 +29,15 @@ public interface DriverOperations {
             @RequestParam(value = "offset", defaultValue = "0") Integer offset,
             @RequestParam(value = "limit", defaultValue = "5") Integer limit);
 
+
+    @Operation(summary = "get all drivers")
+    @ApiResponses(
+            value = { @ApiResponse(responseCode = "200", description = "Driver found"),
+                      @ApiResponse(responseCode = "404", description = "Driver not found"),
+                      @ApiResponse(responseCode = "500", description = "Internal server error")})
+    @GetMapping("/{id}")
+    public ResponseEntity<DriverResponse> getById(@PathVariable Long id);
+
     @Operation(summary = "create new driver")
     @ApiResponses(
             value = { @ApiResponse(responseCode = "201", description = "Driver created"),

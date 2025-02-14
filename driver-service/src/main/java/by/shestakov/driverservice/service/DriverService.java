@@ -4,10 +4,13 @@ import by.shestakov.driverservice.dto.request.DriverRequest;
 import by.shestakov.driverservice.dto.request.DriverUpdateRequest;
 import by.shestakov.driverservice.dto.response.DriverResponse;
 import by.shestakov.driverservice.dto.response.PageResponse;
+import by.shestakov.driverservice.entity.Driver;
 
 public interface DriverService {
 
     PageResponse<DriverResponse> getAllDrivers(Integer offset, Integer limit);
+
+    DriverResponse getById(Long id);
 
     DriverResponse createDriver(DriverRequest driverRequest);
 
