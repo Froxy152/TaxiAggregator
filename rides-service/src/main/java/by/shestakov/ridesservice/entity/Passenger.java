@@ -13,5 +13,4 @@ public class Passenger {
 
     private String phoneNumber;
 
-
 }
