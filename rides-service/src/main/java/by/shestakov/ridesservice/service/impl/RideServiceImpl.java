@@ -2,16 +2,20 @@ package by.shestakov.ridesservice.service.impl;
 
 import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.request.RideStatusRequest;
-import by.shestakov.ridesservice.dto.response.PageResponse;
-import by.shestakov.ridesservice.dto.response.RideResponse;
-import by.shestakov.ridesservice.dto.response.RoutingResponse;
+import by.shestakov.ridesservice.dto.response.*;
+import by.shestakov.ridesservice.entity.Passenger;
 import by.shestakov.ridesservice.entity.Ride;
+import by.shestakov.ridesservice.feign.DriverClient;
+import by.shestakov.ridesservice.feign.PassengerClient;
 import by.shestakov.ridesservice.mapper.PageMapper;
+import by.shestakov.ridesservice.mapper.PassengerMapper;
 import by.shestakov.ridesservice.mapper.RideMapper;
 import by.shestakov.ridesservice.repository.RideRepository;
 import by.shestakov.ridesservice.service.RideService;
 import by.shestakov.ridesservice.service.RouteService;
 import by.shestakov.ridesservice.util.CalculatePrice;
+
+import java.sql.Driver;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,10 +26,20 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class RideServiceImpl implements RideService {
+
     private final RideRepository rideRepository;
+
     private final RideMapper rideMapper;
+
     private final PageMapper pageMapper;
+
     private final RouteService routeService;
+
+    private final PassengerClient passengerClient;
+
+    private final PassengerMapper passengerMapper;
+
+    private final DriverClient driverClient;
 
 
     @Override
@@ -38,6 +52,9 @@ public class RideServiceImpl implements RideService {
     @Override
     public RideResponse createRide(RideRequest rideRequest) {
 
+        Passenger existsPassenger = getPassenger(rideRequest.passengerId());
+
+
         RoutingResponse response = routeService.createRequest(
                 rideRequest.pickUpAddress(), rideRequest.destinationAddress());
 
@@ -47,6 +64,7 @@ public class RideServiceImpl implements RideService {
         Integer time = CalculatePrice.msToMin(response.paths().getFirst().time());
 
 
+        newRide.setPassengerId(existsPassenger);
         newRide.setDistance(distance);
         newRide.setDuringRide(time);
         newRide.setTime(LocalDateTime.now());
@@ -82,6 +100,15 @@ public class RideServiceImpl implements RideService {
 
         return rideMapper.toDto(existsRide);
     }
+
+    private Passenger getPassenger(Long id) {
+        PassengerResponse passengerResponse = passengerClient.getPassengerById(id);
+        return passengerMapper.toEntity(passengerResponse);
+    }
+
+//    private Driver getDriver(Long id) {
+//        driverClient.getDriverById(id);
+//    }
 
 
 }

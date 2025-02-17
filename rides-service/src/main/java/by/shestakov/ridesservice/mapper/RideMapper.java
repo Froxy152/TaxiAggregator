@@ -21,8 +21,10 @@ public interface RideMapper {
     @Mapping(target = "time", ignore = true)
     @Mapping(target = "duringRide", ignore = true)
     @Mapping(target = "price", ignore = true)
+    @Mapping(target = "passengerId", ignore = true)
     Ride toEntity(RideRequest rideRequest);
 
+    @Mapping(target = "passengerId", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateExists(RideRequest rideRequest, @MappingTarget Ride ride);
 }

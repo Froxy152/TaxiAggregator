@@ -23,7 +23,7 @@ public class Ride {
     private Long driverId;
 
     @Field(name = "passenger_id")
-    private Long passengerId;
+    private Passenger passengerId;
 
     @Field(name = "pickup_address")
     private String pickUpAddress;
