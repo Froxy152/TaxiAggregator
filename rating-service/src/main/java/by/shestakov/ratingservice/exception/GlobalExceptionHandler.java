@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
                 .build());
     }
 
-    @ExceptionHandler(FeignClientNotFoundDataException.class)
+    @ExceptionHandler({FeignClientNotFoundDataException.class, DataNotFoundException.class})
     public ResponseEntity<ExceptionResponse> handleFeignClientNotFoundDataException(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionResponse.builder()
                 .status(HttpStatus.NOT_FOUND)

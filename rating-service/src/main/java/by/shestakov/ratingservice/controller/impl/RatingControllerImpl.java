@@ -3,6 +3,7 @@ package by.shestakov.ratingservice.controller.impl;
 import by.shestakov.ratingservice.controller.RatingController;
 import by.shestakov.ratingservice.dto.request.RatingRequest;
 import by.shestakov.ratingservice.dto.response.AverageRatingResponse;
+import by.shestakov.ratingservice.dto.response.PageResponse;
 import by.shestakov.ratingservice.dto.response.RatingResponse;
 import by.shestakov.ratingservice.service.RatingService;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class RatingControllerImpl implements RatingController {
     private final RatingService ratingService;
 
+
+    @Override
+    public ResponseEntity<PageResponse<RatingResponse>> getAllReviews(Integer offset, Integer limit) {
+        return new ResponseEntity<>(ratingService.getAllReviews(offset, limit),
+            HttpStatus.OK);
+    }
+
     @Override
     @GetMapping
-    public ResponseEntity<AverageRatingResponse> get(@RequestParam("driverId") Long driverId,
+    public ResponseEntity<AverageRatingResponse> getAverageRating(@RequestParam("driverId") Long driverId,
                                                      @RequestParam("limit") Integer limit) {
         return new ResponseEntity<>(ratingService.getResultForDriver(driverId, limit),
                 HttpStatus.OK);
@@ -33,8 +41,8 @@ public class RatingControllerImpl implements RatingController {
 
     @PostMapping
     @Override
-    public ResponseEntity<RatingResponse> createNewRating(@RequestBody RatingRequest ratingRequest) {
-        return new ResponseEntity<>(ratingService.addNewReviewOnRideByDriver(ratingRequest),
+    public ResponseEntity<RatingResponse> createNewReview(@RequestBody RatingRequest ratingRequest) {
+        return new ResponseEntity<>(ratingService.addNewReviewOnRide(ratingRequest),
                 HttpStatus.CREATED);
     }
 

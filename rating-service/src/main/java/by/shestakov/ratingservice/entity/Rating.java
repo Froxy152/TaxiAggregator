@@ -19,14 +19,14 @@ public class Rating  {
     @MongoId
     private String id;
 
-    @Field("rideId")
+    @Field("ride_id")
     private String rideId;
 
-    @Field("passenger")
-    private Passenger passenger;
+    @Field("passenger_id")
+    private Long passengerId;
 
-    @Field("driver")
-    private Driver driver;
+    @Field("driver_id")
+    private Long driverId;
 
     @Field("mark")
     private Integer mark;
