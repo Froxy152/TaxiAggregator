@@ -1,5 +1,6 @@
 package by.shestakov.ridesservice.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,5 +45,5 @@ public class Ride {
     private Integer duringRide;
 
     @Field(name = "price")
-    private Double price;
+    private BigDecimal price;
 }

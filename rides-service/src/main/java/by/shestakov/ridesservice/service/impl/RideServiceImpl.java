@@ -10,6 +10,7 @@ import by.shestakov.ridesservice.dto.response.RoutingResponse;
 import by.shestakov.ridesservice.entity.Driver;
 import by.shestakov.ridesservice.entity.Passenger;
 import by.shestakov.ridesservice.entity.Ride;
+import by.shestakov.ridesservice.exception.DriverWithoutCarException;
 import by.shestakov.ridesservice.feign.DriverClient;
 import by.shestakov.ridesservice.feign.PassengerClient;
 import by.shestakov.ridesservice.mapper.DriverMapper;
@@ -58,8 +59,13 @@ public class RideServiceImpl implements RideService {
     @Override
     public RideResponse createRide(RideRequest rideRequest) {
 
-        Passenger existsPassenger = getPassenger(rideRequest.passengerId());
         Driver existsDriver = getDriver(rideRequest.driverId());
+
+        if (existsDriver.getCarIds().isEmpty()) {
+            throw new DriverWithoutCarException();
+        }
+
+        Passenger existsPassenger = getPassenger(rideRequest.passengerId());
 
         RoutingResponse response = routeService.createRequest(
             rideRequest.pickUpAddress(), rideRequest.destinationAddress());
@@ -116,6 +122,5 @@ public class RideServiceImpl implements RideService {
         DriverResponse driverResponse = driverClient.getDriverById(id);
         return driverMapper.toEntity(driverResponse);
     }
-
 
 }

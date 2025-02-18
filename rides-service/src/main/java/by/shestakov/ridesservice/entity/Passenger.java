@@ -1,6 +1,8 @@
 package by.shestakov.ridesservice.entity;
 
+import lombok.Data;
 
+@Data
 public class Passenger {
 
     private Long id;

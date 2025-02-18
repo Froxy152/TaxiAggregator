@@ -41,6 +41,6 @@ public class CustomErrorDecoder implements ErrorDecoder {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ""; //todo add smth
+        return "no message in body";
     }
 }

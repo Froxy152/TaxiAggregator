@@ -1,6 +1,8 @@
 package by.shestakov.ridesservice.entity;
 
 import by.shestakov.ridesservice.util.constant.ExceptionMessage;
+import java.util.Map;
+import java.util.Set;
 import lombok.Getter;
 
 @Getter
@@ -13,6 +15,8 @@ public enum Status {
     DECLINED(6);
 
     private final int code;
+
+
 
     Status(Integer code) {
         this.code = code;
