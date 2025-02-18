@@ -2,6 +2,7 @@ package by.shestakov.ridesservice.dto.response;
 
 import by.shestakov.ridesservice.entity.Gender;
 import java.util.List;
+import java.util.Set;
 
 public record DriverResponse(
     Long id,
@@ -10,7 +11,7 @@ public record DriverResponse(
     String email,
     String phoneNumber,
     Gender gender,
-    List<Long> carId,
+    Set<Long> cars,
     Boolean isDeleted
 ) {
 }

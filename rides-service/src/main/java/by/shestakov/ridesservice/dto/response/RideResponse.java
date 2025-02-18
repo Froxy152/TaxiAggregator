@@ -1,27 +1,28 @@
 package by.shestakov.ridesservice.dto.response;
 
+import by.shestakov.ridesservice.entity.Driver;
 import by.shestakov.ridesservice.entity.Passenger;
 import by.shestakov.ridesservice.entity.Status;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record RideResponse(
-        Long driver,
+    Driver driver,
 
-        Passenger passenger,
+    Passenger passenger,
 
-        String pickUpAddress,
+    String pickUpAddress,
 
-        String destinationAddress,
+    String destinationAddress,
 
-        Status status,
+    Status status,
 
-        Double distance,
+    Double distance,
 
-        LocalDateTime time,
+    LocalDateTime time,
 
-        Integer duringRide,
+    Integer duringRide,
 
-        BigDecimal price
+    BigDecimal price
 ) {
 }

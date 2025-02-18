@@ -1,7 +1,10 @@
 package by.shestakov.ridesservice.entity;
 
-import java.util.HashSet;
 
+import java.util.Set;
+import lombok.Data;
+
+@Data
 public class Driver {
     Long id;
 
@@ -15,7 +18,7 @@ public class Driver {
 
     Gender gender;
 
-    HashSet<Long> carsId;
+    Set<Car> carIds;
 
     Boolean isDeleted;
 }
