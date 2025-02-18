@@ -19,11 +19,11 @@ public class Ride {
     @Id
     private String id;
 
-    @Field(name = "driver_id")
-    private Long driverId;
+    @Field(name = "driver")
+    private Driver driver;
 
-    @Field(name = "passenger_id")
-    private Passenger passengerId;
+    @Field(name = "passenger")
+    private Passenger passenger;
 
     @Field(name = "pickup_address")
     private String pickUpAddress;

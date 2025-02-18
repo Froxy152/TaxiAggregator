@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface DriverClient {
 
     @GetMapping("/{id}")
-    ResponseEntity<DriverResponse> getDriverById(@PathVariable Long id);
+    DriverResponse getDriverById(@PathVariable Long id);
 
 }
