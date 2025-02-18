@@ -1,8 +1,6 @@
 package by.shestakov.ridesservice.entity;
 
 import by.shestakov.ridesservice.util.constant.ExceptionMessage;
-import java.util.Map;
-import java.util.Set;
 import lombok.Getter;
 
 @Getter
