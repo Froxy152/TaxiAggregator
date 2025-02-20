@@ -23,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class DriverServiceImpl implements DriverService {
 
     private final DriverRepository driverRepository;
+
     private final DriverMapper driverMapper;
+
     private final PageMapper pageMapper;
 
     @Override
@@ -51,7 +53,9 @@ public class DriverServiceImpl implements DriverService {
             throw new DriverAlreadyExistsException(
                     ExceptionMessages.CONFLICT_MESSAGE.formatted("driver"));
         }
+
         Driver newDriver = driverMapper.toEntity(driverRequest);
+        newDriver.setRating(0.0);
         newDriver.setIsDeleted(false);
         driverRepository.save(newDriver);
 
