@@ -11,6 +11,7 @@ public record DriverResponse(
     String email,
     String phoneNumber,
     Gender gender,
+    Double rating,
     Boolean isDeleted,
     Set<Long> cars
 ) {

@@ -45,6 +45,9 @@ public class Driver {
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
+    @Column(name = "rating", nullable = false)
+    private Double rating;
+
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
