@@ -64,8 +64,9 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public PassengerResponse updatePassengerById(UpdatePassengerRequest updatePassengerRequest, Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new PassengerNotFoundException(
-                        String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
+            .orElseThrow(() -> new PassengerNotFoundException(
+                String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
+
         String email = updatePassengerRequest.email();
         String phoneNumber = updatePassengerRequest.phoneNumber();
 

@@ -1,8 +1,9 @@
 package by.shestakov.passengerservice.util;
 
-import lombok.experimental.UtilityClass;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-@UtilityClass
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ValidationConstants {
     public static final String MANDATORY_PHONE_FIELD = "Phone number is mandatory";
     public static final String MANDATORY_NAME_FIELD = "Name is mandatory";
