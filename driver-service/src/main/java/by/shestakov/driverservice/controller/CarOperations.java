@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface CarOperations {
-    @Operation(summary = "get all cars")
+    @Operation(summary = "Get all cars")
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "Cars found"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
@@ -27,7 +27,7 @@ public interface CarOperations {
             @RequestParam(value = "offset", defaultValue = "0") Integer offset,
             @RequestParam(value = "limit", defaultValue = "5") Integer limit);
 
-    @Operation(summary = "create new car")
+    @Operation(summary = "Create new car")
     @ApiResponses(
             value = { @ApiResponse(responseCode = "201", description = "Car created"),
                       @ApiResponse(responseCode = "404", description = "Driver for this car not found"),
@@ -36,7 +36,7 @@ public interface CarOperations {
     @PostMapping
     ResponseEntity<CarResponse> createCar(@RequestBody @Valid CarRequest carRequest, @RequestParam Long id);
 
-    @Operation(summary = "update car")
+    @Operation(summary = "Update car")
     @ApiResponses(
             value = { @ApiResponse(responseCode = "200", description = "Car updated"),
                       @ApiResponse(responseCode = "400", description = "Car is deleted"),
@@ -47,7 +47,7 @@ public interface CarOperations {
     ResponseEntity<CarResponse> updateCar(@RequestBody @Valid CarUpdateRequest carUpdateRequest,
                                           @PathVariable Long driverId);
 
-    @Operation(summary = "soft delete car")
+    @Operation(summary = "Soft delete car")
     @ApiResponses(
             value = { @ApiResponse(responseCode = "204", description = "Car deleted"),
                       @ApiResponse(responseCode = "404", description = "Car not found"),

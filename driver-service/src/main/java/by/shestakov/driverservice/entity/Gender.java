@@ -8,7 +8,7 @@ public enum Gender {
     FEMALE(2),
     OTHER(3);
 
-    private final int code;
+    private final Integer code;
 
     Gender(Integer code) {
         this.code = code;
@@ -23,9 +23,9 @@ public enum Gender {
         throw new IllegalArgumentException("Unknown value: " + value);
     }
 
-    public static Gender fromCode(Integer code) {
+    public static Gender fromCode(int code) {
         for (Gender gender : Gender.values()) {
-            if (gender.getCode() == code) {
+            if (gender.getCode().equals(code)) {
                 return gender;
             }
         }

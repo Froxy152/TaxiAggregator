@@ -36,7 +36,7 @@ public interface DriverOperations {
                       @ApiResponse(responseCode = "404", description = "Driver not found"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @GetMapping("/{id}")
-    public ResponseEntity<DriverResponse> getById(@PathVariable Long id);
+    ResponseEntity<DriverResponse> getById(@PathVariable Long id);
 
     @Operation(summary = "create new driver")
     @ApiResponses(
@@ -55,7 +55,7 @@ public interface DriverOperations {
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PutMapping("/{id}")
     ResponseEntity<DriverResponse> updateDriver(@RequestBody @Valid DriverUpdateRequest driverUpdateRequest,
-                                                       @PathVariable Long id);
+                                                @PathVariable Long id);
 
     @Operation(summary = "soft delete driver")
     @ApiResponses(

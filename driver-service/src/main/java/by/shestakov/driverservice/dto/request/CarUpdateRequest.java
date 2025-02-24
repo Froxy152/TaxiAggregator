@@ -9,5 +9,6 @@ public record CarUpdateRequest(
         @Pattern(regexp = RegexpConstants.CAR_NUMBER_REGEXP)
         String carNumber,
 
-        String carColor) {
+        String carColor
+) {
 }
