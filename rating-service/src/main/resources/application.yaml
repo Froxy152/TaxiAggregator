@@ -1,6 +1,7 @@
 spring:
   application:
     name: rating-service
+
   data:
     mongodb:
       host: ${HOST_DB:localhost}
@@ -9,3 +10,12 @@ spring:
       username: werdiens
       password: haduken
       authenticationDatabase: admin
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    topics:
+      driver-rating: update-rating-topic
+      passenger-rating: update-passenger-rating-topic

@@ -1,19 +1,21 @@
 package by.shestakov.ratingservice.dto.response;
 
-import by.shestakov.ratingservice.entity.Driver;
-import by.shestakov.ratingservice.entity.Passenger;
+
+import by.shestakov.ratingservice.entity.RatedBy;
 
 public record RatingResponse(
         String id,
 
         String rideId,
 
-        Passenger passenger,
+        Long passengerId,
 
-        Driver driver,
+        Long driverId,
 
-        Integer mark,
+        Double rate,
 
-        String commentary
+        String commentary,
+
+        RatedBy ratedBy
 ) {
 }
