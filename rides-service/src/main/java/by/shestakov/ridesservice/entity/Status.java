@@ -14,8 +14,6 @@ public enum Status {
 
     private final int code;
 
-
-
     Status(Integer code) {
         this.code = code;
     }
