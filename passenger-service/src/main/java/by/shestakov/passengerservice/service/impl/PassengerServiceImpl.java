@@ -97,8 +97,9 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public void softDeletePassenger(Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new PassengerNotFoundException((
-                        String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id))));
+            .orElseThrow(() -> new PassengerNotFoundException(
+                String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
+
         foundPassenger.setIsDeleted(true);
 
         passengerRepository.save(foundPassenger);
