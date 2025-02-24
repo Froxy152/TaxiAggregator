@@ -1,6 +1,7 @@
 package by.shestakov.driverservice.dto.response;
 
 import by.shestakov.driverservice.entity.Gender;
+import java.math.BigDecimal;
 import java.util.Set;
 
 
@@ -11,7 +12,7 @@ public record DriverResponse(
     String email,
     String phoneNumber,
     Gender gender,
-    Double rating,
+    BigDecimal rating,
     Boolean isDeleted,
     Set<Long> cars
 ) {

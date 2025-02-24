@@ -4,7 +4,7 @@ create table if not exists drivers(
     last_name varchar(32) not null,
     email varchar(255) not null unique ,
     phone_number varchar(13) not null unique,
-    rating float not null default 0,
+    rating Numeric(38,2) not null default 0,
     gender int not null,
     is_deleted boolean default false
 );

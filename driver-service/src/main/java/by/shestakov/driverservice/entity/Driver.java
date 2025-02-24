@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -46,7 +47,7 @@ public class Driver {
     private Gender gender;
 
     @Column(name = "rating", nullable = false)
-    private Double rating;
+    private BigDecimal rating;
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;

@@ -1,6 +1,6 @@
 package by.shestakov.driverservice.config;
 
-import by.shestakov.driverservice.dto.request.DriverRatingRequest;
+import by.shestakov.driverservice.dto.request.UpdateRatingRequest;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -18,11 +18,11 @@ import org.springframework.kafka.support.serializer.JsonDeserializer;
 @EnableKafka
 public class KafkaConsumerConfig {
 
-    @Value("${kafka.consumer.bootstrap-servers}")
+    @Value("${spring.kafka.consumer.bootstrap-servers}")
     private String bootstrapServers;
 
     @Bean
-    public ConsumerFactory<String, DriverRatingRequest> consumerFactory() {
+    public ConsumerFactory<String, UpdateRatingRequest> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
@@ -34,14 +34,14 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(
             props,
             new StringDeserializer(),
-            new JsonDeserializer<>(DriverRatingRequest.class)
+            new JsonDeserializer<>(UpdateRatingRequest.class)
         );
     }
 
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, DriverRatingRequest> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, DriverRatingRequest> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, UpdateRatingRequest> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, UpdateRatingRequest> factory =
             new ConcurrentKafkaListenerContainerFactory<>();
         factory.getContainerProperties().setObservationEnabled(true);
         factory.setConsumerFactory(consumerFactory());

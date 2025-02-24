@@ -1,4 +1,4 @@
-addeINSERT INTO drivers (name, last_name, email, phone_number, rating, gender, is_deleted) VALUES
+INSERT INTO drivers (name, last_name, email, phone_number, rating, gender, is_deleted) VALUES
 ('Иван', 'Иванов', 'ivan.ivanov@example.com', '89001234567','0', '1', false),
 ('Анна', 'Петрова', 'anna.petrova@example.com', '89007654321','0', '2', false),
 ('Сергей', 'Сидоров', 'sergey.sidorov@example.com', '89012345678','0', '3', false),

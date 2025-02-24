@@ -12,6 +12,7 @@ import by.shestakov.driverservice.mapper.PageMapper;
 import by.shestakov.driverservice.repository.DriverRepository;
 import by.shestakov.driverservice.service.DriverService;
 import by.shestakov.driverservice.util.ExceptionMessages;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,7 +56,7 @@ public class DriverServiceImpl implements DriverService {
         }
 
         Driver newDriver = driverMapper.toEntity(driverRequest);
-        newDriver.setRating(0.0);
+        newDriver.setRating(BigDecimal.valueOf(0.0));
         newDriver.setIsDeleted(false);
         driverRepository.save(newDriver);
 
