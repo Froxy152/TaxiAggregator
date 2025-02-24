@@ -26,7 +26,9 @@ public class RatingControllerImpl implements RatingController {
 
 
     @Override
-    public ResponseEntity<PageResponse<RatingResponse>> getAllReviews(Integer offset, Integer limit) {
+    @GetMapping
+    public ResponseEntity<PageResponse<RatingResponse>> getAllReviews(@RequestParam("offset") Integer offset, 
+                                                                      @RequestParam("limit") Integer limit) {
         return new ResponseEntity<>(ratingService.getAllReviews(offset, limit),
             HttpStatus.OK);
     }
@@ -34,7 +36,7 @@ public class RatingControllerImpl implements RatingController {
     @Override
     @GetMapping
     public ResponseEntity<AverageRatingResponse> getAverageRating(@RequestParam("driverId") Long driverId,
-                                                     @RequestParam("limit") Integer limit) {
+                                                                  @RequestParam("limit") Integer limit) {
         return new ResponseEntity<>(ratingService.getResultForDriver(driverId, limit),
                 HttpStatus.OK);
     }
@@ -47,6 +49,7 @@ public class RatingControllerImpl implements RatingController {
     }
 
     @PatchMapping
+    @Override
     public ResponseEntity<RatingResponse> updateCommentUnderReview(@RequestBody String text,
                                                                    @RequestParam(value = "id") String id) {
         return new ResponseEntity<>(ratingService.changeCommentUnderReview(id, text),

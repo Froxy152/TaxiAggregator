@@ -16,7 +16,7 @@ public interface RatingController {
 
     @GetMapping
     ResponseEntity<PageResponse<RatingResponse>> getAllReviews(@RequestParam("offset") Integer offset,
-                                               @RequestParam("limit") Integer limit);
+                                                               @RequestParam("limit") Integer limit);
 
     @GetMapping("/{id}")
     ResponseEntity<AverageRatingResponse> getAverageRating(@PathVariable Long driverId,
@@ -27,5 +27,5 @@ public interface RatingController {
 
     @PatchMapping
     ResponseEntity<RatingResponse> updateCommentUnderReview(@RequestBody String text,
-                                                                   @RequestParam(value = "id") String id);
+                                                            @RequestParam(value = "id") String id);
 }

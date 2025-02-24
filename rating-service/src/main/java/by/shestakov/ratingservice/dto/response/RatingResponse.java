@@ -1,19 +1,13 @@
 package by.shestakov.ratingservice.dto.response;
 
-import by.shestakov.ratingservice.entity.Driver;
-import by.shestakov.ratingservice.entity.Passenger;
+import java.math.BigDecimal;
 
 public record RatingResponse(
         String id,
-
         String rideId,
-
-        Passenger passenger,
-
-        Driver driver,
-
-        Integer mark,
-
+        Long passengerId,
+        Long driverId,
+        BigDecimal mark,
         String commentary
 ) {
 }
