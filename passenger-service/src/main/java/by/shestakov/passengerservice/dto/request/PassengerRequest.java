@@ -23,6 +23,5 @@ public record PassengerRequest(
         @NotBlank(message = ValidationConstants.MANDATORY_PHONE_FIELD)
         @Pattern(regexp = RegexpConstants.PHONE_NUMBER_REGEXP)
         String phoneNumber
-
 ) {
 }

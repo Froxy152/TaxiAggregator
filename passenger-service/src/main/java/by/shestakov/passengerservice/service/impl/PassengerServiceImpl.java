@@ -12,6 +12,7 @@ import by.shestakov.passengerservice.mapper.PassengerMapper;
 import by.shestakov.passengerservice.repository.PassengerRepository;
 import by.shestakov.passengerservice.service.PassengerService;
 import by.shestakov.passengerservice.util.ExceptionConstants;
+import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -55,6 +56,8 @@ public class PassengerServiceImpl implements PassengerService {
                     ExceptionConstants.CONFLICT_MESSAGE.formatted(email, phoneNumber));
         }
         Passenger savedPassenger = passengerMapper.toEntity(passengerRequest);
+        savedPassenger.setRating(BigDecimal.valueOf(0.0));
+
         passengerRepository.save(savedPassenger);
 
         return passengerMapper.toDto(savedPassenger);
