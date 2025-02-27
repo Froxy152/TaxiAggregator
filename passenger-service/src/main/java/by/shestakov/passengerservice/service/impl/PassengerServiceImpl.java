@@ -40,7 +40,7 @@ public class PassengerServiceImpl implements PassengerService {
     public PassengerResponse getPassengerById(Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new PassengerNotFoundException(
-                        String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
+                        ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
 
         return passengerMapper.toDto(foundPassenger);
     }
@@ -65,7 +65,7 @@ public class PassengerServiceImpl implements PassengerService {
     public PassengerResponse updatePassengerById(UpdatePassengerRequest updatePassengerRequest, Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
             .orElseThrow(() -> new PassengerNotFoundException(
-                String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
+                ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
 
         String email = updatePassengerRequest.email();
         String phoneNumber = updatePassengerRequest.phoneNumber();
@@ -95,8 +95,8 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public void softDeletePassenger(Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new PassengerNotFoundException((
-                        String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id))));
+            .orElseThrow(() -> new PassengerNotFoundException(
+                ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
         foundPassenger.setIsDeleted(true);
 
         passengerRepository.save(foundPassenger);
