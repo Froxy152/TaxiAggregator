@@ -1,6 +1,7 @@
 package by.shestakov.driverservice.service.impl;
 
 import by.shestakov.driverservice.dto.request.CarRequest;
+import by.shestakov.driverservice.dto.request.UpdateCarRequest;
 import by.shestakov.driverservice.dto.response.CarResponse;
 import by.shestakov.driverservice.dto.response.PageResponse;
 import by.shestakov.driverservice.entity.Car;
@@ -61,7 +62,7 @@ public class CarServiceImpl implements CarService {
 
     @Transactional
     @Override
-    public CarResponse updateCar(CarRequest carRequest, Long id) {
+    public CarResponse updateCar(UpdateCarRequest carRequest, Long id) {
         Car existsCar = carRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new CarNotFoundException(
                         ExceptionMessages.NOT_FOUND_MESSAGE.formatted("car", id)));

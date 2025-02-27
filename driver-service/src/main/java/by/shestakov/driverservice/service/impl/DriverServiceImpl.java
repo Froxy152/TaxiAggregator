@@ -1,6 +1,7 @@
 package by.shestakov.driverservice.service.impl;
 
 import by.shestakov.driverservice.dto.request.DriverRequest;
+import by.shestakov.driverservice.dto.request.UpdateDriverRequest;
 import by.shestakov.driverservice.dto.response.DriverResponse;
 import by.shestakov.driverservice.dto.response.PageResponse;
 import by.shestakov.driverservice.entity.Driver;
@@ -50,7 +51,7 @@ public class DriverServiceImpl implements DriverService {
 
     @Transactional
     @Override
-    public DriverResponse updateDriver(DriverRequest driverRequest, Long id) {
+    public DriverResponse updateDriver(UpdateDriverRequest driverRequest, Long id) {
         Driver existsDriver = driverRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new DriverNotFoundException(
                         ExceptionMessages.NOT_FOUND_MESSAGE.formatted("driver", id)));

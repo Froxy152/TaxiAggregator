@@ -1,6 +1,7 @@
 package by.shestakov.driverservice.controller;
 
 import by.shestakov.driverservice.dto.request.DriverRequest;
+import by.shestakov.driverservice.dto.request.UpdateDriverRequest;
 import by.shestakov.driverservice.dto.response.DriverResponse;
 import by.shestakov.driverservice.dto.response.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,8 +45,8 @@ public interface DriverOperations {
                       @ApiResponse(responseCode = "409", description = "Driver already exists"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PutMapping("/{id}")
-    ResponseEntity<DriverResponse> updateDriver(@RequestBody @Valid DriverRequest driverRequest,
-                                                       @PathVariable Long id);
+    ResponseEntity<DriverResponse> updateDriver(@RequestBody @Valid UpdateDriverRequest driverRequest,
+                                                @PathVariable Long id);
 
     @Operation(summary = "soft delete driver")
     @ApiResponses(
