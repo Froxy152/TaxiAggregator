@@ -1,8 +1,7 @@
 package by.shestakov.passengerservice.dto.response;
 
-import lombok.Builder;
-
 import java.util.List;
+import lombok.Builder;
 
 @Builder
 public record PageResponse<T>(
