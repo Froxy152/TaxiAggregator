@@ -1,6 +1,7 @@
 package by.shestakov.passengerservice.service;
 
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
+import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PageResponse;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 
@@ -11,7 +12,8 @@ public interface PassengerService {
 
     PassengerResponse createPassenger(PassengerRequest passengerRequest);
 
-    PassengerResponse updatePassengerById(PassengerRequest passengerRequest, Long id);
+    PassengerResponse updatePassengerById(UpdatePassengerRequest updatePassengerRequest, Long id);
 
     void softDeletePassenger(Long id);
+
 }

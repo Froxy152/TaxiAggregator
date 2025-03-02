@@ -1,6 +1,7 @@
 package by.shestakov.passengerservice.controller;
 
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
+import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PageResponse;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-
 
 public interface ControllerAction {
     @Operation(summary = "get all passengers")
@@ -55,8 +55,8 @@ public interface ControllerAction {
                       @ApiResponse(responseCode = "409", description = "Passenger with this number or email exists"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PutMapping("/{id}")
-    ResponseEntity<PassengerResponse> update(
-            @RequestBody @Valid PassengerRequest passengerRequest, @PathVariable Long id);
+    ResponseEntity<PassengerResponse> update(@RequestBody @Valid UpdatePassengerRequest updatePassengerRequest,
+                                                    @PathVariable Long id);
 
     @Operation(summary = "soft delete passengers")
     @ApiResponses(

@@ -1,6 +1,7 @@
 package by.shestakov.passengerservice.mapper;
 
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
+import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 import by.shestakov.passengerservice.entity.Passenger;
 import org.mapstruct.BeanMapping;
@@ -18,6 +19,6 @@ public interface PassengerMapper {
     Passenger toEntity(PassengerRequest passengerRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void update(PassengerRequest passengerRequest, @MappingTarget Passenger passenger);
+    void update(UpdatePassengerRequest updatePassengerRequest, @MappingTarget Passenger passenger);
 
 }
