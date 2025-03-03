@@ -1,2 +1,5 @@
-package TestStaticParametrs;public class TestConstraints {
+package TestStaticParametrs;
+
+public class TestConstraints {
+
 }
