@@ -20,6 +20,6 @@ public class GenderConverter implements AttributeConverter<Gender, Integer> {
         if (integer == null) {
             return null;
         }
-        return Gender.fromValue(integer);
+        return Gender.fromCode(integer);
     }
 }
