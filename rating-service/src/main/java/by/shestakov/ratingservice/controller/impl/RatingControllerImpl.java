@@ -1,6 +1,7 @@
 package by.shestakov.ratingservice.controller.impl;
 
 import by.shestakov.ratingservice.controller.RatingController;
+import by.shestakov.ratingservice.dto.request.CommentaryDto;
 import by.shestakov.ratingservice.dto.request.RatingRequest;
 import by.shestakov.ratingservice.dto.response.AverageRatingResponse;
 import by.shestakov.ratingservice.dto.response.PageResponse;
@@ -28,7 +29,7 @@ public class RatingControllerImpl implements RatingController {
 
     @GetMapping
     @Override
-    public ResponseEntity<PageResponse<RatingResponse>> getAllReviews(@RequestParam("offset") Integer offset,
+    public ResponseEntity<PageResponse<RatingResponse>> getAllRatings(@RequestParam("offset") Integer offset,
                                                                       @RequestParam("limit") Integer limit) {
         return new ResponseEntity<>(ratingService.getAllReviews(offset, limit),
             HttpStatus.OK);
@@ -50,9 +51,9 @@ public class RatingControllerImpl implements RatingController {
     }
 
     @PatchMapping
-    public ResponseEntity<RatingResponse> updateCommentUnderReview(@RequestBody String text,
-                                                                   @RequestParam(value = "id") String id) {
-        return new ResponseEntity<>(ratingService.changeCommentUnderReview(id, text),
+    public ResponseEntity<RatingResponse> updateCommentUnderReview(@RequestBody CommentaryDto commentaryDto,
+                                                                   @PathVariable String id) {
+        return new ResponseEntity<>(ratingService.changeCommentUnderReview(id, commentaryDto),
                 HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package by.shestakov.ratingservice.service.impl;
 
+import by.shestakov.ratingservice.dto.request.CommentaryDto;
 import by.shestakov.ratingservice.dto.request.RatingRequest;
 import by.shestakov.ratingservice.dto.response.AverageRatingResponse;
 import by.shestakov.ratingservice.dto.response.PageResponse;
@@ -73,11 +74,11 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public RatingResponse changeCommentUnderReview(String reviewId, String text) {
+    public RatingResponse changeCommentUnderReview(String reviewId, CommentaryDto commentaryDto) {
         Rating existsRating = ratingRepository.findById(reviewId)
                 .orElseThrow((DataNotFoundException::new));
 
-        existsRating.setCommentary(text);
+        existsRating.setCommentary(commentaryDto.text());
 
         ratingRepository.save(existsRating);
 
