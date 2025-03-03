@@ -23,7 +23,7 @@ public class KafkaConfiguration {
 
     @Bean
     public ConsumerFactory<String, UpdateRatingRequest> consumerFactory() {
-        Map<String, Object> props= new HashMap<>();
+        Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootStrapServers);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
@@ -38,7 +38,7 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, UpdateRatingRequest>kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, UpdateRatingRequest> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, UpdateRatingRequest> factory =
             new ConcurrentKafkaListenerContainerFactory<>();
         factory.getContainerProperties().setObservationEnabled(true);

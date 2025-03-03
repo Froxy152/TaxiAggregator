@@ -44,7 +44,8 @@ public class CarControllerImpl implements CarOperations {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CarResponse> updateCar(@RequestBody @Valid UpdateCarRequest carRequest, @PathVariable Long id) {
+    public ResponseEntity<CarResponse> updateCar(@RequestBody @Valid UpdateCarRequest carRequest,
+                                                 @PathVariable Long id) {
         return new ResponseEntity<>(carService.updateCar(carRequest, id),
                 HttpStatus.OK);
     }

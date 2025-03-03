@@ -1,5 +1,14 @@
 package by.shestakov.passengerservice.service.impl;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
 import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PageResponse;
@@ -10,8 +19,10 @@ import by.shestakov.passengerservice.exception.PassengerNotFoundException;
 import by.shestakov.passengerservice.mapper.PageMapper;
 import by.shestakov.passengerservice.mapper.PassengerMapper;
 import by.shestakov.passengerservice.repository.PassengerRepository;
-import by.shestakov.passengerservice.service.PassengerService;
 import by.shestakov.passengerservice.util.ExceptionConstants;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,16 +32,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PassengerServiceImplTest {
@@ -53,7 +54,8 @@ class PassengerServiceImplTest {
     private PassengerResponse passengerResponse;
     private PassengerResponse updatePassengerResponse;
     private Long passengerId;
-    private Integer limit, offset;
+    private Integer limit;
+    private Integer offset;
     private PageRequest pageRequest;
     private PageResponse<PassengerResponse> expectedPageResponse;
     private List<Passenger> passengers;
@@ -77,9 +79,11 @@ class PassengerServiceImplTest {
         passenger.setEmail("test.mail@gmail.com");
         passenger.setPhoneNumber("+375295035859");
 
-        passengerResponse = new PassengerResponse(32L, "Ilya","Shestakov", "mail@example.com","+375445684123",new BigDecimal("0.0"), false);
+        passengerResponse = new PassengerResponse(32L, "Ilya", "Shestakov",
+            "mail@example.com", "+375445684123", new BigDecimal("0.0"), false);
 
-        updatePassengerResponse = new PassengerResponse(32L, "Nikita","shestakov", "test@example.com","+375256985235",new BigDecimal("0.0"), false);
+        updatePassengerResponse = new PassengerResponse(32L, "Nikita", "shestakov",
+            "test@example.com", "+375256985235", new BigDecimal("0.0"), false);
 
         offset = 0;
         limit = 2;
@@ -113,24 +117,24 @@ class PassengerServiceImplTest {
         assertNotNull(actualResponse);
         assertEquals(expectedPageResponse, actualResponse);
 
-        verify(passengerRepository, times(1)).findAllByIsDeletedFalse(pageRequest);
+        verify(passengerRepository).findAllByIsDeletedFalse(pageRequest);
         verify(passengerMapper, times(passengers.size())).toDto(any(Passenger.class));
-        verify(pageMapper, times(1)).toDto(any(Page.class));
+        verify(pageMapper).toDto(any(Page.class));
     }
 
     @Test
     void testGetPassengerById_ReturnsValidPassengerResponse() {
-            when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.of(passenger));
-            when(passengerMapper.toDto(passenger)).thenReturn(passengerResponse);
+        when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.of(passenger));
+        when(passengerMapper.toDto(passenger)).thenReturn(passengerResponse);
 
-            PassengerResponse response = passengerService.getPassengerById(passengerId);
+        PassengerResponse response = passengerService.getPassengerById(passengerId);
 
-            assertNotNull(response);
-            assertEquals(passengerResponse.email(), response.email());
-            assertEquals(passengerResponse.phoneNumber(), response.phoneNumber());
+        assertNotNull(response);
+        assertEquals(passengerResponse.email(), response.email());
+        assertEquals(passengerResponse.phoneNumber(), response.phoneNumber());
 
-            verify(passengerRepository).findByIdAndIsDeletedFalse(passengerId);
-            verify(passengerMapper).toDto(passenger);
+        verify(passengerRepository).findByIdAndIsDeletedFalse(passengerId);
+        verify(passengerMapper).toDto(passenger);
     }
 
     @Test
@@ -164,7 +168,8 @@ class PassengerServiceImplTest {
 
     @Test
     void testCreatePassenger_PassengerAlreadyExists_throwPassengerAlreadyExistsException() {
-        when(passengerRepository.existsByEmailOrPhoneNumber(passengerRequest.email(),passengerRequest.phoneNumber())).thenReturn(true);
+        when(passengerRepository.existsByEmailOrPhoneNumber(passengerRequest.email(),
+            passengerRequest.phoneNumber())).thenReturn(true);
 
         PassengerAlreadyExistsException exception = assertThrows(
                 PassengerAlreadyExistsException.class,
@@ -183,7 +188,7 @@ class PassengerServiceImplTest {
         when(passengerRepository.save(passenger)).thenReturn(passenger);
         when(passengerMapper.toDto(passenger)).thenReturn(updatePassengerResponse);
 
-        PassengerResponse response = passengerService.updatePassengerById(updatePassengerRequest,passengerId);
+        PassengerResponse response = passengerService.updatePassengerById(updatePassengerRequest, passengerId);
 
         assertNotNull(response);
         assertEquals(updatePassengerRequest.name(), response.name());
@@ -191,7 +196,7 @@ class PassengerServiceImplTest {
         assertEquals(updatePassengerRequest.email(), response.email());
         assertEquals(updatePassengerRequest.phoneNumber(), response.phoneNumber());
 
-        verify(passengerMapper).update(updatePassengerRequest,passenger);
+        verify(passengerMapper).update(updatePassengerRequest, passenger);
         verify(passengerRepository).save(passenger);
     }
 
@@ -212,12 +217,12 @@ class PassengerServiceImplTest {
         when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.of(passenger));
         when(passengerRepository.existsByEmail(updatePassengerRequest.email())).thenReturn(true);
 
-        PassengerAlreadyExistsException exception = assertThrows(
-          PassengerAlreadyExistsException.class,
-          () -> passengerService.updatePassengerById(updatePassengerRequest, passengerId)
+        PassengerAlreadyExistsException exception = assertThrows(PassengerAlreadyExistsException.class, () ->
+            passengerService.updatePassengerById(updatePassengerRequest, passengerId)
         );
 
-        assertEquals(ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED.formatted(updatePassengerRequest.email()), exception.getMessage());
+        assertEquals(ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED
+            .formatted(updatePassengerRequest.email()), exception.getMessage());
     }
 
     @Test
@@ -231,7 +236,8 @@ class PassengerServiceImplTest {
                 () -> passengerService.updatePassengerById(updatePassengerRequest, passengerId)
         );
 
-        assertEquals(ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED.formatted(updatePassengerRequest.phoneNumber()), exception.getMessage());
+        assertEquals(ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED
+            .formatted(updatePassengerRequest.phoneNumber()), exception.getMessage());
     }
 
     @Test
