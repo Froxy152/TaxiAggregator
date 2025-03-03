@@ -1,17 +1,15 @@
 package by.shestakov.passengerservice.service;
 
-import by.shestakov.passengerservice.dto.request.PassengerRequest;
-import by.shestakov.passengerservice.dto.response.PageResponse;
-import by.shestakov.passengerservice.dto.response.PassengerResponse;
+import by.shestakov.passengerservice.dto.PassengerDto;
+import by.shestakov.passengerservice.entity.Passenger;
 
 public interface PassengerService {
-    PageResponse<PassengerResponse> getAllPassengers(Integer offset, Integer limit);
+    public PassengerDto getById(Long id);
 
-    PassengerResponse getPassengerById(Long id);
+    public PassengerDto create(PassengerDto passengerDto);
 
-    PassengerResponse createPassenger(PassengerRequest passengerRequest);
+    public PassengerDto updateById(PassengerDto passengerDto, Long id);
 
-    PassengerResponse updatePassengerById(PassengerRequest passengerRequest, Long id);
+    public void delete(Long id);
 
-    void softDeletePassenger(Long id);
 }
