@@ -55,6 +55,7 @@ public class PassengerServiceImpl implements PassengerService {
             throw new PassengerAlreadyExistsException(
                     ExceptionConstants.CONFLICT_MESSAGE.formatted(email, phoneNumber));
         }
+
         Passenger savedPassenger = passengerMapper.toEntity(passengerRequest);
         savedPassenger.setRating(BigDecimal.valueOf(0.0));
 
@@ -71,11 +72,6 @@ public class PassengerServiceImpl implements PassengerService {
                         String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
         String email = updatePassengerRequest.email();
         String phoneNumber = updatePassengerRequest.phoneNumber();
-
-        if (foundPassenger.getEmail().equals(email) || foundPassenger.getPhoneNumber().equals(phoneNumber)) {
-            throw new PassengerAlreadyExistsException(
-                    ExceptionConstants.CONFLICT_MESSAGE_ITS_YOUR_CREDENTIALS);
-        }
 
         if (passengerRepository.existsByEmail(email)) {
             throw new PassengerAlreadyExistsException(
