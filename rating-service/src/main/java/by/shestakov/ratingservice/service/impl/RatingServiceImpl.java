@@ -4,16 +4,20 @@ import by.shestakov.ratingservice.dto.request.RatingRequest;
 import by.shestakov.ratingservice.dto.response.AverageRatingResponse;
 import by.shestakov.ratingservice.dto.response.PageResponse;
 import by.shestakov.ratingservice.dto.response.RatingResponse;
+import by.shestakov.ratingservice.entity.RatedBy;
 import by.shestakov.ratingservice.entity.Rating;
 import by.shestakov.ratingservice.exception.DataNotFoundException;
 import by.shestakov.ratingservice.exception.OnlyOneCommentOnRideException;
 import by.shestakov.ratingservice.feign.DriverClient;
 import by.shestakov.ratingservice.feign.PassengerClient;
 import by.shestakov.ratingservice.feign.RideClient;
+import by.shestakov.ratingservice.kafka.KafkaProducer;
 import by.shestakov.ratingservice.mapper.PageMapper;
 import by.shestakov.ratingservice.mapper.RatingMapper;
 import by.shestakov.ratingservice.repository.RatingRepository;
 import by.shestakov.ratingservice.service.RatingService;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +39,8 @@ public class RatingServiceImpl implements RatingService {
 
     private final PageMapper pageMapper;
 
+    private final KafkaProducer kafkaProducer;
+
     @Override
     public PageResponse<RatingResponse> getAllReviews(Integer offset, Integer limit) {
         Page<RatingResponse> ratingPage = ratingRepository.findAll(PageRequest.of(offset, limit))
@@ -46,6 +52,8 @@ public class RatingServiceImpl implements RatingService {
     public RatingResponse addNewReviewOnRide(RatingRequest ratingRequest) {
 
         checkRide(ratingRequest.rideId());
+        checkDriver(ratingRequest.driverId());
+        checkPassenger(ratingRequest.passengerId());
 
         if (ratingRepository.existsByRideId(ratingRequest.rideId())) {
             throw new OnlyOneCommentOnRideException();
@@ -53,11 +61,13 @@ public class RatingServiceImpl implements RatingService {
 
         Rating newRating = ratingMapper.toEntity(ratingRequest);
 
-        checkDriver(ratingRequest.driverId());
-
-        checkPassenger(ratingRequest.passengerId());
-
         ratingRepository.save(newRating);
+
+        if (ratingRequest.ratedBy().equals(RatedBy.PASSENGER)) {
+            realtimeDriverUpdateRating(ratingRequest.driverId());
+        } else {
+            realtimePassengerUpdateRating(ratingRequest.passengerId());
+        }
 
         return ratingMapper.toDto(newRating);
     }
@@ -75,8 +85,9 @@ public class RatingServiceImpl implements RatingService {
     }
 
     @Override
-    public AverageRatingResponse getResultForDriver(Long driverId, Integer limit) {
-        return ratingRepository.findAverageRatingByDriverId(driverId, limit);
+    public AverageRatingResponse getResultForDriverWithLimit(Long driverId, Integer limit) {
+        checkDriver(driverId);
+        return ratingRepository.findAverageRatingByDriverIdByLimit(driverId, limit);
     }
 
     private void checkPassenger(Long passengerId) {
@@ -90,4 +101,28 @@ public class RatingServiceImpl implements RatingService {
     private void checkRide(String rideId) {
         rideClient.getById(rideId);
     }
+
+    private void realtimeDriverUpdateRating(Long driverId) {
+        checkDriver(driverId);
+
+        AverageRatingResponse response = ratingRepository.findAverageRatingByDriverId(driverId);
+
+        BigDecimal rating = response.average();
+        rating = rating.setScale(2, RoundingMode.HALF_UP);
+
+        kafkaProducer.sendMessageForDriver(driverId, rating);
+    }
+
+    private void realtimePassengerUpdateRating(Long passengerId) {
+        checkPassenger(passengerId);
+
+        AverageRatingResponse response = ratingRepository.findAverageRatingByPassengerId(passengerId);
+
+        BigDecimal rating = response.average();
+        rating = rating.setScale(2, RoundingMode.HALF_UP);
+
+        kafkaProducer.sendMessageForPassenger(passengerId, rating);
+    }
+
+
 }

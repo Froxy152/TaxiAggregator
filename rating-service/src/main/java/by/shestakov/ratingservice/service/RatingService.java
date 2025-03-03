@@ -11,7 +11,7 @@ public interface RatingService {
 
     RatingResponse addNewReviewOnRide(RatingRequest ratingRequest);
 
-    AverageRatingResponse getResultForDriver(Long driverId, Integer limit);
+    AverageRatingResponse getResultForDriverWithLimit(Long driverId, Integer limit);
 
     RatingResponse changeCommentUnderReview(String reviewId, String text);
 }
