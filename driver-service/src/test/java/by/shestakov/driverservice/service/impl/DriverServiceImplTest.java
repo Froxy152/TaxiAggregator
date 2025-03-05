@@ -6,30 +6,38 @@ import static by.shestakov.constant.TestDriverData.defaultDriverRequest;
 import static by.shestakov.constant.TestDriverData.defaultDriverResponse;
 import static by.shestakov.constant.TestDriverData.driverUpdateRequest;
 import static by.shestakov.constant.TestDriverData.updatedDriver;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import by.shestakov.driverservice.dto.request.DriverRequest;
 import by.shestakov.driverservice.dto.request.DriverUpdateRequest;
 import by.shestakov.driverservice.dto.response.DriverResponse;
+import by.shestakov.driverservice.dto.response.PageResponse;
 import by.shestakov.driverservice.entity.Driver;
 import by.shestakov.driverservice.exception.driver.DriverAlreadyExistsException;
 import by.shestakov.driverservice.exception.driver.DriverNotFoundException;
 import by.shestakov.driverservice.mapper.DriverMapper;
+import by.shestakov.driverservice.mapper.PageMapper;
 import by.shestakov.driverservice.repository.DriverRepository;
 import by.shestakov.driverservice.util.ExceptionMessages;
-import jakarta.persistence.Id;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
-import org.aspectj.apache.bcel.ExceptionConstants;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.util.Assert;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 @ExtendWith(MockitoExtension.class)
 class DriverServiceImplTest {
@@ -41,11 +49,37 @@ class DriverServiceImplTest {
     @Mock
     private DriverMapper driverMapper;
 
+    @Mock
+    private PageMapper pageMapper;
+
     @InjectMocks
     private DriverServiceImpl driverService;
 
     @Test
-    void getAllDrivers() { //todo test for page
+    void getAllDrivers() {
+        int offset = 0;
+        int limit = 2;
+
+        List<Driver> drivers = List.of(defaultDriver());
+        Page<Driver> driverPage = new PageImpl<>(drivers, PageRequest.of(offset, limit), drivers.size());
+        List<DriverResponse> driverResponses = List.of(defaultDriverResponse());
+        Page<DriverResponse> responsePage =
+            new PageImpl<>(driverResponses, PageRequest.of(offset, limit), driverResponses.size());
+        PageResponse<DriverResponse> expectedResponse =
+            new PageResponse<>(offset, limit, 1, driverResponses.size(), "", driverResponses);
+
+        when(driverRepository.findAllByIsDeletedFalse(PageRequest.of(offset, limit))).thenReturn(driverPage);
+        when(driverMapper.toDto(any(Driver.class))).thenReturn(defaultDriverResponse());
+        when(pageMapper.toDto(responsePage)).thenReturn(expectedResponse);
+
+        PageResponse<DriverResponse> response = driverService.getAllDrivers(offset, limit);
+
+        assertNotNull(response);
+        assertEquals(expectedResponse, response);
+
+        verify(driverRepository).findAllByIsDeletedFalse(PageRequest.of(offset, limit));
+        verify(driverMapper, times(drivers.size())).toDto(any(Driver.class));
+        verify(pageMapper).toDto(responsePage);
     }
 
     @Test
@@ -219,7 +253,7 @@ class DriverServiceImplTest {
 
         DriverNotFoundException exception = assertThrows(
             DriverNotFoundException.class,
-            ()  -> driverService.deleteDriver(id)
+            () -> driverService.deleteDriver(id)
         );
 
         assertEquals(ExceptionMessages.NOT_FOUND_MESSAGE.formatted("driver", id), exception.getMessage());

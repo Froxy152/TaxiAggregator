@@ -2,12 +2,11 @@ package by.shestakov.driverservice.kafka;
 
 import static by.shestakov.constant.TestDriverData.defaultDriver;
 import static by.shestakov.constant.TestKafkaData.ratingRequest;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import by.shestakov.constant.TestKafkaData;
 import by.shestakov.driverservice.dto.request.UpdateRatingRequest;
 import by.shestakov.driverservice.entity.Driver;
 import by.shestakov.driverservice.exception.driver.DriverNotFoundException;
