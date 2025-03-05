@@ -40,7 +40,5 @@ public class Car {
 
     @ManyToOne
     @JoinColumn(name = "driver_id", referencedColumnName = "id", nullable = false)
-    private Driver driverId;
-
-
+    private Driver driver;
 }
