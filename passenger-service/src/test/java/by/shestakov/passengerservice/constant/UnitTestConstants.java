@@ -2,13 +2,12 @@ package by.shestakov.passengerservice.constant;
 
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
 import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
+import by.shestakov.passengerservice.dto.request.UpdateRatingRequest;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 import by.shestakov.passengerservice.entity.Passenger;
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.NumberRange;
-
-import java.math.BigDecimal;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class UnitTestConstants {
@@ -79,4 +78,11 @@ public final class UnitTestConstants {
                 .build();
     }
 
+    public static Passenger defaultPassenger() {
+        return new Passenger(TEST_ID, TEST_NAME, TEST_LASTNAME, TEST_EMAIL, TEST_NUMBER, TEST_RATING, false);
+    }
+
+    public static UpdateRatingRequest ratingRequest() {
+        return new UpdateRatingRequest(TEST_ID, TEST_RATING);
+    }
 }

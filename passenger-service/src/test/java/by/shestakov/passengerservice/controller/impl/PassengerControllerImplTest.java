@@ -23,6 +23,7 @@ import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PageResponse;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 import by.shestakov.passengerservice.exception.GlobalExceptionHandler;
+import by.shestakov.passengerservice.exception.PassengerAlreadyExistsException;
 import by.shestakov.passengerservice.exception.PassengerNotFoundException;
 import by.shestakov.passengerservice.service.PassengerService;
 import by.shestakov.passengerservice.util.ExceptionConstants;
@@ -124,6 +125,20 @@ class PassengerControllerImplTest {
     }
 
     @Test
+    void testCreate_PassengerCredentialsAlreadyExists_ThrowException() throws Exception {
+        PassengerRequest request = defaultRequest();
+
+        when(passengerService.createPassenger(request)).thenThrow(new PassengerAlreadyExistsException(
+            ExceptionConstants.CONFLICT_MESSAGE.formatted(request.phoneNumber(), request.email())));
+
+        mockMvc.perform(post("/api/v1/passengers")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isConflict())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
     void testCreate_InvalidEmailInRequest() throws Exception {
         PassengerRequest invalidRequest = invalidEmailRequest();
 
@@ -170,8 +185,7 @@ class PassengerControllerImplTest {
         Long id = 2L;
 
         when(passengerService.updatePassengerById(request, id)).thenThrow(
-            new PassengerNotFoundException(
-                ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id))
+            new PassengerNotFoundException(ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id))
         );
 
         mockMvc.perform(put("/api/v1/passengers/{id}", id)
@@ -181,6 +195,24 @@ class PassengerControllerImplTest {
             .andExpect(status().isNotFound());
 
         verify(passengerService).updatePassengerById(request, id);
+    }
+
+    @Test
+    void testUpdateById_PassengerAlreadyExists_ThrowException() throws Exception {
+        UpdatePassengerRequest request = updatePassengerRequest();
+
+        Long id = 2L;
+
+        when(passengerService.updatePassengerById(request, id)).thenThrow(
+            new PassengerAlreadyExistsException(
+                ExceptionConstants.CONFLICT_MESSAGE.formatted(request.phoneNumber(), request.email()))
+        );
+
+        mockMvc.perform(put("/api/v1/passengers/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isConflict());
     }
 
     @Test
