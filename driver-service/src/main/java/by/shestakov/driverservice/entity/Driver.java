@@ -52,6 +52,6 @@ public class Driver {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "driverId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL)
     private Set<Car> cars;
 }
