@@ -6,6 +6,8 @@ import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultRe
 import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultResponse;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidEmailRequest;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidPhoneNumberRequest;
+import static by.shestakov.passengerservice.constant.UnitTestConstants.updateAlreadyEmailPassengerRequest;
+import static by.shestakov.passengerservice.constant.UnitTestConstants.updateAlreadyNumberPassengerRequest;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.updatePassengerRequest;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.updatedPassengerResponse;
 import static org.mockito.Mockito.doThrow;
@@ -198,14 +200,32 @@ class PassengerControllerImplTest {
     }
 
     @Test
-    void testUpdateById_PassengerAlreadyExists_ThrowException() throws Exception {
-        UpdatePassengerRequest request = updatePassengerRequest();
+    void testUpdateById_PassengerNumberAlreadyExists_ThrowException() throws Exception {
+        UpdatePassengerRequest request = updateAlreadyNumberPassengerRequest();
 
         Long id = 2L;
 
         when(passengerService.updatePassengerById(request, id)).thenThrow(
             new PassengerAlreadyExistsException(
-                ExceptionConstants.CONFLICT_MESSAGE.formatted(request.phoneNumber(), request.email()))
+                ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED.formatted(request.phoneNumber()))
+        );
+
+        mockMvc.perform(put("/api/v1/passengers/{id}", id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isConflict());
+    }
+
+    @Test
+    void testUpdateById_PassengerEmailAlreadyExists_ThrowException() throws Exception {
+        UpdatePassengerRequest request = updateAlreadyEmailPassengerRequest();
+
+        Long id = 2L;
+
+        when(passengerService.updatePassengerById(request, id)).thenThrow(
+            new PassengerAlreadyExistsException(
+                ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED.formatted(request.email()))
         );
 
         mockMvc.perform(put("/api/v1/passengers/{id}", id)

@@ -10,7 +10,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class UnitTestConstants {
+public class UnitTestConstants {
 
     public static final Long TEST_ID = 1L;
     public static final String TEST_NAME = "Ilya";
@@ -42,6 +42,16 @@ public final class UnitTestConstants {
                 .build();
     }
 
+    public static PassengerRequest alreadyPassengerRequest() {
+
+        return PassengerRequest.builder()
+                .name(TEST_NAME)
+                .lastName(TEST_LASTNAME)
+                .email("john.doe@example.com")
+                .phoneNumber("+375291234567")
+                .build();
+    }
+
     public static PassengerRequest invalidEmailRequest() {
         return PassengerRequest.builder()
                 .name(TEST_NAME)
@@ -63,6 +73,18 @@ public final class UnitTestConstants {
     public static UpdatePassengerRequest updatePassengerRequest() {
         return UpdatePassengerRequest.builder()
                 .email(TEST_EMAIL_FOR_UPDATE)
+                .build();
+    }
+
+    public static UpdatePassengerRequest updateAlreadyEmailPassengerRequest() {
+        return UpdatePassengerRequest.builder()
+                .email("frank.moore@example.com")
+                .build();
+    }
+
+    public static UpdatePassengerRequest updateAlreadyNumberPassengerRequest() {
+        return UpdatePassengerRequest.builder()
+                .phoneNumber("+375291234567")
                 .build();
     }
 
