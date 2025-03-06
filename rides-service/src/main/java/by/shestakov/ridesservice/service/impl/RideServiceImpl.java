@@ -2,11 +2,20 @@ package by.shestakov.ridesservice.service.impl;
 
 import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.request.RideStatusRequest;
+import by.shestakov.ridesservice.dto.response.DriverResponse;
 import by.shestakov.ridesservice.dto.response.PageResponse;
+import by.shestakov.ridesservice.dto.response.PassengerResponse;
 import by.shestakov.ridesservice.dto.response.RideResponse;
 import by.shestakov.ridesservice.dto.response.RoutingResponse;
+import by.shestakov.ridesservice.entity.Driver;
+import by.shestakov.ridesservice.entity.Passenger;
 import by.shestakov.ridesservice.entity.Ride;
+import by.shestakov.ridesservice.exception.DriverWithoutCarException;
+import by.shestakov.ridesservice.feign.DriverClient;
+import by.shestakov.ridesservice.feign.PassengerClient;
+import by.shestakov.ridesservice.mapper.DriverMapper;
 import by.shestakov.ridesservice.mapper.PageMapper;
+import by.shestakov.ridesservice.mapper.PassengerMapper;
 import by.shestakov.ridesservice.mapper.RideMapper;
 import by.shestakov.ridesservice.repository.RideRepository;
 import by.shestakov.ridesservice.service.RideService;
@@ -22,31 +31,52 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class RideServiceImpl implements RideService {
+
     private final RideRepository rideRepository;
+
     private final RideMapper rideMapper;
+
     private final PageMapper pageMapper;
+
     private final RouteService routeService;
+
+    private final PassengerClient passengerClient;
+
+    private final PassengerMapper passengerMapper;
+
+    private final DriverClient driverClient;
+
+    private final DriverMapper driverMapper;
 
 
     @Override
     public PageResponse<RideResponse> getAll(Integer offset, Integer limit) {
         Page<RideResponse> rides = rideRepository.findAll(PageRequest.of(offset, limit))
-                .map(rideMapper::toDto);
+            .map(rideMapper::toDto);
         return pageMapper.toDto(rides);
     }
 
     @Override
     public RideResponse createRide(RideRequest rideRequest) {
 
+        Driver existsDriver = getDriver(rideRequest.driverId());
+
+        if (existsDriver.getCarIds().isEmpty()) {
+            throw new DriverWithoutCarException();
+        }
+
+        Passenger existsPassenger = getPassenger(rideRequest.passengerId());
+
         RoutingResponse response = routeService.createRequest(
-                rideRequest.pickUpAddress(), rideRequest.destinationAddress());
+            rideRequest.pickUpAddress(), rideRequest.destinationAddress());
 
         Ride newRide = rideMapper.toEntity(rideRequest);
 
         Double distance = CalculatePrice.meterToKilometers(response.paths().getFirst().distance());
         Integer time = CalculatePrice.msToMin(response.paths().getFirst().time());
 
-
+        newRide.setDriver(existsDriver);
+        newRide.setPassenger(existsPassenger);
         newRide.setDistance(distance);
         newRide.setDuringRide(time);
         newRide.setTime(LocalDateTime.now());
@@ -72,7 +102,7 @@ public class RideServiceImpl implements RideService {
         Ride existsRide = rideRepository.findById(rideId).orElseThrow();
 
         RoutingResponse response = routeService.createRequest(
-                rideRequest.pickUpAddress(), rideRequest.destinationAddress());
+            rideRequest.pickUpAddress(), rideRequest.destinationAddress());
 
         rideMapper.updateExists(rideRequest, existsRide);
         existsRide.setDistance(response.paths().getFirst().distance());
@@ -83,5 +113,14 @@ public class RideServiceImpl implements RideService {
         return rideMapper.toDto(existsRide);
     }
 
+    private Passenger getPassenger(Long id) {
+        PassengerResponse passengerResponse = passengerClient.getPassengerById(id);
+        return passengerMapper.toEntity(passengerResponse);
+    }
+
+    private Driver getDriver(Long id) {
+        DriverResponse driverResponse = driverClient.getDriverById(id);
+        return driverMapper.toEntity(driverResponse);
+    }
 
 }
