@@ -9,7 +9,6 @@ import by.shestakov.driverservice.entity.Gender;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
 
 public final class TestDriverData {
 
@@ -17,7 +16,7 @@ public final class TestDriverData {
     public static final String TEST_NAME = "Ilya";
     public static final String TEST_LASTNAME = "Shestakov";
     public static final String TEST_EMAIL = "test@example.com";
-    public static final String TEST_NUMBER = "+375299240850";
+    public static final String TEST_NUMBER = "+375299208505";
     public static final Gender TEST_GENDER = Gender.OTHER;
     public static final BigDecimal TEST_RATING = new BigDecimal("0.0");
     public static final Set<Long> TEST_CARS_DTO = new HashSet<>();
@@ -29,6 +28,26 @@ public final class TestDriverData {
             .lastName(TEST_LASTNAME)
             .email(TEST_EMAIL)
             .phoneNumber(TEST_NUMBER)
+            .gender(TEST_GENDER)
+            .build();
+    }
+
+    public static DriverRequest alreadyEmailDriverRequest() {
+        return DriverRequest.builder()
+            .name(TEST_NAME)
+            .lastName(TEST_LASTNAME)
+            .email("ivan.ivanov@example.com")
+            .phoneNumber(TEST_NUMBER)
+            .gender(TEST_GENDER)
+            .build();
+    }
+
+    public static DriverRequest alreadyNumberDriverRequest() {
+        return DriverRequest.builder()
+            .name(TEST_NAME)
+            .lastName(TEST_LASTNAME)
+            .email(TEST_EMAIL)
+            .phoneNumber("+375295035305")
             .gender(TEST_GENDER)
             .build();
     }
@@ -53,7 +72,12 @@ public final class TestDriverData {
     }
 
     public static DriverUpdateRequest driverUpdateRequest() {
-        return new DriverUpdateRequest("Nikita", "Komkov", "test@example.com", "+375445986231",
+        return new DriverUpdateRequest("Nikita", "Komkov", "test@exaple.com", "+375445986231",
+            BigDecimal.valueOf(2.0), Gender.MALE);
+    }
+
+    public static DriverUpdateRequest alReadyDriverUpdateRequest() {
+        return new DriverUpdateRequest("Nikita", "Komkov", "anna.petrova@example.com", "+375295035305",
             BigDecimal.valueOf(2.0), Gender.MALE);
     }
 
