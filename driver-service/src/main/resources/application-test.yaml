@@ -1,0 +1,20 @@
+server:
+  port: 8082
+spring:
+  application:
+    name: driver-service
+  datasource:
+    driver-class-name: ${DB-DRIVER:org.postgresql.Driver}
+    url: ${DB-URL:jdbc:postgresql://localhost:5432/DriverDB}
+    username: ${DB-USERNAME:root}
+    password: ${DB-PASSWORD:123}
+  jpa:
+    database: ${DB:postgresql}
+    hibernate:
+      ddl-auto: update
+
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: rating-consumer
+      auto-offset-reset: earliest

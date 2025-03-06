@@ -11,7 +11,7 @@ public final class TestCarData {
     public static final String TEST_CAR_BRAND = "BMW";
     public static final String TEST_CAR_BRAND_UPDATE = "AUDI";
     public static final String TEST_CAR_NUMBER = "А123ВС45";
-    public static final String TEST_CAR_NUMBER_UPDATE = "А123ВС46";
+    public static final String TEST_CAR_NUMBER_UPDATE = "А123ВС47";
     public static final String TEST_CAR_COLOR = "Black";
     public static final String TEST_CAR_COLOR_UPDATE = "GRAY";
     public static final Long TEST_DRIVER_ID = 1L;
@@ -24,6 +24,10 @@ public final class TestCarData {
         return new CarRequest(TEST_CAR_BRAND, TEST_CAR_NUMBER, TEST_CAR_COLOR);
     }
 
+    public static CarRequest alreadyCarRequest() {
+        return new CarRequest(TEST_CAR_BRAND, "М012МТ178", TEST_CAR_COLOR);
+    }
+
     public static CarResponse defaultCarResponse() {
         return new CarResponse(TEST_CAR_ID, TEST_CAR_BRAND, TEST_CAR_NUMBER, TEST_CAR_COLOR, TEST_DRIVER_ID, false);
     }
@@ -34,6 +38,10 @@ public final class TestCarData {
 
     public static CarUpdateRequest updateRequest() {
         return new CarUpdateRequest(TEST_CAR_BRAND_UPDATE, TEST_CAR_NUMBER_UPDATE, TEST_CAR_COLOR_UPDATE);
+    }
+
+    public static CarUpdateRequest alreadyUpdateRequest() {
+        return new CarUpdateRequest(TEST_CAR_BRAND_UPDATE, "М012МТ178", TEST_CAR_COLOR_UPDATE);
     }
 
     public static CarResponse updatedResponse() {
