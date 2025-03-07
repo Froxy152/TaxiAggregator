@@ -20,14 +20,14 @@ spring:
       driver-rating: update-rating-topic
       passenger-rating: update-passenger-rating-topic
 
-    spring:
-      cloud:
-        openfeign:
-          client:
-            config:
-              driver-service:
-                url: localhost:8082/api/v1/drivers
-              passenger-service:
-                url: localhost:8081/api/v1/passengers
-              rides-service:
-                url: localhost:8083/api/v1/rides
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          driver-service:
+            url: localhost:8082/api/v1/drivers
+          passenger-service:
+            url: localhost:8081/api/v1/passengers
+          rides-service:
+            url: localhost:8083/api/v1/rides

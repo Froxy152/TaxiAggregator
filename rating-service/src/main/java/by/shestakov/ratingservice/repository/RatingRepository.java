@@ -31,4 +31,6 @@ public interface RatingRepository extends MongoRepository<Rating, String> {
     Page<Rating> findAll(Pageable pageable);
 
     Boolean existsByRideId(String rideId);
+
+    Boolean existsByDriverId(Long driverId);
 }

@@ -67,7 +67,7 @@ public class RatingServiceImpl implements RatingService {
         if (ratingRequest.ratedBy().equals(RatedBy.PASSENGER)) {
             realtimeDriverUpdateRating(ratingRequest.driverId());
         } else {
-            realtimePassengerUpdateRating(ratingRequest.passengerId());
+           realtimePassengerUpdateRating(ratingRequest.passengerId());
         }
 
         return ratingMapper.toDto(newRating);
@@ -88,6 +88,9 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public AverageRatingResponse getResultForDriverWithLimit(Long driverId, Integer limit) {
         checkDriver(driverId);
+        if (!ratingRepository.existsByDriverId(driverId)) {
+            throw new DataNotFoundException();
+        }
         return ratingRepository.findAverageRatingByDriverIdByLimit(driverId, limit);
     }
 
