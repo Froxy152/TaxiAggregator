@@ -3,10 +3,12 @@ package by.shestakov.ridesservice.feign;
 import by.shestakov.ridesservice.dto.response.RoutingResponse;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+@ActiveProfiles("test")
 @FeignClient(name = "routing-service")
 public interface RoutingFeign {
     @GetMapping("/route")

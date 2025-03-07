@@ -1,6 +1,7 @@
 package by.shestakov.ridesservice.mapper;
 
 import by.shestakov.ridesservice.dto.request.RideRequest;
+import by.shestakov.ridesservice.dto.request.RideUpdateRequest;
 import by.shestakov.ridesservice.dto.response.RideResponse;
 import by.shestakov.ridesservice.entity.Ride;
 import org.mapstruct.BeanMapping;
@@ -28,5 +29,5 @@ public interface RideMapper {
     @Mapping(target = "passenger", ignore = true)
     @Mapping(target = "driver", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateExists(RideRequest rideRequest, @MappingTarget Ride ride);
+    void updateExists(RideUpdateRequest rideUpdateRequest, @MappingTarget Ride ride);
 }

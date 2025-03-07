@@ -2,6 +2,7 @@ package by.shestakov.ridesservice.service.impl;
 
 import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.request.RideStatusRequest;
+import by.shestakov.ridesservice.dto.request.RideUpdateRequest;
 import by.shestakov.ridesservice.dto.response.DriverResponse;
 import by.shestakov.ridesservice.dto.response.PageResponse;
 import by.shestakov.ridesservice.dto.response.PassengerResponse;
@@ -10,6 +11,7 @@ import by.shestakov.ridesservice.dto.response.RoutingResponse;
 import by.shestakov.ridesservice.entity.Driver;
 import by.shestakov.ridesservice.entity.Passenger;
 import by.shestakov.ridesservice.entity.Ride;
+import by.shestakov.ridesservice.exception.DataNotFoundException;
 import by.shestakov.ridesservice.exception.DriverWithoutCarException;
 import by.shestakov.ridesservice.feign.DriverClient;
 import by.shestakov.ridesservice.feign.PassengerClient;
@@ -52,8 +54,14 @@ public class RideServiceImpl implements RideService {
     @Override
     public PageResponse<RideResponse> getAll(Integer offset, Integer limit) {
         Page<RideResponse> rides = rideRepository.findAll(PageRequest.of(offset, limit))
-            .map(rideMapper::toDto);
+                .map(rideMapper::toDto);
         return pageMapper.toDto(rides);
+    }
+
+    @Override
+    public RideResponse getById(String id) {
+        Ride existsRide = rideRepository.findById(id).orElseThrow(DataNotFoundException::new);
+        return rideMapper.toDto(existsRide);
     }
 
     @Override
@@ -68,7 +76,7 @@ public class RideServiceImpl implements RideService {
         Passenger existsPassenger = getPassenger(rideRequest.passengerId());
 
         RoutingResponse response = routeService.createRequest(
-            rideRequest.pickUpAddress(), rideRequest.destinationAddress());
+                rideRequest.pickUpAddress(), rideRequest.destinationAddress());
 
         Ride newRide = rideMapper.toEntity(rideRequest);
 
@@ -89,7 +97,7 @@ public class RideServiceImpl implements RideService {
 
     @Override
     public RideResponse changeStatus(RideStatusRequest statusRequest, String rideId) {
-        Ride existsRide = rideRepository.findById(rideId).orElseThrow();
+        Ride existsRide = rideRepository.findById(rideId).orElseThrow(DataNotFoundException::new);
 
         existsRide.setStatus(statusRequest.status());
         rideRepository.save(existsRide);
@@ -98,15 +106,16 @@ public class RideServiceImpl implements RideService {
     }
 
     @Override
-    public RideResponse updateRide(RideRequest rideRequest, String rideId) {
-        Ride existsRide = rideRepository.findById(rideId).orElseThrow();
+    public RideResponse updateRide(RideUpdateRequest rideUpdateRequest, String rideId) {
+        Ride existsRide = rideRepository.findById(rideId).orElseThrow(DataNotFoundException::new);
 
         RoutingResponse response = routeService.createRequest(
-            rideRequest.pickUpAddress(), rideRequest.destinationAddress());
+                rideUpdateRequest.pickUpAddress(), rideUpdateRequest.destinationAddress());
 
-        rideMapper.updateExists(rideRequest, existsRide);
-        existsRide.setDistance(response.paths().getFirst().distance());
-        existsRide.setDuringRide(response.paths().getFirst().time());
+        rideMapper.updateExists(rideUpdateRequest, existsRide);
+        existsRide.setDistance(CalculatePrice.meterToKilometers(response.paths().getFirst().distance()));
+        existsRide.setDuringRide(CalculatePrice.msToMin(response.paths().getFirst().time()));
+        existsRide.setPrice(CalculatePrice.mathPrice(existsRide.getDistance(), existsRide.getDuringRide()));
 
         rideRepository.save(existsRide);
 

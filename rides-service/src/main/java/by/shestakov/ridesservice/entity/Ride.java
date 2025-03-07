@@ -46,4 +46,20 @@ public class Ride {
 
     @Field(name = "price")
     private BigDecimal price;
+
+    @Override
+    public String toString() {
+        return "Ride{" +
+                "id='" + id + '\'' +
+                ", driver=" + driver +
+                ", passenger=" + passenger +
+                ", pickUpAddress='" + pickUpAddress + '\'' +
+                ", destinationAddress='" + destinationAddress + '\'' +
+                ", status=" + status +
+                ", distance=" + distance +
+                ", time=" + time +
+                ", duringRide=" + duringRide +
+                ", price=" + price +
+                '}';
+    }
 }
