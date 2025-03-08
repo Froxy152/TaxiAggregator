@@ -1,5 +1,11 @@
 package by.shestakov.passengerservice.service.impl;
 
+import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_ID;
+import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultPassenger;
+import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultRequest;
+import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultResponse;
+import static by.shestakov.passengerservice.constant.UnitTestConstants.updatePassengerRequest;
+import static by.shestakov.passengerservice.constant.UnitTestConstants.updatedPassengerResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -20,10 +26,8 @@ import by.shestakov.passengerservice.mapper.PageMapper;
 import by.shestakov.passengerservice.mapper.PassengerMapper;
 import by.shestakov.passengerservice.repository.PassengerRepository;
 import by.shestakov.passengerservice.util.ExceptionConstants;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -48,68 +52,31 @@ class PassengerServiceImplTest {
     @Mock
     private PageMapper pageMapper;
 
-    private PassengerRequest passengerRequest;
-    private UpdatePassengerRequest updatePassengerRequest;
-    private Passenger passenger;
-    private PassengerResponse passengerResponse;
-    private PassengerResponse updatePassengerResponse;
-    private Long passengerId;
-    private Integer limit;
-    private Integer offset;
-    private PageRequest pageRequest;
-    private PageResponse<PassengerResponse> expectedPageResponse;
-    private List<Passenger> passengers;
-    private Page<Passenger> passengerPage;
-    private List<PassengerResponse> passengerResponses;
-    private Page<PassengerResponse> passengerResponsePage;
+    @Test
+    void testGetAllPassengers() {
+        int offset = 0;
+        int limit = 2;
 
+        List<Passenger> passengers = List.of(defaultPassenger(), defaultPassenger());
+        Page<Passenger> passengerPage = new PageImpl<>(passengers, PageRequest.of(offset, limit), passengers.size());
 
-    @BeforeEach
-    void setUp() {
-        passengerRequest = new PassengerRequest("Ilya", "Shestakov", "test@gmail.com", "+375298956845");
+        List<PassengerResponse> passengerResponses = List.of(defaultResponse(), defaultResponse());
+        Page<PassengerResponse> passengerResponsePage =
+                new PageImpl<>(passengerResponses, PageRequest.of(offset, limit), passengerResponses.size());
 
-        updatePassengerRequest = new UpdatePassengerRequest("Nikita", "shestakov", "test@example.com", "+375256985235");
-
-        passengerId = 23L;
-
-        passenger = new Passenger();
-        passenger.setId(15L);
-        passenger.setName("Jeremy");
-        passenger.setLastName("Barak");
-        passenger.setEmail("test.mail@gmail.com");
-        passenger.setPhoneNumber("+375295035859");
-
-        passengerResponse = new PassengerResponse(32L, "Ilya", "Shestakov",
-            "mail@example.com", "+375445684123", new BigDecimal("0.0"), false);
-
-        updatePassengerResponse = new PassengerResponse(32L, "Nikita", "shestakov",
-            "test@example.com", "+375256985235", new BigDecimal("0.0"), false);
-
-        offset = 0;
-        limit = 2;
-
-        pageRequest = PageRequest.of(offset, limit);
-        passengers = List.of(passenger, passenger);
-        passengerPage = new PageImpl<>(passengers, pageRequest, passengers.size());
-
-        passengerResponses = List.of(passengerResponse, passengerResponse);
-        passengerResponsePage = new PageImpl<>(passengerResponses, pageRequest, passengerResponses.size());
-
-        expectedPageResponse = PageResponse.<PassengerResponse>builder()
+        PageResponse<PassengerResponse> expectedPageResponse = PageResponse.<PassengerResponse>builder()
                 .offset(offset)
                 .limit(limit)
                 .totalPages(passengerPage.getTotalPages())
                 .totalElements(passengerPage.getTotalElements())
-                .sort(pageRequest.getSort().toString())
+                .sort("")
                 .values(passengerResponses)
                 .build();
+        Passenger passenger = defaultPassenger();
+        PassengerResponse passengerResponse = defaultResponse();
 
-    }
-
-    @Test
-    void testGetAllPassengers() {
-        when(passengerRepository.findAllByIsDeletedFalse(pageRequest)).thenReturn(passengerPage);
-        when(passengerMapper.toDto(passenger)).thenReturn(passengerResponse);
+        when(passengerRepository.findAllByIsDeletedFalse(PageRequest.of(offset, limit))).thenReturn(passengerPage);
+        when(passengerMapper.toDto(any(Passenger.class))).thenReturn(passengerResponse);
         when(pageMapper.toDto(passengerResponsePage)).thenReturn(expectedPageResponse);
 
         PageResponse<PassengerResponse> actualResponse = passengerService.getAllPassengers(offset, limit);
@@ -117,37 +84,50 @@ class PassengerServiceImplTest {
         assertNotNull(actualResponse);
         assertEquals(expectedPageResponse, actualResponse);
 
-        verify(passengerRepository).findAllByIsDeletedFalse(pageRequest);
+        verify(passengerRepository).findAllByIsDeletedFalse(PageRequest.of(offset, limit));
         verify(passengerMapper, times(passengers.size())).toDto(any(Passenger.class));
         verify(pageMapper).toDto(any(Page.class));
     }
 
     @Test
     void testGetPassengerById_ReturnsValidPassengerResponse() {
-        when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.of(passenger));
+
+        Long id = TEST_ID;
+        Passenger passenger = defaultPassenger();
+        PassengerResponse passengerResponse = defaultResponse();
+
+        when(passengerRepository.findByIdAndIsDeletedFalse(id)).thenReturn(Optional.of(passenger));
         when(passengerMapper.toDto(passenger)).thenReturn(passengerResponse);
 
-        PassengerResponse response = passengerService.getPassengerById(passengerId);
+        PassengerResponse response = passengerService.getPassengerById(id);
 
         assertNotNull(response);
         assertEquals(passengerResponse.email(), response.email());
         assertEquals(passengerResponse.phoneNumber(), response.phoneNumber());
 
-        verify(passengerRepository).findByIdAndIsDeletedFalse(passengerId);
+        verify(passengerRepository).findByIdAndIsDeletedFalse(id);
         verify(passengerMapper).toDto(passenger);
     }
 
     @Test
     void testGetPassengerById_PassengerNotFound_throwsPassengerNotFoundException() {
+        Long passengerId = TEST_ID;
+
         when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.empty());
 
-        assertThrows(PassengerNotFoundException.class, () -> passengerService.getPassengerById(passengerId));
+        assertThrows(
+                PassengerNotFoundException.class,
+                () -> passengerService.getPassengerById(passengerId));
 
         verify(passengerRepository).findByIdAndIsDeletedFalse(passengerId);
     }
 
     @Test
     void testCreatePassenger_ReturnValidResponse() {
+        PassengerRequest passengerRequest = defaultRequest();
+        Passenger passenger = defaultPassenger();
+        PassengerResponse passengerResponse = defaultResponse();
+
         when(passengerMapper.toEntity(passengerRequest)).thenReturn(passenger);
         when(passengerRepository.save(passenger)).thenReturn(passenger);
         when(passengerMapper.toDto(passenger)).thenReturn(passengerResponse);
@@ -168,6 +148,8 @@ class PassengerServiceImplTest {
 
     @Test
     void testCreatePassenger_PassengerAlreadyExists_throwPassengerAlreadyExistsException() {
+        PassengerRequest passengerRequest = defaultRequest();
+
         when(passengerRepository.existsByEmailOrPhoneNumber(passengerRequest.email(),
             passengerRequest.phoneNumber())).thenReturn(true);
 
@@ -184,17 +166,21 @@ class PassengerServiceImplTest {
 
     @Test
     void testUpdatePassengerById() {
+        Long passengerId = TEST_ID;
+        Passenger passenger = defaultPassenger();
+        UpdatePassengerRequest updatePassengerRequest = updatePassengerRequest();
+        PassengerResponse updatePassengerResponse = updatedPassengerResponse();
+
         when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.of(passenger));
-        when(passengerRepository.save(passenger)).thenReturn(passenger);
         when(passengerMapper.toDto(passenger)).thenReturn(updatePassengerResponse);
 
         PassengerResponse response = passengerService.updatePassengerById(updatePassengerRequest, passengerId);
 
         assertNotNull(response);
-        assertEquals(updatePassengerRequest.name(), response.name());
-        assertEquals(updatePassengerRequest.lastName(), response.lastName());
-        assertEquals(updatePassengerRequest.email(), response.email());
-        assertEquals(updatePassengerRequest.phoneNumber(), response.phoneNumber());
+        assertEquals(updatePassengerResponse.name(), response.name());
+        assertEquals(updatePassengerResponse.lastName(), response.lastName());
+        assertEquals(updatePassengerResponse.email(), response.email());
+        assertEquals(updatePassengerResponse.phoneNumber(), response.phoneNumber());
 
         verify(passengerMapper).update(updatePassengerRequest, passenger);
         verify(passengerRepository).save(passenger);
@@ -202,6 +188,9 @@ class PassengerServiceImplTest {
 
     @Test
     void testUpdatePassengerById_PassengerNotFound_ThrowPassengerNotFoundException() {
+        Long passengerId = TEST_ID;
+        UpdatePassengerRequest updatePassengerRequest = updatePassengerRequest();
+
         when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.empty());
 
         PassengerNotFoundException exception = assertThrows(
@@ -214,6 +203,10 @@ class PassengerServiceImplTest {
 
     @Test
     void testUpdatePassengerById_PassengerExistByEmail_ThrowPassengerAlreadyExists() {
+        Long passengerId = TEST_ID;
+        Passenger passenger = defaultPassenger();
+        UpdatePassengerRequest updatePassengerRequest = updatePassengerRequest();
+
         when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.of(passenger));
         when(passengerRepository.existsByEmail(updatePassengerRequest.email())).thenReturn(true);
 
@@ -227,6 +220,10 @@ class PassengerServiceImplTest {
 
     @Test
     void testUpdatePassengerById_PassengerExistsByPhoneNumber_ThrowPassengerAlreadyExists() {
+        Long passengerId = TEST_ID;
+        Passenger passenger = defaultPassenger();
+        UpdatePassengerRequest updatePassengerRequest = updatePassengerRequest();
+
         when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.of(passenger));
         when(passengerRepository.existsByEmail(updatePassengerRequest.email())).thenReturn(false);
         when(passengerRepository.existsByPhoneNumber(updatePassengerRequest.phoneNumber())).thenReturn(true);
@@ -242,6 +239,9 @@ class PassengerServiceImplTest {
 
     @Test
     void testSoftDeletePassenger() {
+        Long passengerId = TEST_ID;
+        Passenger passenger = defaultPassenger();
+
         when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.of(passenger));
 
         passengerService.softDeletePassenger(passengerId);
@@ -252,6 +252,8 @@ class PassengerServiceImplTest {
 
     @Test
     void testSoftDeletePassenger_PassengerNotFound_ThrowPassengerNotFound() {
+        Long passengerId = TEST_ID;
+
         when(passengerRepository.findByIdAndIsDeletedFalse(passengerId)).thenReturn(Optional.empty());
 
         PassengerNotFoundException exception = assertThrows(

@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 public class UnitTestConstants {
 
     public static final Long TEST_ID = 1L;
+    public static final Long TEST_INVALID_ID = 999L;
+    public static final Long TEST_ALREADY_ID = 2L;
     public static final String TEST_NAME = "Ilya";
     public static final String TEST_LASTNAME = "Shestakov";
     public static final String TEST_NUMBER = "+375295896535";

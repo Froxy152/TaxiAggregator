@@ -1,7 +1,9 @@
 package by.shestakov.passengerservice.controller.impl;
 
 
+import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_ALREADY_ID;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_ID;
+import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_INVALID_ID;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultRequest;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultResponse;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidEmailRequest;
@@ -99,7 +101,7 @@ class PassengerControllerImplTest {
 
     @Test
     void testGetById_PassengerNotFound_throwException() throws Exception {
-        Long id = 2L;
+        Long id = TEST_INVALID_ID;
         when(passengerService.getPassengerById(id))
             .thenThrow(new PassengerNotFoundException(
                 ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
@@ -184,7 +186,7 @@ class PassengerControllerImplTest {
     void testUpdateById_NotFoundPassenger_ThrowException() throws Exception {
         UpdatePassengerRequest request = updatePassengerRequest();
 
-        Long id = 2L;
+        Long id = TEST_INVALID_ID;
 
         when(passengerService.updatePassengerById(request, id)).thenThrow(
             new PassengerNotFoundException(ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id))
@@ -203,7 +205,7 @@ class PassengerControllerImplTest {
     void testUpdateById_PassengerNumberAlreadyExists_ThrowException() throws Exception {
         UpdatePassengerRequest request = updateAlreadyNumberPassengerRequest();
 
-        Long id = 2L;
+        Long id = TEST_ALREADY_ID;
 
         when(passengerService.updatePassengerById(request, id)).thenThrow(
             new PassengerAlreadyExistsException(
@@ -221,7 +223,7 @@ class PassengerControllerImplTest {
     void testUpdateById_PassengerEmailAlreadyExists_ThrowException() throws Exception {
         UpdatePassengerRequest request = updateAlreadyEmailPassengerRequest();
 
-        Long id = 2L;
+        Long id = TEST_ALREADY_ID;
 
         when(passengerService.updatePassengerById(request, id)).thenThrow(
             new PassengerAlreadyExistsException(

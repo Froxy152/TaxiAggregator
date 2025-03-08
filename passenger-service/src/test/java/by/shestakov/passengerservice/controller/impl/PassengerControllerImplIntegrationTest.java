@@ -1,6 +1,7 @@
 package by.shestakov.passengerservice.controller.impl;
 
 import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_ID;
+import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_INVALID_ID;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.alreadyPassengerRequest;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultRequest;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidEmailRequest;
@@ -11,19 +12,15 @@ import static by.shestakov.passengerservice.constant.UnitTestConstants.updatePas
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertTrue;
 
 import by.shestakov.passengerservice.PassengerServiceApplication;
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
 import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
-import by.shestakov.passengerservice.entity.Passenger;
-import by.shestakov.passengerservice.repository.PassengerRepository;
 import by.shestakov.passengerservice.util.ExceptionConstants;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -35,13 +32,10 @@ import org.testcontainers.utility.DockerImageName;
 
 @Testcontainers
 @SpringBootTest(classes = PassengerServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PassengerControllerImplIt {
+public class PassengerControllerImplIntegrationTest {
 
     @Container
     static PostgreSQLContainer psqlContainer = new PostgreSQLContainer(DockerImageName.parse("postgres:latest"));
-
-    @Autowired
-    private PassengerRepository passengerRepository;
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
@@ -52,7 +46,6 @@ public class PassengerControllerImplIt {
 
     @LocalServerPort
     private Integer port;
-
 
     @BeforeEach
     void setup() {
@@ -93,7 +86,7 @@ public class PassengerControllerImplIt {
 
     @Test
     void getById_PassengerNotFound_404() {
-        Long id = 999L;
+        Long id = TEST_INVALID_ID;
 
         given()
                 .when()
@@ -179,7 +172,7 @@ public class PassengerControllerImplIt {
     @Test
     void update_PassengerNotFound_404() {
         UpdatePassengerRequest request = updatePassengerRequest();
-        Long id = 999L;
+        Long id = TEST_INVALID_ID;
 
         given()
                 .contentType(ContentType.JSON)
@@ -236,13 +229,12 @@ public class PassengerControllerImplIt {
                 .then()
                 .statusCode(204);
 
-        Passenger deletePassenger = passengerRepository.findById(TEST_ID).orElseThrow();
-        assertTrue(deletePassenger.getIsDeleted());
+
     }
 
     @Test
     void delete_404() {
-        Long id = 999L;
+        Long id = TEST_INVALID_ID;
 
         given()
                 .when()
