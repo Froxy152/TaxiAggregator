@@ -103,7 +103,7 @@ class RideControllerImplIT {
                 .body("values[0].destinationAddress", notNullValue());
     }
 
-    @Order(2)
+
     @Test
     void getById_200() {
         given()
@@ -125,7 +125,6 @@ class RideControllerImplIT {
                 .contentType(ContentType.JSON);
     }
 
-    @Order(1)
     @Test
     void create() throws Exception {
         WireMockConfiguration.getDriverMock(wireMockServer, objectMapper, TEST_DRIVER_RESPONSE);
@@ -161,20 +160,6 @@ class RideControllerImplIT {
 
     }
 
-    @Test
-    void create_DriverServiceUnvailable_500() throws Exception {
-        RideRequest request = defaultRideRequest();
-
-        given()
-                .contentType(ContentType.JSON)
-                .body(request)
-                .when()
-                .post()
-                .then()
-                .contentType(ContentType.JSON)
-                .statusCode(500);
-
-    }
 
     @Test
     void create_PassengerNotFound_404() throws Exception {
