@@ -6,6 +6,7 @@ import by.shestakov.passengerservice.dto.request.UpdateRatingRequest;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 import by.shestakov.passengerservice.entity.Passenger;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -22,7 +23,6 @@ public class UnitTestConstants {
     public static final String TEST_EMAIL_FOR_UPDATE = "test@gmail.com";
     public static final BigDecimal TEST_RATING = new BigDecimal("0.0");
 
-
     public static PassengerResponse defaultResponse() {
         return PassengerResponse.builder()
                 .id(TEST_ID)
@@ -31,6 +31,18 @@ public class UnitTestConstants {
                 .email(TEST_EMAIL)
                 .phoneNumber(TEST_NUMBER)
                 .rating(TEST_RATING)
+                .isDeleted(false)
+                .build();
+    }
+
+    public static PassengerResponse defaultFirstResponse() {
+        return PassengerResponse.builder()
+                .id(1L)
+                .name("John")
+                .lastName("Doe")
+                .email("john.doe@example.com")
+                .phoneNumber("+375291234567")
+                .rating(BigDecimal.valueOf(4.5).setScale(2, RoundingMode.HALF_UP))
                 .isDeleted(false)
                 .build();
     }
@@ -92,13 +104,13 @@ public class UnitTestConstants {
 
     public static PassengerResponse updatedPassengerResponse() {
         return PassengerResponse.builder()
-                .id(TEST_ID)
-                .name(TEST_NAME)
-                .lastName(TEST_LASTNAME)
+                .id(3L)
+                .name("Alice")
+                .lastName("Johnson")
                 .email(TEST_EMAIL_FOR_UPDATE)
-                .phoneNumber(TEST_NUMBER)
+                .phoneNumber("+375291234569")
                 .isDeleted(false)
-                .rating(TEST_RATING)
+                .rating(BigDecimal.valueOf(4.2).setScale(2, RoundingMode.HALF_UP))
                 .build();
     }
 

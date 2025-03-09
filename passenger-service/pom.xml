@@ -22,12 +22,26 @@
 		<maven-checkstyle-plugin.version>3.4.0</maven-checkstyle-plugin.version>
 		<checkstyle.tools.version>10.21.2</checkstyle.tools.version>
 		<assured.version>5.5.1</assured.version>
+		<cucumber.version>7.14.0</cucumber.version>
+		<jackson.version>2.16.1</jackson.version>
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.16.1</version>
+			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -149,7 +163,7 @@
 						<artifactId>checkstyle</artifactId>
 						<version>${checkstyle.tools.version}</version>
 					</dependency>
-				</dependencies>
+				</dependencies>fF
 				<configuration>
 					<configLocation>${project.basedir}/checkstyleConfig/checkstyle.xml</configLocation>
 					<consoleOutput>true</consoleOutput>
