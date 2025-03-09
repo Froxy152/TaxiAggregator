@@ -29,7 +29,7 @@ public final class TestCarData {
     }
 
     public static CarResponse defaultCarResponse() {
-        return new CarResponse(TEST_CAR_ID, TEST_CAR_BRAND, TEST_CAR_NUMBER, TEST_CAR_COLOR, TEST_DRIVER_ID, false);
+        return new CarResponse(7L, TEST_CAR_BRAND, TEST_CAR_NUMBER, TEST_CAR_COLOR, 7L, false);
     }
 
     public static Car defaultCar() {

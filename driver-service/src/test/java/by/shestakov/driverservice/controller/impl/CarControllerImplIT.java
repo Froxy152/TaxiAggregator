@@ -102,7 +102,6 @@ class CarControllerImplIT {
                 .body("carColor", equalTo(request.carColor()));
     }
 
-
     @Test
     @Order(3)
     void createCar_CarNumberExists_409() {
