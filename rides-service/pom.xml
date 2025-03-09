@@ -23,8 +23,21 @@
         <openapi.version>2.8.3</openapi.version>
         <feign.version>4.2.0</feign.version>
         <assured.version>5.5.1</assured.version>
+        <cucumber.version>7.14.0</cucumber.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-testcontainers</artifactId>

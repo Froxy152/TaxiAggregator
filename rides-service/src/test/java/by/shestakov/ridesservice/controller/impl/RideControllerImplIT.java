@@ -103,7 +103,6 @@ class RideControllerImplIT {
                 .body("values[0].destinationAddress", notNullValue());
     }
 
-
     @Test
     void getById_200() {
         given()
