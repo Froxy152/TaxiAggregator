@@ -7,6 +7,7 @@ import by.shestakov.driverservice.entity.Car;
 import by.shestakov.driverservice.entity.Driver;
 import by.shestakov.driverservice.entity.Gender;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,7 +55,7 @@ public final class TestDriverData {
 
     public static DriverResponse defaultDriverResponse() {
         return DriverResponse.builder()
-            .id(TEST_ID)
+            .id(6L)
             .name(TEST_NAME)
             .lastName(TEST_LASTNAME)
             .email(TEST_EMAIL)
@@ -98,5 +99,19 @@ public final class TestDriverData {
     public static DriverRequest invalidDriverRequest() {
         return DriverRequest.builder()
             .build();
+    }
+
+    public static DriverResponse getFirstDriver() {
+        return DriverResponse.builder()
+                .id(TEST_ID)
+                .name("Иван")
+                .lastName("Иванов")
+                .email("ivan.ivanov@example.com")
+                .phoneNumber("89001234567")
+                .gender(Gender.MALE)
+                .rating(BigDecimal.valueOf(0.0).setScale(2, RoundingMode.HALF_UP))
+                .cars(new HashSet<>(Set.of(1L,6L)))
+                .isDeleted(false)
+                .build();
     }
 }
