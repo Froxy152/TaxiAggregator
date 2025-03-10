@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   application:
@@ -21,6 +21,3 @@ spring:
       bootstrap-servers: localhost:9092
       group-id: rating-consumer-1
       auto-offset-reset: earliest
-
-  active:
-    profiles: test

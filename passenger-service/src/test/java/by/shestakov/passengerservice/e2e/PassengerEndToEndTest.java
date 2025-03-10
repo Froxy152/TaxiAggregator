@@ -7,32 +7,24 @@ import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidEm
 import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidPhoneNumberRequest;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.updatePassengerRequest;
 import static by.shestakov.passengerservice.constant.UnitTestConstants.updatedPassengerResponse;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
 import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
-import by.shestakov.passengerservice.repository.PassengerRepository;
 import by.shestakov.passengerservice.util.ExceptionConstants;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PassengerEndToEndTest {
 
     private PassengerRequest request;
     private UpdatePassengerRequest updatePassengerRequest;
     private Response response;
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Autowired
-    private PassengerRepository repository;
 
     @Given("I have a passenger")
     public void i_have_a_passenger() {
