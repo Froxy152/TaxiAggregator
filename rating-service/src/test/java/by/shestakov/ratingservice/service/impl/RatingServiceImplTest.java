@@ -13,8 +13,12 @@ import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriv
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverResponse;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingPassengerRequest;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingPassengerResponse;
+import by.shestakov.ratingservice.dto.response.PageResponse;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,6 +47,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 
@@ -78,7 +85,29 @@ class RatingServiceImplTest {
 
     @Test
     void getAllReviews() {
-    } // todo write test for get all ratings
+        int offset = 0;
+        int limit = 1;
+
+        List<Rating> ratingList = List.of(defaultRatingByDriver());
+        Page<Rating> ratingPage = new PageImpl<>(ratingList, PageRequest.of(offset, limit), ratingList.size());
+        List<RatingResponse> responseList = List.of(defaultRatingDriverResponse());
+        Page<RatingResponse> ratingResponsePage = new PageImpl<>(responseList, PageRequest.of(offset, limit), responseList.size());
+        PageResponse<RatingResponse> expectedResponse = new PageResponse<>(offset, limit, 1, responseList.size(), "", responseList);
+
+
+        when(ratingRepository.findAll(PageRequest.of(offset, limit))).thenReturn(ratingPage);
+        when(ratingMapper.toDto(any(Rating.class))).thenReturn(defaultRatingDriverResponse());
+        when(pageMapper.toDto(ratingResponsePage)).thenReturn(expectedResponse);
+
+        PageResponse<RatingResponse> response = ratingService.getAllReviews(offset, limit);
+
+        assertNotNull(response);
+        assertEquals(expectedResponse, response);
+
+        verify(ratingRepository).findAll(PageRequest.of(offset, limit));
+        verify(ratingMapper, times(ratingList.size())).toDto(any(Rating.class));
+        verify(pageMapper).toDto(ratingResponsePage);
+    }
 
     @Test
     void addNewReviewOnRide_ReturnsValidResponse() {
