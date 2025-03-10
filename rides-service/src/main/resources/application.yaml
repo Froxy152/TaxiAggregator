@@ -7,7 +7,7 @@ spring:
       uri: ${DB_URI:mongodb://werdiens:haduken@localhost:27017/RideDB?authSource=admin}
 
   profiles:
-    active: test
+    active:
 
 
   cloud:
@@ -15,9 +15,9 @@ spring:
       client:
         config:
           passenger-service:
-            url: localhost:8081/api/v1/passengers
+            url: http://localhost:8081/api/v1/passengers
           driver-service:
-            url: localhost:8082/api/v1/drivers
+            url: http://localhost:8082/api/v1/drivers
           routing-service:
             url: https://graphhopper.com/api/1
 
