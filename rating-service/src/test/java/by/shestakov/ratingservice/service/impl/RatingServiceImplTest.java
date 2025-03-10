@@ -1,8 +1,11 @@
 package by.shestakov.ratingservice.service.impl;
 
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_COMMENTARY;
+import static by.shestakov.ratingservice.constant.TestConstant.TEST_COMMENTARY_DTO;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_DRIVER_ID;
+import static by.shestakov.ratingservice.constant.TestConstant.TEST_DRIVER_INVALID_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_ID;
+import static by.shestakov.ratingservice.constant.TestConstant.TEST_INVALID_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_RIDE_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.averageRatingResponse;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingByDriver;
@@ -75,7 +78,7 @@ class RatingServiceImplTest {
 
     @Test
     void getAllReviews() {
-    }
+    } // todo write test for get all ratings
 
     @Test
     void addNewReviewOnRide_ReturnsValidResponse() {
@@ -138,11 +141,10 @@ class RatingServiceImplTest {
         verify(ratingRepository).existsByRideId(rideId);
     }
 
-
     @Test
     void changeCommentUnderReview() {
         String id = TEST_ID;
-        CommentaryDto request = new CommentaryDto(TEST_COMMENTARY);
+        CommentaryDto request = TEST_COMMENTARY_DTO;
         Rating rating = defaultRatingByDriver();
         RatingResponse expectedResponse = defaultRatingDriverResponse();
 
@@ -162,8 +164,8 @@ class RatingServiceImplTest {
 
     @Test
     void changeCommentUnderReview_ReviewNotFound() {
-        String id = "ASDASDAS";
-        CommentaryDto request = new CommentaryDto(TEST_COMMENTARY);
+        String id = TEST_INVALID_ID;
+        CommentaryDto request = TEST_COMMENTARY_DTO;
 
         when(ratingRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -180,7 +182,7 @@ class RatingServiceImplTest {
     @Test
     void getResultForDriverWithLimit() {
         Long driverId = TEST_DRIVER_ID;
-        int limit = 0;
+        int limit = 1;
 
         when(ratingRepository.existsByDriverId(driverId)).thenReturn(true);
         when(ratingRepository.findAverageRatingByDriverIdByLimit(driverId, limit)).thenReturn(averageRatingResponse());
@@ -189,5 +191,21 @@ class RatingServiceImplTest {
 
         assertNotNull(response);
         assertEquals(averageRatingResponse(), response);
+    }
+
+    @Test
+    void getResultForDriverWithLimit_DriverNotFound() {
+        Long driverId = TEST_DRIVER_INVALID_ID;
+        int limit = 1;
+
+        when(ratingRepository.existsByDriverId(driverId)).thenReturn(false);
+
+        DataNotFoundException exception = assertThrows(
+                DataNotFoundException.class,
+                () -> ratingService.getResultForDriverWithLimit(driverId, limit)
+        );
+
+
+        assertEquals(ExceptionMessage.NOT_FOUND_MESSAGE, exception.getMessage());
     }
 }
