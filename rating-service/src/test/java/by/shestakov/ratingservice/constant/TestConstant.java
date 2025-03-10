@@ -7,7 +7,6 @@ import by.shestakov.ratingservice.dto.response.RatingResponse;
 import by.shestakov.ratingservice.entity.RatedBy;
 import by.shestakov.ratingservice.entity.Rating;
 import java.math.BigDecimal;
-import org.junit.platform.commons.util.PackageUtils;
 
 public final class TestConstant {
 
@@ -24,11 +23,11 @@ public final class TestConstant {
     public static final CommentaryDto TEST_COMMENTARY_DTO = new CommentaryDto(TEST_COMMENTARY);
 
     public static RatingRequest defaultRatingDriverRequest() {
-        return new RatingRequest(TEST_RIDE_ID, TEST_DRIVER_ID , TEST_PASSENGER_ID, TEST_RATE, TEST_COMMENTARY, TEST_RATED_BY_DRIVER);
+        return new RatingRequest(TEST_RIDE_ID, TEST_DRIVER_ID, TEST_PASSENGER_ID, TEST_RATE, TEST_COMMENTARY, TEST_RATED_BY_DRIVER);
     }
 
     public static RatingRequest defaultRatingPassengerRequest() {
-        return new RatingRequest(TEST_RIDE_ID, TEST_DRIVER_ID , TEST_PASSENGER_ID, TEST_RATE, TEST_COMMENTARY, TEST_RATED_BY_PASSENGER);
+        return new RatingRequest(TEST_RIDE_ID, TEST_DRIVER_ID, TEST_PASSENGER_ID, TEST_RATE, TEST_COMMENTARY, TEST_RATED_BY_PASSENGER);
     }
 
     public static RatingResponse defaultRatingDriverResponse() {

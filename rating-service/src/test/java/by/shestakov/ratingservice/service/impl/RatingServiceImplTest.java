@@ -1,6 +1,6 @@
 package by.shestakov.ratingservice.service.impl;
 
-import static by.shestakov.ratingservice.constant.TestConstant.TEST_COMMENTARY;
+import by.shestakov.ratingservice.config.KafkaConfig;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_COMMENTARY_DTO;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_DRIVER_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_DRIVER_INVALID_ID;
@@ -13,24 +13,13 @@ import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriv
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverResponse;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingPassengerRequest;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingPassengerResponse;
-import by.shestakov.ratingservice.dto.response.PageResponse;
-import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import by.shestakov.ratingservice.config.KafkaConfig;
 import by.shestakov.ratingservice.dto.request.CommentaryDto;
 import by.shestakov.ratingservice.dto.request.RatingRequest;
 import by.shestakov.ratingservice.dto.response.AverageRatingResponse;
+import by.shestakov.ratingservice.dto.response.PageResponse;
 import by.shestakov.ratingservice.dto.response.RatingResponse;
-import by.shestakov.ratingservice.entity.RatedBy;
 import by.shestakov.ratingservice.entity.Rating;
 import by.shestakov.ratingservice.exception.DataNotFoundException;
-import by.shestakov.ratingservice.exception.FeignClientNotFoundDataException;
 import by.shestakov.ratingservice.exception.OnlyOneCommentOnRideException;
 import by.shestakov.ratingservice.feign.DriverClient;
 import by.shestakov.ratingservice.feign.PassengerClient;
@@ -40,17 +29,23 @@ import by.shestakov.ratingservice.mapper.PageMapper;
 import by.shestakov.ratingservice.mapper.RatingMapper;
 import by.shestakov.ratingservice.repository.RatingRepository;
 import by.shestakov.ratingservice.util.ExceptionMessage;
-import feign.FeignException;
+import java.util.List;
 import java.util.Optional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
 
 @ExtendWith(MockitoExtension.class)
