@@ -46,6 +46,10 @@ public final class TestConstant {
         return new Rating(TEST_ID, TEST_RIDE_ID, TEST_PASSENGER_ID, TEST_DRIVER_ID, TEST_RATE, TEST_COMMENTARY, TEST_RATED_BY_PASSENGER);
     }
 
+    public static Rating defaultRatingByPassengerForInsert() {
+        return new Rating(TEST_ID, "NEW_RIDE", TEST_PASSENGER_ID, TEST_DRIVER_ID, TEST_RATE, TEST_COMMENTARY, TEST_RATED_BY_PASSENGER);
+    }
+
     public static AverageRatingResponse averageRatingResponse() {
         return new AverageRatingResponse(BigDecimal.valueOf(2.0));
     }
