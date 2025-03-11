@@ -167,7 +167,7 @@ class RatingControllerImplTest {
         String id = TEST_INVALID_ID;
         CommentaryDto request = TEST_COMMENTARY_DTO;
 
-        when(ratingService.changeCommentUnderReview(id, request)).thenThrow(new OnlyOneCommentOnRideException());
+        when(ratingService.changeCommentUnderReview(id, request)).thenThrow(new DataNotFoundException());
 
         mockMvc.perform(patch("/api/v1/ratings/{id}", id)
                         .content(objectMapper.writeValueAsString(request))
