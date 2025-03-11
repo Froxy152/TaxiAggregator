@@ -1,22 +1,5 @@
 package by.shestakov.ridesservice.controller.impl;
 
-import static testConstant.TestConstant.TEST_DRIVER_RESPONSE;
-import static testConstant.TestConstant.TEST_DRIVER_RESPONSE_WITHOUT_CAR;
-import static testConstant.TestConstant.TEST_ID;
-import static testConstant.TestConstant.TEST_PASSENGER_RESPONSE;
-import static testConstant.TestConstant.TEST_PICKUP_ADDRESS;
-import static testConstant.TestConstant.TEST_ROUTING_RESPONSE;
-import static testConstant.TestConstant.defaultRide;
-import static testConstant.TestConstant.defaultRideDriverNotFoundRequest;
-import static testConstant.TestConstant.defaultRidePassengerNotFoundRequest;
-import static testConstant.TestConstant.defaultRideRequest;
-import static testConstant.TestConstant.defaultRideStatusRequest;
-import static testConstant.TestConstant.defaultRideUpdateRequest;
-import static testConstant.TestConstant.invalidRequest;
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.notNullValue;
-
 import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.request.RideStatusRequest;
 import by.shestakov.ridesservice.dto.request.RideUpdateRequest;
@@ -24,10 +7,12 @@ import by.shestakov.ridesservice.repository.RideRepository;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import config.WireMockConfiguration;
 import io.restassured.RestAssured;
+import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +27,19 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import static testConstant.TestConstant.TEST_DRIVER_RESPONSE;
+import static testConstant.TestConstant.TEST_DRIVER_RESPONSE_WITHOUT_CAR;
+import static testConstant.TestConstant.TEST_ID;
+import static testConstant.TestConstant.TEST_PASSENGER_RESPONSE;
+import static testConstant.TestConstant.TEST_PICKUP_ADDRESS;
+import static testConstant.TestConstant.TEST_ROUTING_RESPONSE;
+import static testConstant.TestConstant.defaultRide;
+import static testConstant.TestConstant.defaultRideDriverNotFoundRequest;
+import static testConstant.TestConstant.defaultRidePassengerNotFoundRequest;
+import static testConstant.TestConstant.defaultRideRequest;
+import static testConstant.TestConstant.defaultRideStatusRequest;
+import static testConstant.TestConstant.defaultRideUpdateRequest;
+import static testConstant.TestConstant.invalidRequest;
 import wiremock.com.fasterxml.jackson.databind.ObjectMapper;
 
 @ActiveProfiles("test")
@@ -59,9 +57,6 @@ class RideControllerImplIT {
     static void setProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getConnectionString);
     }
-
-    @Autowired
-    private RideRepository rideRepository;
 
     @BeforeEach
     void setup() {
@@ -118,7 +113,7 @@ class RideControllerImplIT {
     void getById_404() {
         given()
                 .when()
-                .get("/{id}", "ASDASDASD")
+                .get("/{id}", "asdasd")
                 .then()
                 .statusCode(404)
                 .contentType(ContentType.JSON);

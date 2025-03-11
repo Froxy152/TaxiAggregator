@@ -22,6 +22,7 @@ import java.util.Set;
 
 public final class TestConstant {
     public static final String TEST_ID = "ID";
+    public static final String TEST_INVALID_ID = "invalid_id";
     public static final Long TEST_DRIVER_ID = 1L;
     public static final Long TEST_PASSENGER_ID = 1L;
     public static final String TEST_PICKUP_ADDRESS = "55.48632,28.765492";
