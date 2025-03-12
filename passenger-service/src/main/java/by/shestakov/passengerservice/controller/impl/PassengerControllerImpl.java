@@ -2,6 +2,7 @@ package by.shestakov.passengerservice.controller.impl;
 
 import by.shestakov.passengerservice.controller.ControllerAction;
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
+import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PageResponse;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 import by.shestakov.passengerservice.service.PassengerService;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+
 
 @RequiredArgsConstructor
 @RestController
@@ -50,9 +53,9 @@ public class PassengerControllerImpl implements ControllerAction {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PassengerResponse> update(@RequestBody @Valid PassengerRequest passengerRequest,
+    public ResponseEntity<PassengerResponse> update(@RequestBody @Valid UpdatePassengerRequest updatePassengerRequest,
                                                     @PathVariable Long id) {
-        return new ResponseEntity<>(passengerService.updatePassengerById(passengerRequest, id),
+        return new ResponseEntity<>(passengerService.updatePassengerById(updatePassengerRequest, id),
                 HttpStatus.OK);
     }
 
