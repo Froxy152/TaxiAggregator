@@ -4,27 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a715674-6362-442c-934f-7f94e97f88c7" name="Changes" comment="delete imports">
-      <change afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/Ride.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/mapper/PageMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/mapper/RideMapper.java" afterDir="false" />
+    <list default="true" id="4a715674-6362-442c-934f-7f94e97f88c7" name="Changes" comment="minor fix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/controller/RatingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/controller/RatingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/controller/impl/RatingControllerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/controller/impl/RatingControllerImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/dto/response/RideResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/dto/response/RideResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/Car.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/Driver.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/Driver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/Passenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/Passenger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/Rating.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/Rating.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/exception/CustomErrorDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/exception/CustomErrorDecoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/dto/response/CarResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/dto/response/DriverResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/dto/response/RideResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/RatedBy.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/entity/RatedBy.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/feign/DriverClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/feign/DriverClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/feign/PassengerClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/feign/PassengerClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/feign/RideClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/feign/RideClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/mapper/CarMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/mapper/DriverMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/mapper/DriverMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/mapper/PassengerMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/mapper/PassengerMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/repository/RatingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/repository/RatingRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/service/RatingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/service/RatingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/service/impl/RatingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/service/impl/RatingServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/util/ExceptionMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/rating-service/src/main/java/by/shestakov/ratingservice/util/ExceptionMessage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +78,7 @@
     "Application.RidesServiceApplication.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "#6 on feature/rating-service",
+    "git-widget-placeholder": "feature/rating-service",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/home/werdiens/IdeaProjects/TaxiAggregator/checkstyleConfig/checkstyle.xml",
     "project.structure.last.edited": "Project",
@@ -160,6 +150,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="delete unnecessary" />
     <MESSAGE value="delete imports" />
-    <option name="LAST_COMMIT_MESSAGE" value="delete imports" />
+    <MESSAGE value="minor fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor fix" />
   </component>
 </project>

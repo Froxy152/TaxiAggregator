@@ -3,17 +3,14 @@ package by.shestakov.ratingservice.entity;
 import by.shestakov.ratingservice.util.ExceptionMessage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.RequiredArgsConstructor;
 
-
+@RequiredArgsConstructor
 public enum RatedBy {
     DRIVER("DRIVER"),
     PASSENGER("PASSENGER");
 
     private final String value;
-
-    RatedBy(String value) {
-        this.value = value;
-    }
 
     @JsonValue
     public String getValue() {

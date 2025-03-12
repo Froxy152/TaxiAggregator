@@ -1,5 +1,6 @@
 package by.shestakov.ratingservice.exception;
 
+import by.shestakov.ratingservice.util.ExceptionMessage;
 import java.time.LocalDateTime;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionResponse.builder()
                 .status(HttpStatus.BAD_REQUEST)
                 .time(LocalDateTime.now())
-                .errors(Map.of("message", e.getMessage()))
+                .errors(Map.of(ExceptionMessage.MESSAGE, e.getMessage()))
                 .build());
     }
 
@@ -24,7 +25,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ExceptionResponse.builder()
                 .status(HttpStatus.CONFLICT)
                 .time(LocalDateTime.now())
-                .errors(Map.of("message", e.getMessage()))
+                .errors(Map.of(ExceptionMessage.MESSAGE, e.getMessage()))
                 .build());
     }
 
@@ -33,7 +34,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionResponse.builder()
                 .status(HttpStatus.NOT_FOUND)
                 .time(LocalDateTime.now())
-                .errors(Map.of("message", e.getMessage()))
+                .errors(Map.of(ExceptionMessage.MESSAGE, e.getMessage()))
                 .build());
     }
 
