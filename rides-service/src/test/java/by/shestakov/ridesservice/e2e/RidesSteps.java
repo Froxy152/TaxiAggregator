@@ -15,6 +15,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static testConstant.TestConstant.DEFAULT_ADDRESS;
 import static testConstant.TestConstant.defaultRideDriverNotFoundRequest;
 import static testConstant.TestConstant.defaultRidePassengerNotFoundRequest;
 import static testConstant.TestConstant.defaultRideRequest;
@@ -36,7 +37,7 @@ public class RidesSteps {
                 .queryParam("offset", String.valueOf(offset))
                 .queryParam("limit", String.valueOf(limit))
                 .when()
-                .get("/api/v1/rides");
+                .get(DEFAULT_ADDRESS);
     }
 
     @Given("I have a ride request")
@@ -50,7 +51,7 @@ public class RidesSteps {
                 .contentType(ContentType.JSON)
                 .body(rideRequest)
                 .when()
-                .post("/api/v1/rides");
+                .post(DEFAULT_ADDRESS);
     }
 
     @Then("Status should be {int}")
@@ -84,7 +85,7 @@ public class RidesSteps {
     public void i_send_a_get_ride_request_with_string(String id) {
         response = given()
                 .when()
-                .get("/api/v1/rides/{id}", id);
+                .get(DEFAULT_ADDRESS + "/{id}", id);
     }
 
     @And("Body should be not found")
@@ -105,7 +106,7 @@ public class RidesSteps {
                 .body(rideStatusRequest)
                 .queryParam("rideId", id)
                 .when()
-                .patch("/api/v1/rides");
+                .patch(DEFAULT_ADDRESS);
     }
 
     @Given("I have a ride update request")
@@ -120,7 +121,7 @@ public class RidesSteps {
                 .body(rideUpdateRequest)
                 .queryParam("rideId", id)
                 .when()
-                .put("/api/v1/rides");
+                .put(DEFAULT_ADDRESS);
     }
 
     @And("Body should change status")

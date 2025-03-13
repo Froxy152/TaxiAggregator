@@ -3,7 +3,6 @@ package by.shestakov.ridesservice.controller.impl;
 import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.request.RideStatusRequest;
 import by.shestakov.ridesservice.dto.request.RideUpdateRequest;
-import by.shestakov.ridesservice.repository.RideRepository;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import config.WireMockConfiguration;
 import io.restassured.RestAssured;
@@ -27,9 +26,11 @@ import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+import static testConstant.TestConstant.DEFAULT_ADDRESS;
 import static testConstant.TestConstant.TEST_DRIVER_RESPONSE;
 import static testConstant.TestConstant.TEST_DRIVER_RESPONSE_WITHOUT_CAR;
 import static testConstant.TestConstant.TEST_ID;
+import static testConstant.TestConstant.TEST_INVALID_ID;
 import static testConstant.TestConstant.TEST_PASSENGER_RESPONSE;
 import static testConstant.TestConstant.TEST_PICKUP_ADDRESS;
 import static testConstant.TestConstant.TEST_ROUTING_RESPONSE;
@@ -47,7 +48,7 @@ import wiremock.com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureWireMock(port = 8090)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class RideControllerImplIT {
+class RideControllerImplIntegrationTest {
 
     @Container
     static final MongoDBContainer mongoDBContainer = new MongoDBContainer(
@@ -60,7 +61,7 @@ class RideControllerImplIT {
 
     @BeforeEach
     void setup() {
-        RestAssured.baseURI = "http://localhost:" + this.port + "/api/v1/rides";
+        RestAssured.baseURI = "http://localhost:" + this.port + DEFAULT_ADDRESS;
     }
 
     @LocalServerPort
@@ -221,7 +222,7 @@ class RideControllerImplIT {
 
     @Test
     void updateStatus_404() {
-        String id = "ASDASDAD";
+        String id = TEST_INVALID_ID;
         RideStatusRequest request = defaultRideStatusRequest();
 
         given()
@@ -256,7 +257,7 @@ class RideControllerImplIT {
     @Test
     void updateRide_404() throws Exception {
         RideUpdateRequest request = defaultRideUpdateRequest();
-        String id = "ASDSAD";
+        String id = TEST_INVALID_ID;
 
         given()
                 .contentType(ContentType.JSON)

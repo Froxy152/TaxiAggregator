@@ -1,24 +1,5 @@
 package by.shestakov.ridesservice.controller.impl;
 
-import static testConstant.TestConstant.TEST_ID;
-import static testConstant.TestConstant.defaultRideDriverNotFoundRequest;
-import static testConstant.TestConstant.defaultRidePassengerNotFoundRequest;
-import static testConstant.TestConstant.defaultRideRequest;
-import static testConstant.TestConstant.defaultRideResponse;
-import static testConstant.TestConstant.defaultRideStatusRequest;
-import static testConstant.TestConstant.defaultRideUpdateRequest;
-import static testConstant.TestConstant.invalidRequest;
-import static testConstant.TestConstant.updatedRideResponse;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.request.RideStatusRequest;
 import by.shestakov.ridesservice.dto.request.RideUpdateRequest;
@@ -36,10 +17,30 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import static testConstant.TestConstant.DEFAULT_ADDRESS;
+import static testConstant.TestConstant.TEST_ID;
+import static testConstant.TestConstant.TEST_INVALID_ID;
+import static testConstant.TestConstant.defaultRideDriverNotFoundRequest;
+import static testConstant.TestConstant.defaultRidePassengerNotFoundRequest;
+import static testConstant.TestConstant.defaultRideRequest;
+import static testConstant.TestConstant.defaultRideResponse;
+import static testConstant.TestConstant.defaultRideStatusRequest;
+import static testConstant.TestConstant.defaultRideUpdateRequest;
+import static testConstant.TestConstant.invalidRequest;
+import static testConstant.TestConstant.updatedRideResponse;
 
 @ExtendWith(MockitoExtension.class)
 class RideControllerImplTest {
@@ -71,7 +72,7 @@ class RideControllerImplTest {
         when(rideService.getAll(offset, limit))
                 .thenReturn(new PageResponse<>(offset, limit, 1, 1, "", List.of(response)));
 
-        mockMvc.perform(get("/api/v1/rides")
+        mockMvc.perform(get(DEFAULT_ADDRESS)
                         .param("offset", String.valueOf(offset))
                         .param("limit", String.valueOf(limit)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -87,7 +88,7 @@ class RideControllerImplTest {
 
         when(rideService.getById(id)).thenReturn(response);
 
-        mockMvc.perform(get("/api/v1/rides/{id}", id))
+        mockMvc.perform(get(DEFAULT_ADDRESS + "/{id}", id))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.pickUpAddress").value(response.pickUpAddress()))
@@ -102,7 +103,7 @@ class RideControllerImplTest {
 
         when(rideService.getById(id)).thenThrow(new DataNotFoundException());
 
-        mockMvc.perform(get("/api/v1/rides/{id}", id))
+        mockMvc.perform(get(DEFAULT_ADDRESS + "/{id}", id))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
 
@@ -116,7 +117,7 @@ class RideControllerImplTest {
 
         when(rideService.createRide(request)).thenReturn(response);
 
-        mockMvc.perform(post("/api/v1/rides")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -131,7 +132,7 @@ class RideControllerImplTest {
 
         when(rideService.createRide(request)).thenThrow(new FeignNotFoundDataException(""));
 
-        mockMvc.perform(post("/api/v1/rides")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -146,7 +147,7 @@ class RideControllerImplTest {
 
         when(rideService.createRide(request)).thenThrow(new FeignNotFoundDataException(""));
 
-        mockMvc.perform(post("/api/v1/rides")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -161,7 +162,7 @@ class RideControllerImplTest {
 
         when(rideService.createRide(request)).thenThrow(new DriverWithoutCarException());
 
-        mockMvc.perform(post("/api/v1/rides")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -174,7 +175,7 @@ class RideControllerImplTest {
     void create_BadRequest_400() throws Exception {
         RideRequest invalidRequest = invalidRequest();
 
-        mockMvc.perform(post("/api/v1/rides")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                         .content(objectMapper.writeValueAsString(invalidRequest))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
@@ -189,7 +190,7 @@ class RideControllerImplTest {
 
         when(rideService.changeStatus(request, id)).thenReturn(response);
 
-        mockMvc.perform(patch("/api/v1/rides")
+        mockMvc.perform(patch(DEFAULT_ADDRESS)
                         .param("rideId", id)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -204,10 +205,10 @@ class RideControllerImplTest {
     @Test
     void updateStatus_RideNotFound_404() throws Exception {
         RideStatusRequest request = defaultRideStatusRequest();
-        String id = "invalid_id";
+        String id = TEST_INVALID_ID;
 
         when(rideService.changeStatus(request, id)).thenThrow(new DataNotFoundException());
-        mockMvc.perform(patch("/api/v1/rides", id)
+        mockMvc.perform(patch(DEFAULT_ADDRESS)
                         .param("rideId", id)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -225,7 +226,7 @@ class RideControllerImplTest {
 
         when(rideService.updateRide(request, id)).thenReturn(response);
 
-        mockMvc.perform(put("/api/v1/rides")
+        mockMvc.perform(put(DEFAULT_ADDRESS)
                         .param("rideId", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -242,7 +243,7 @@ class RideControllerImplTest {
 
         when(rideService.updateRide(request, id)).thenThrow(new DataNotFoundException());
 
-        mockMvc.perform(put("/api/v1/rides")
+        mockMvc.perform(put(DEFAULT_ADDRESS)
                         .param("rideId", id)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

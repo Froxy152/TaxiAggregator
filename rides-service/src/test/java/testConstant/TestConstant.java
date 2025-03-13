@@ -34,6 +34,8 @@ public final class TestConstant {
     public static final Integer TEST_DURING = 2;
     public static final BigDecimal TEST_PRICE = BigDecimal.valueOf(12.2);
     public static final Status TEST_STATUS = Status.CREATED;
+    public static final String DEFAULT_ADDRESS = "/api/v1/rides";
+
     public static final Driver TEST_DRIVER =
             new Driver(TEST_DRIVER_ID, "ILYA", "SHESTAKOV", "test@example.com", "+375295035659", Gender.MALE, new HashSet<>(Set.of(new Car(1L))), false);
   public static final Driver TEST_DRIVER_E2E =
