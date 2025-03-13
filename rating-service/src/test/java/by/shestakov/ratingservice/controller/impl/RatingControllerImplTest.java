@@ -1,5 +1,6 @@
 package by.shestakov.ratingservice.controller.impl;
 
+import static by.shestakov.ratingservice.constant.TestConstant.DEFAULT_ADDRESS;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_COMMENTARY_DTO;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_DRIVER_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_DRIVER_INVALID_ID;
@@ -67,7 +68,7 @@ class RatingControllerImplTest {
 
         when(ratingService.getAllReviews(offset, limit)).thenReturn(new PageResponse<>(offset, limit, 1, 1, "", List.of(response)));
 
-        mockMvc.perform(get("/api/v1/ratings")
+        mockMvc.perform(get(DEFAULT_ADDRESS)
                         .queryParam("offset", String.valueOf(offset))
                         .queryParam("limit", String.valueOf(limit)))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -83,7 +84,7 @@ class RatingControllerImplTest {
 
         when(ratingService.getResultForDriverWithLimit(driverId, limit)).thenReturn(response);
 
-        mockMvc.perform(get("/api/v1/ratings/{driverId}", driverId)
+        mockMvc.perform(get(DEFAULT_ADDRESS + "/{driverId}", driverId)
                         .queryParam("limit", String.valueOf(limit)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.average").value(response.average()));
@@ -97,7 +98,7 @@ class RatingControllerImplTest {
 
         when(ratingService.getResultForDriverWithLimit(driverId, limit)).thenThrow(new DataNotFoundException());
 
-        mockMvc.perform(get("/api/v1/ratings/{driverId}", driverId)
+        mockMvc.perform(get(DEFAULT_ADDRESS + "/{driverId}", driverId)
                         .queryParam("limit", String.valueOf(limit)))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.errors.message").value(ExceptionMessage.NOT_FOUND_MESSAGE));
@@ -110,7 +111,7 @@ class RatingControllerImplTest {
 
         when(ratingService.addNewReviewOnRide(request)).thenReturn(expectedResponse);
 
-        mockMvc.perform(post("/api/v1/ratings")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -125,7 +126,7 @@ class RatingControllerImplTest {
 
         when(ratingService.addNewReviewOnRide(request)).thenReturn(expectedResponse);
 
-        mockMvc.perform(post("/api/v1/ratings")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -139,7 +140,7 @@ class RatingControllerImplTest {
 
         when(ratingService.addNewReviewOnRide(request)).thenThrow(new OnlyOneCommentOnRideException());
 
-        mockMvc.perform(post("/api/v1/ratings")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict())
@@ -155,7 +156,7 @@ class RatingControllerImplTest {
 
         when(ratingService.changeCommentUnderReview(id, request)).thenReturn(response);
 
-        mockMvc.perform(patch("/api/v1/ratings/{id}", id)
+        mockMvc.perform(patch(DEFAULT_ADDRESS + "/{id}", id)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -169,7 +170,7 @@ class RatingControllerImplTest {
 
         when(ratingService.changeCommentUnderReview(id, request)).thenThrow(new DataNotFoundException());
 
-        mockMvc.perform(patch("/api/v1/ratings/{id}", id)
+        mockMvc.perform(patch(DEFAULT_ADDRESS + "/{id}", id)
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

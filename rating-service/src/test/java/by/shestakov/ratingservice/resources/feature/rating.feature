@@ -31,7 +31,7 @@ Feature: Rating API
 
   Scenario: Update commentary under review
     Given I have a new commentary
-    When  I send a PATCH request with id "67d0a45fb5f64f406e63e66c"
+    When  I send a PATCH request with id "some_id"
     Then Status should be is 200
 
   Scenario: Update commentary under review not found ride

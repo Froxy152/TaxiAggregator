@@ -42,7 +42,7 @@ public class WireMockConfiguration {
     }
 
     public static void getRide(WireMockServer wireMockServer) throws Exception {
-        wireMockServer.stubFor(get(urlEqualTo("/api/v1/rides/ID"))
+        wireMockServer.stubFor(get(urlEqualTo("/api/v1/rides/67cea3597960c17aa8048ab7"))
                 .willReturn(aResponse()
                         .withStatus(200)));
     }

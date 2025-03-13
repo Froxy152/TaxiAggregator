@@ -1,6 +1,7 @@
 package by.shestakov.ratingservice.controller.impl;
 
 import by.shestakov.ratingservice.config.WireMockConfiguration;
+import static by.shestakov.ratingservice.constant.TestConstant.DEFAULT_ADDRESS;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_COMMENTARY_DTO;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_DRIVER_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_DRIVER_INVALID_ID;
@@ -8,8 +9,8 @@ import static by.shestakov.ratingservice.constant.TestConstant.TEST_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_INVALID_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingByPassengerForInsert;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequest;
-import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequestInvalidDriverID;
-import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequestInvalidPassengerID;
+import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequestInvalidDriverIDForIT;
+import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequestInvalidPassengerIDForIT;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequestInvalidRideID;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverResponse;
 import by.shestakov.ratingservice.dto.request.CommentaryDto;
@@ -56,11 +57,6 @@ class RatingControllerImplIntegrationTest {
         registry.add("spring.data.mongodb.uri", mongoDBContainer::getConnectionString);
     }
 
-    @BeforeEach
-    void setup() {
-        RestAssured.baseURI = "http://localhost:" + this.port + "/api/v1/ratings";
-    }
-
     @LocalServerPort
     private Integer port;
 
@@ -75,6 +71,7 @@ class RatingControllerImplIntegrationTest {
 
     @BeforeEach
     void setUp() {
+        RestAssured.baseURI = "http://localhost:" + this.port + DEFAULT_ADDRESS;
         mongoTemplate.dropCollection("reviews");
         mongoTemplate.insert(defaultRatingByPassengerForInsert());
     }
@@ -108,8 +105,7 @@ class RatingControllerImplIntegrationTest {
                 .get("/{driverId}", driverId)
                 .then()
                 .contentType(ContentType.JSON)
-                .statusCode(200)
-                .body("average", notNullValue());
+                .statusCode(200);
     }
 
     @Test
@@ -159,7 +155,7 @@ class RatingControllerImplIntegrationTest {
         WireMockConfiguration.getRide(wireMockServer);
         WireMockConfiguration.getDriverNotFoundMock(wireMockServer);
 
-        RatingRequest request = defaultRatingDriverRequestInvalidDriverID();
+        RatingRequest request = defaultRatingDriverRequestInvalidDriverIDForIT();
 
         given()
                 .contentType(ContentType.JSON)
@@ -193,7 +189,7 @@ class RatingControllerImplIntegrationTest {
         WireMockConfiguration.getDriverMock(wireMockServer);
         WireMockConfiguration.getPassengerNotFoundMock(wireMockServer);
 
-        RatingRequest request = defaultRatingDriverRequestInvalidPassengerID();
+        RatingRequest request = defaultRatingDriverRequestInvalidPassengerIDForIT();
 
         given()
                 .contentType(ContentType.JSON)

@@ -9,8 +9,9 @@ import static by.shestakov.ratingservice.constant.TestConstant.TEST_INVALID_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_RIDE_ID;
 import static by.shestakov.ratingservice.constant.TestConstant.averageRatingResponse;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingByDriver;
-import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequest;
+import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequestForUnit;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverResponse;
+import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverResponseForUnit;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingPassengerRequest;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingPassengerResponse;
 import by.shestakov.ratingservice.dto.request.CommentaryDto;
@@ -107,9 +108,9 @@ class RatingServiceImplTest {
     @Test
     void addNewReviewOnRide_ReturnsValidResponse() {
         String rideId = TEST_RIDE_ID;
-        RatingRequest request = defaultRatingDriverRequest();
+        RatingRequest request = defaultRatingDriverRequestForUnit();
         Rating rating = defaultRatingByDriver();
-        RatingResponse expectedResponse = defaultRatingDriverResponse();
+        RatingResponse expectedResponse = defaultRatingDriverResponseForUnit();
 
         when(ratingRepository.existsByRideId(rideId)).thenReturn(false);
         when(ratingMapper.toEntity(request)).thenReturn(rating);
@@ -151,7 +152,7 @@ class RatingServiceImplTest {
     @Test
     void addNewReviewOnRide_UserCanSendOnReviewOnRide_ThrowException() {
         String rideId = TEST_RIDE_ID;
-        RatingRequest request = defaultRatingDriverRequest();
+        RatingRequest request = defaultRatingDriverRequestForUnit();
 
         when(ratingRepository.existsByRideId(rideId)).thenReturn(true);
 

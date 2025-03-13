@@ -45,7 +45,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public PageResponse<RatingResponse> getAllReviews(Integer offset, Integer limit) {
         Page<RatingResponse> ratingPage = ratingRepository.findAll(PageRequest.of(offset, limit))
-            .map(ratingMapper::toDto);
+                .map(ratingMapper::toDto);
 
         return pageMapper.toDto(ratingPage);
     }
@@ -67,7 +67,7 @@ public class RatingServiceImpl implements RatingService {
         if (ratingRequest.ratedBy().equals(RatedBy.PASSENGER)) {
             realtimeDriverUpdateRating(ratingRequest.driverId());
         } else {
-           realtimePassengerUpdateRating(ratingRequest.passengerId());
+            realtimePassengerUpdateRating(ratingRequest.passengerId());
         }
 
         return ratingMapper.toDto(newRating);

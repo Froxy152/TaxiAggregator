@@ -1,24 +1,19 @@
 package by.shestakov.ratingservice.e2e;
 
+import static by.shestakov.ratingservice.constant.TestConstant.DEFAULT_ADDRESS;
 import static by.shestakov.ratingservice.constant.TestConstant.TEST_COMMENTARY_DTO;
-import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingByPassengerForInsert;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequest;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequestInvalidDriverID;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequestInvalidPassengerID;
 import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverRequestInvalidRideID;
-import static by.shestakov.ratingservice.constant.TestConstant.defaultRatingDriverResponse;
 import by.shestakov.ratingservice.dto.request.CommentaryDto;
 import by.shestakov.ratingservice.dto.request.RatingRequest;
-import by.shestakov.ratingservice.dto.response.RatingResponse;
-import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 
 public class RatingSteps {
@@ -26,8 +21,6 @@ public class RatingSteps {
     private Response response;
     private RatingRequest ratingRequest;
     private CommentaryDto commentary;
-
-
 
     @Given("I have a rating request")
     public void i_have_a_rating_request() {
@@ -40,11 +33,8 @@ public class RatingSteps {
                 .contentType(ContentType.JSON)
                 .body(ratingRequest)
                 .when()
-                .post("/api/v1/ratings");
+                .post(DEFAULT_ADDRESS);
     }
-
-
-
 
     @Then("Status should be is {int}")
     public void status_should_be_is(int status) {
@@ -74,7 +64,7 @@ public class RatingSteps {
                 .queryParam("offset", String.valueOf(offset))
                 .queryParam("limit", String.valueOf(limit))
                 .when()
-                .get("/api/v1/ratings");
+                .get(DEFAULT_ADDRESS);
     }
 
     @Given("I have a new commentary")
@@ -89,14 +79,8 @@ public class RatingSteps {
                 .contentType(ContentType.JSON)
                 .body(commentary)
                 .when()
-                .patch("/api/v1/ratings/{id}", id);
+                .patch(DEFAULT_ADDRESS + "/{id}", id);
 
     }
-
-
-
-
-
-
 
 }

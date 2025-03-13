@@ -13,16 +13,4 @@ public record RatingResponse(
         String commentary,
         RatedBy ratedBy
 ) {
-    @Override
-    public String toString() {
-        return "RatingResponse{" +
-                "id='" + id + '\'' +
-                ", rideId='" + rideId + '\'' +
-                ", passengerId=" + passengerId +
-                ", driverId=" + driverId +
-                ", rate=" + rate +
-                ", commentary='" + commentary + '\'' +
-                ", ratedBy=" + ratedBy +
-                '}';
-    }
 }
