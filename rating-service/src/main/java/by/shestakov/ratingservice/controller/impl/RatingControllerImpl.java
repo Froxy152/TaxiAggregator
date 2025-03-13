@@ -50,7 +50,7 @@ public class RatingControllerImpl implements RatingController {
                 HttpStatus.CREATED);
     }
 
-    @PatchMapping
+    @PatchMapping("/{id}")
     public ResponseEntity<RatingResponse> updateCommentUnderReview(@RequestBody CommentaryDto commentaryDto,
                                                                    @PathVariable String id) {
         return new ResponseEntity<>(ratingService.changeCommentUnderReview(id, commentaryDto),

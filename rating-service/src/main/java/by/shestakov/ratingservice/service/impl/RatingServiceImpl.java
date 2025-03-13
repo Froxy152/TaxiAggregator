@@ -45,7 +45,7 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public PageResponse<RatingResponse> getAllReviews(Integer offset, Integer limit) {
         Page<RatingResponse> ratingPage = ratingRepository.findAll(PageRequest.of(offset, limit))
-            .map(ratingMapper::toDto);
+                .map(ratingMapper::toDto);
 
         return pageMapper.toDto(ratingPage);
     }
@@ -88,6 +88,9 @@ public class RatingServiceImpl implements RatingService {
     @Override
     public AverageRatingResponse getResultForDriverWithLimit(Long driverId, Integer limit) {
         checkDriver(driverId);
+        if (!ratingRepository.existsByDriverId(driverId)) {
+            throw new DataNotFoundException();
+        }
         return ratingRepository.findAverageRatingByDriverIdByLimit(driverId, limit);
     }
 
@@ -107,22 +110,25 @@ public class RatingServiceImpl implements RatingService {
         checkDriver(driverId);
 
         AverageRatingResponse response = ratingRepository.findAverageRatingByDriverId(driverId);
+        if (response.average() != null) {
 
-        BigDecimal rating = response.average();
-        rating = rating.setScale(2, RoundingMode.HALF_UP);
+            BigDecimal rating = BigDecimal.valueOf(response.average());
+            rating = rating.setScale(2, RoundingMode.HALF_UP);
 
-        kafkaProducer.sendMessageForDriver(driverId, rating);
+            kafkaProducer.sendMessageForDriver(driverId, rating);
+        }
     }
 
     private void realtimePassengerUpdateRating(Long passengerId) {
         checkPassenger(passengerId);
 
         AverageRatingResponse response = ratingRepository.findAverageRatingByPassengerId(passengerId);
+        if (response.average() != null) {
+            BigDecimal rating = BigDecimal.valueOf(response.average());
+            rating = rating.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal rating = response.average();
-        rating = rating.setScale(2, RoundingMode.HALF_UP);
-
-        kafkaProducer.sendMessageForPassenger(passengerId, rating);
+            kafkaProducer.sendMessageForPassenger(passengerId, rating);
+        }
     }
 
 
