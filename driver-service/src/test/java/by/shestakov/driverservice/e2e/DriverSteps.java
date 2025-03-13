@@ -1,8 +1,10 @@
 package by.shestakov.driverservice.e2e;
 
+import static by.shestakov.constant.TestCarData.DEFAULT_CAR_ADDRESS;
 import static by.shestakov.constant.TestCarData.defaultCarRequest;
 import static by.shestakov.constant.TestCarData.defaultCarResponse;
 import static by.shestakov.constant.TestCarData.updateRequest;
+import static by.shestakov.constant.TestDriverData.DEFAULT_DRIVER_ADDRESS;
 import static by.shestakov.constant.TestDriverData.alReadyDriverUpdateRequest;
 import static by.shestakov.constant.TestDriverData.alreadyEmailDriverRequest;
 import static by.shestakov.constant.TestDriverData.alreadyNumberDriverRequest;
@@ -47,7 +49,7 @@ public class DriverSteps {
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when()
-                .post("/api/v1/drivers");
+                .post(DEFAULT_DRIVER_ADDRESS);
     }
 
     @Then("The response should be {int}")
@@ -79,7 +81,7 @@ public class DriverSteps {
                 .contentType(ContentType.JSON)
                 .body(updateRequest)
                 .when()
-                .put("/api/v1/drivers/{id}", id);
+                .put(DEFAULT_DRIVER_ADDRESS + "/{id}", id);
     }
 
     @Given("I have already exists updated driver request")
@@ -91,7 +93,7 @@ public class DriverSteps {
     public void i_send_a_delete_driver_request_with(int id) {
         response = given()
                 .when()
-                .delete("/api/v1/drivers/{id}", id);
+                .delete(DEFAULT_DRIVER_ADDRESS + "/{id}", id);
     }
 
     @Then("The response should be deleted {int}")
@@ -126,7 +128,7 @@ public class DriverSteps {
     public void i_send_a_get_request(int id) {
         response = given()
                 .when()
-                .get("/api/v1/drivers/{id}", id);
+                .get(DEFAULT_DRIVER_ADDRESS + "/{id}", id);
     }
 
     @And("valid get response check")
@@ -142,7 +144,7 @@ public class DriverSteps {
                 .queryParam("offset", String.valueOf(offset))
                 .queryParam("limit", String.valueOf(limit))
                 .when()
-                .get("/api/v1/drivers");
+                .get(DEFAULT_DRIVER_ADDRESS);
     }
 
     @When("I send a GET request with offset {int} limit {int}")
@@ -151,7 +153,7 @@ public class DriverSteps {
                 .queryParam("offset", String.valueOf(offset))
                 .queryParam("limit", String.valueOf(limit))
                 .when()
-                .get("/api/v1/cars");
+                .get(DEFAULT_CAR_ADDRESS);
     }
 
     @Given("I have a car")
@@ -166,7 +168,7 @@ public class DriverSteps {
                 .body(carRequest)
                 .queryParam("driverId", String.valueOf(id))
                 .when()
-                .post("/api/v1/cars");
+                .post(DEFAULT_CAR_ADDRESS);
     }
 
     @And("validate car response")
@@ -202,13 +204,13 @@ public class DriverSteps {
                 .contentType(ContentType.JSON)
                 .body(carUpdateRequest)
                 .when()
-                .put("/api/v1/cars/{id}", id);
+                .put( DEFAULT_CAR_ADDRESS + "/{id}", id);
     }
 
     @When("I send a DELETE car request with {int}")
     public void i_send_a_delete_car_request_with(int id) {
         response = given()
                 .when()
-                .delete("/api/v1/cars/{id}", id);
+                .delete(DEFAULT_CAR_ADDRESS + "/{id}", id);
     }
 }

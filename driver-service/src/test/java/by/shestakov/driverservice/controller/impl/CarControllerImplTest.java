@@ -1,5 +1,8 @@
 package by.shestakov.driverservice.controller.impl;
 
+import static by.shestakov.constant.TestCarData.DEFAULT_CAR_ADDRESS;
+import static by.shestakov.constant.TestCarData.INVALID_CAR_ID;
+import static by.shestakov.constant.TestCarData.INVALID_DRIVER_ID;
 import static by.shestakov.constant.TestCarData.TEST_CAR_ID;
 import static by.shestakov.constant.TestCarData.TEST_DRIVER_ID;
 import static by.shestakov.constant.TestCarData.defaultCarRequest;
@@ -70,7 +73,7 @@ class CarControllerImplTest {
         when(carService.getAllCars(offset, limit))
             .thenReturn(new PageResponse<>(offset, limit, 1, 1, "", List.of(response)));
 
-        mockMvc.perform(get("/api/v1/cars")
+        mockMvc.perform(get(DEFAULT_CAR_ADDRESS)
                 .param("offset", String.valueOf(offset))
                 .param("limit", String.valueOf(limit))
             .contentType(MediaType.APPLICATION_JSON))
@@ -88,7 +91,7 @@ class CarControllerImplTest {
 
         when(carService.createCar(request, driverId)).thenReturn(response);
 
-        mockMvc.perform(post("/api/v1/cars")
+        mockMvc.perform(post(DEFAULT_CAR_ADDRESS)
                 .param("driverId", String.valueOf(driverId))
             .content(objectMapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON))
@@ -104,12 +107,13 @@ class CarControllerImplTest {
     void createCar_CarNumberExists_ThrowExceptions() throws Exception {
         CarRequest request = defaultCarRequest();
         Long driverId = TEST_DRIVER_ID;
+
         when(carService.createCar(request, driverId))
             .thenThrow(new CarNumberAlreadyException(
                 ExceptionMessages.CONFLICT_MESSAGE.formatted("car")
             ));
 
-        mockMvc.perform(post("/api/v1/cars")
+        mockMvc.perform(post(DEFAULT_CAR_ADDRESS)
             .param("driverId", String.valueOf(driverId))
                 .content(objectMapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON))
@@ -120,13 +124,13 @@ class CarControllerImplTest {
     @Test
     void createCar_DriverNotFound_ThrowException() throws Exception {
         CarRequest request = defaultCarRequest();
-        Long driverId = TEST_DRIVER_ID;
+        Long driverId = INVALID_DRIVER_ID;
 
         when(carService.createCar(request, driverId)).thenThrow(new DriverNotFoundException(
             ExceptionMessages.NOT_FOUND_MESSAGE.formatted("driver", driverId)
         ));
 
-        mockMvc.perform(post("/api/v1/cars")
+        mockMvc.perform(post(DEFAULT_CAR_ADDRESS)
             .param("driverId", String.valueOf(driverId))
                 .content(objectMapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON))
@@ -139,7 +143,7 @@ class CarControllerImplTest {
         CarRequest invalidRequest = TestCarData.invalidRequest();
         Long driverId = TEST_DRIVER_ID;
 
-        mockMvc.perform(post("/api/v1/cars")
+        mockMvc.perform(post(DEFAULT_CAR_ADDRESS)
             .param("driverId", String.valueOf(driverId))
                 .content(objectMapper.writeValueAsString(invalidRequest))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -155,7 +159,7 @@ class CarControllerImplTest {
 
         when(carService.updateCar(request, id)).thenReturn(response);
 
-        mockMvc.perform(put("/api/v1/cars/{id}", id)
+        mockMvc.perform(put(DEFAULT_CAR_ADDRESS + "/{id}", id)
                 .content(objectMapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -170,12 +174,12 @@ class CarControllerImplTest {
     @Test
     void carUpdate_CarNotFound_ThrowException() throws Exception {
         CarUpdateRequest request = updateRequest();
-        Long id = TEST_CAR_ID;
+        Long id = INVALID_CAR_ID;
 
         when(carService.updateCar(request, id))
             .thenThrow(new CarNotFoundException(ExceptionMessages.NOT_FOUND_MESSAGE.formatted("car", id)));
 
-        mockMvc.perform(put("/api/v1/cars/{id}", id)
+        mockMvc.perform(put(DEFAULT_CAR_ADDRESS + "/{id}", id)
             .content(objectMapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound())
@@ -190,7 +194,7 @@ class CarControllerImplTest {
         when(carService.updateCar(request, id))
             .thenThrow(new CarNumberAlreadyException(ExceptionMessages.CONFLICT_MESSAGE.formatted("car")));
 
-        mockMvc.perform(put("/api/v1/cars/{id}", id)
+        mockMvc.perform(put(DEFAULT_CAR_ADDRESS + "/{id}", id)
             .content(objectMapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isConflict())
@@ -201,19 +205,19 @@ class CarControllerImplTest {
     void deleteCar() throws Exception {
         Long id = TEST_CAR_ID;
 
-        mockMvc.perform(delete("/api/v1/cars/{id}", id)
+        mockMvc.perform(delete(DEFAULT_CAR_ADDRESS + "/{id}", id)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
     }
 
     @Test
     void deleteCar_CarNotFound_ThrowException() throws Exception {
-        Long id = TEST_CAR_ID;
+        Long id = INVALID_CAR_ID;
 
         doThrow(new CarNotFoundException(ExceptionMessages.NOT_FOUND_MESSAGE.formatted("car", id)))
             .when(carService).deleteCar(id);
 
-        mockMvc.perform(delete("/api/v1/cars/{id}", id)
+        mockMvc.perform(delete(DEFAULT_CAR_ADDRESS + "/{id}", id)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));

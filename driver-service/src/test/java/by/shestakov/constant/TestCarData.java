@@ -8,6 +8,7 @@ import by.shestakov.driverservice.entity.Driver;
 
 public final class TestCarData {
     public static final Long TEST_CAR_ID = 1L;
+    public static final Long INVALID_CAR_ID = 999L;
     public static final String TEST_CAR_BRAND = "BMW";
     public static final String TEST_CAR_BRAND_UPDATE = "AUDI";
     public static final String TEST_CAR_NUMBER = "А123ВС45";
@@ -15,10 +16,9 @@ public final class TestCarData {
     public static final String TEST_CAR_COLOR = "Black";
     public static final String TEST_CAR_COLOR_UPDATE = "GRAY";
     public static final Long TEST_DRIVER_ID = 1L;
-    private static final Driver TEST_DRIVER = new Driver();
-
-
-
+    public static final Long INVALID_DRIVER_ID = 999L;
+    public static final Driver TEST_DRIVER = new Driver();
+    public static final String DEFAULT_CAR_ADDRESS = "/api/v1/cars";
 
     public static CarRequest defaultCarRequest() {
         return new CarRequest(TEST_CAR_BRAND, TEST_CAR_NUMBER, TEST_CAR_COLOR);

@@ -1,5 +1,7 @@
 package by.shestakov.driverservice.controller.impl;
 
+import static by.shestakov.constant.TestDriverData.DEFAULT_DRIVER_ADDRESS;
+import static by.shestakov.constant.TestDriverData.INVALID_ID;
 import static by.shestakov.constant.TestDriverData.TEST_ID;
 import static by.shestakov.constant.TestDriverData.alReadyDriverUpdateRequest;
 import static by.shestakov.constant.TestDriverData.alreadyEmailDriverRequest;
@@ -38,8 +40,7 @@ import org.testcontainers.utility.DockerImageName;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class DriverControllerImplIT {
-
+class DriverControllerImplIntegrationTest {
 
     @Container
     static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>(
@@ -57,7 +58,7 @@ class DriverControllerImplIT {
 
     @BeforeEach
     void setup() {
-        RestAssured.baseURI = "http://localhost:" + this.port + "/api/v1/drivers";
+        RestAssured.baseURI = "http://localhost:" + this.port + DEFAULT_DRIVER_ADDRESS;
     }
 
     @LocalServerPort
@@ -100,7 +101,7 @@ class DriverControllerImplIT {
     @Order(3)
     @Test
     void getById_DriverNotFound_404() {
-        Long id = 9999L;
+        Long id = INVALID_ID;
 
         given()
                 .when()
@@ -182,7 +183,7 @@ class DriverControllerImplIT {
     @Test
     void updateDriver_DriverNotFound_404() {
         DriverUpdateRequest request = driverUpdateRequest();
-        Long id = 999L;
+        Long id = INVALID_ID;
 
         given()
                 .contentType(ContentType.JSON)
@@ -230,7 +231,7 @@ class DriverControllerImplIT {
     @Order(11)
     @Test
     void deleteDriver_DriverNotFound() {
-        Long id = 999L;
+        Long id = INVALID_ID;
 
         given()
                 .when()

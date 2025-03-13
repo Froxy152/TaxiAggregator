@@ -1,5 +1,8 @@
 package by.shestakov.driverservice.controller.impl;
 
+import static by.shestakov.constant.TestCarData.DEFAULT_CAR_ADDRESS;
+import static by.shestakov.constant.TestCarData.INVALID_CAR_ID;
+import static by.shestakov.constant.TestCarData.INVALID_DRIVER_ID;
 import static by.shestakov.constant.TestCarData.TEST_CAR_ID;
 import static by.shestakov.constant.TestCarData.TEST_DRIVER_ID;
 import static by.shestakov.constant.TestCarData.alreadyCarRequest;
@@ -39,7 +42,7 @@ import org.testcontainers.utility.DockerImageName;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class CarControllerImplIT {
+class CarControllerImplIntegrationTest {
 
     @Container
     static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>(
@@ -54,7 +57,7 @@ class CarControllerImplIT {
 
     @BeforeEach
     void setup() {
-        RestAssured.baseURI = "http://localhost:" + this.port + "/api/v1/cars";
+        RestAssured.baseURI = "http://localhost:" + this.port + DEFAULT_CAR_ADDRESS;
     }
 
     @LocalServerPort
@@ -124,7 +127,7 @@ class CarControllerImplIT {
     @Order(4)
     void createCar_CarDriverNotFound_404() {
         CarRequest request = defaultCarRequest();
-        Long driverId = 999L;
+        Long driverId = INVALID_DRIVER_ID;
 
         given()
                 .contentType(ContentType.JSON)
@@ -163,7 +166,7 @@ class CarControllerImplIT {
     @Order(6)
     void updateCar_CarNotFound_404() {
         CarUpdateRequest request = updateRequest();
-        Long id = 999L;
+        Long id = INVALID_CAR_ID;
 
         given()
                 .contentType(ContentType.JSON)
@@ -214,7 +217,7 @@ class CarControllerImplIT {
     @Test
     @Order(9)
     void deleteCar_CarNotFound_404() {
-        Long id = 999L;
+        Long id = INVALID_CAR_ID;
 
         given()
                 .when()

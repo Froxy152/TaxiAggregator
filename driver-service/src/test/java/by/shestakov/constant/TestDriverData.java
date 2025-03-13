@@ -14,6 +14,7 @@ import java.util.Set;
 public final class TestDriverData {
 
     public static final Long TEST_ID = 1L;
+    public static final Long INVALID_ID = 999L;
     public static final String TEST_NAME = "Ilya";
     public static final String TEST_LASTNAME = "Shestakov";
     public static final String TEST_EMAIL = "test@example.com";
@@ -22,6 +23,7 @@ public final class TestDriverData {
     public static final BigDecimal TEST_RATING = new BigDecimal("0.0");
     public static final Set<Long> TEST_CARS_DTO = new HashSet<>();
     public static final Set<Car> TEST_CARS_ENTITY = new HashSet<>();
+    public static final String DEFAULT_DRIVER_ADDRESS = "/api/v1/drivers";
 
     public static DriverRequest defaultDriverRequest() {
         return DriverRequest.builder()
