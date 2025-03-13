@@ -1,11 +1,11 @@
 package by.shestakov.passengerservice.service.impl;
 
-import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_ID;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultPassenger;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultResponse;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updatePassengerRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updatedPassengerResponse;
+import static by.shestakov.passengerservice.constant.TestConstants.TEST_ID;
+import static by.shestakov.passengerservice.constant.TestConstants.defaultPassenger;
+import static by.shestakov.passengerservice.constant.TestConstants.defaultRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.defaultResponse;
+import static by.shestakov.passengerservice.constant.TestConstants.updatePassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updatedPassengerResponse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -72,7 +72,6 @@ class PassengerServiceImplTest {
                 .sort("")
                 .values(passengerResponses)
                 .build();
-        Passenger passenger = defaultPassenger();
         PassengerResponse passengerResponse = defaultResponse();
 
         when(passengerRepository.findAllByIsDeletedFalse(PageRequest.of(offset, limit))).thenReturn(passengerPage);

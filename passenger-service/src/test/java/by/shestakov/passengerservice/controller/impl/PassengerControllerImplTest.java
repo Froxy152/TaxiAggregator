@@ -1,27 +1,18 @@
 package by.shestakov.passengerservice.controller.impl;
 
 
-import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_ALREADY_ID;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_ID;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_INVALID_ID;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultResponse;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidEmailRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidPhoneNumberRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updateAlreadyEmailPassengerRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updateAlreadyNumberPassengerRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updatePassengerRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updatedPassengerResponse;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import static by.shestakov.passengerservice.constant.TestConstants.DEFAULT_ADDRESS;
+import static by.shestakov.passengerservice.constant.TestConstants.TEST_ALREADY_ID;
+import static by.shestakov.passengerservice.constant.TestConstants.TEST_ID;
+import static by.shestakov.passengerservice.constant.TestConstants.TEST_INVALID_ID;
+import static by.shestakov.passengerservice.constant.TestConstants.defaultRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.defaultResponse;
+import static by.shestakov.passengerservice.constant.TestConstants.invalidEmailRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.invalidPhoneNumberRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updateAlreadyEmailPassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updateAlreadyNumberPassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updatePassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updatedPassengerResponse;
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
 import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PageResponse;
@@ -38,9 +29,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 
@@ -75,7 +75,7 @@ class PassengerControllerImplTest {
             .thenReturn(new PageResponse<>(
                 offset, 1, 1, 1, "", List.of(response)));
 
-        mockMvc.perform(get("/api/v1/passengers")
+        mockMvc.perform(get(DEFAULT_ADDRESS)
                 .param("offset", String.valueOf(offset))
                 .param("limit", String.valueOf(limit)))
             .andExpect(status().isOk())
@@ -92,7 +92,7 @@ class PassengerControllerImplTest {
 
         when(passengerService.getPassengerById(id)).thenReturn(response);
 
-        mockMvc.perform(get("/api/v1/passengers/{id}", id))
+        mockMvc.perform(get(DEFAULT_ADDRESS + "/{id}", id))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
@@ -106,7 +106,7 @@ class PassengerControllerImplTest {
             .thenThrow(new PassengerNotFoundException(
                 ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
 
-        mockMvc.perform(get("/api/v1/passengers/{id}", id))
+        mockMvc.perform(get(DEFAULT_ADDRESS + "/{id}", id))
             .andExpect(status().isNotFound())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
@@ -121,7 +121,7 @@ class PassengerControllerImplTest {
 
         when(passengerService.createPassenger(request)).thenReturn(response);
 
-        mockMvc.perform(post("/api/v1/passengers")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                 .content(objectMapper.writeValueAsString(defaultRequest()))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isCreated())
@@ -135,7 +135,7 @@ class PassengerControllerImplTest {
         when(passengerService.createPassenger(request)).thenThrow(new PassengerAlreadyExistsException(
             ExceptionConstants.CONFLICT_MESSAGE.formatted(request.phoneNumber(), request.email())));
 
-        mockMvc.perform(post("/api/v1/passengers")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isConflict())
@@ -146,7 +146,7 @@ class PassengerControllerImplTest {
     void testCreate_InvalidEmailInRequest() throws Exception {
         PassengerRequest invalidRequest = invalidEmailRequest();
 
-        mockMvc.perform(post("/api/v1/passengers")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                 .content(objectMapper.writeValueAsString(invalidRequest))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
@@ -157,7 +157,7 @@ class PassengerControllerImplTest {
     void testCreate_InvalidPhoneNumberRequest() throws Exception {
         PassengerRequest invalidRequest = invalidPhoneNumberRequest();
 
-        mockMvc.perform(post("/api/v1/passengers")
+        mockMvc.perform(post(DEFAULT_ADDRESS)
                 .content(objectMapper.writeValueAsString(invalidRequest))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
@@ -173,7 +173,7 @@ class PassengerControllerImplTest {
 
         when(passengerService.updatePassengerById(request, id)).thenReturn(updatedResponse);
 
-        mockMvc.perform(put("/api/v1/passengers/{id}", id)
+        mockMvc.perform(put(DEFAULT_ADDRESS + "/{id}", id)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -192,7 +192,7 @@ class PassengerControllerImplTest {
             new PassengerNotFoundException(ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id))
         );
 
-        mockMvc.perform(put("/api/v1/passengers/{id}", id)
+        mockMvc.perform(put(DEFAULT_ADDRESS + "/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -212,7 +212,7 @@ class PassengerControllerImplTest {
                 ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED.formatted(request.phoneNumber()))
         );
 
-        mockMvc.perform(put("/api/v1/passengers/{id}", id)
+        mockMvc.perform(put(DEFAULT_ADDRESS + "/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -230,7 +230,7 @@ class PassengerControllerImplTest {
                 ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED.formatted(request.email()))
         );
 
-        mockMvc.perform(put("/api/v1/passengers/{id}", id)
+        mockMvc.perform(put(DEFAULT_ADDRESS + "/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -241,7 +241,7 @@ class PassengerControllerImplTest {
     void testDelete_ReturnValidResponse() throws Exception {
         Long id = TEST_ID;
 
-        mockMvc.perform(delete("/api/v1/passengers/{id}", id)
+        mockMvc.perform(delete(DEFAULT_ADDRESS + "/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
     }
@@ -253,7 +253,7 @@ class PassengerControllerImplTest {
         doThrow(new PassengerNotFoundException(ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)))
             .when(passengerService).softDeletePassenger(id);
 
-        mockMvc.perform(delete("/api/v1/passengers/{id}", id))
+        mockMvc.perform(delete(DEFAULT_ADDRESS + "/{id}", id))
             .andExpect(status().isNotFound());
 
         verify(passengerService).softDeletePassenger(id);

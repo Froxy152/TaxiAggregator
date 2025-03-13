@@ -11,7 +11,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class UnitTestConstants {
+public class TestConstants {
 
     public static final Long TEST_ID = 1L;
     public static final Long TEST_INVALID_ID = 999L;
@@ -22,6 +22,7 @@ public class UnitTestConstants {
     public static final String TEST_EMAIL = "test@example.com";
     public static final String TEST_EMAIL_FOR_UPDATE = "test@gmail.com";
     public static final BigDecimal TEST_RATING = new BigDecimal("0.0");
+    public static final String DEFAULT_ADDRESS = "/api/v1/passengers";
 
     public static PassengerResponse defaultResponse() {
         return PassengerResponse.builder()

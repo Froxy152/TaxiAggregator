@@ -1,12 +1,13 @@
 package by.shestakov.passengerservice.e2e;
 
-import static by.shestakov.passengerservice.constant.UnitTestConstants.alreadyPassengerRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultFirstResponse;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidEmailRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidPhoneNumberRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updatePassengerRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updatedPassengerResponse;
+import static by.shestakov.passengerservice.constant.TestConstants.DEFAULT_ADDRESS;
+import static by.shestakov.passengerservice.constant.TestConstants.alreadyPassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.defaultFirstResponse;
+import static by.shestakov.passengerservice.constant.TestConstants.defaultRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.invalidEmailRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.invalidPhoneNumberRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updatePassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updatedPassengerResponse;
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
 import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
@@ -37,7 +38,7 @@ public class PassengerEndToEndTest {
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when()
-                .post("/api/v1/passengers");
+                .post(DEFAULT_ADDRESS);
     }
 
     @Then("The response status should be {int}")
@@ -73,7 +74,7 @@ public class PassengerEndToEndTest {
     public void get_passenger_with_id(int id) {
         response = given()
                 .when()
-                .get("/api/v1/passengers/{id}", id);
+                .get(DEFAULT_ADDRESS + "/{id}", id);
     }
 
     @Then("Response body should be passenger")
@@ -102,7 +103,7 @@ public class PassengerEndToEndTest {
                 .contentType(ContentType.JSON)
                 .body(updatePassengerRequest)
                 .when()
-                .put("/api/v1/passengers/{id}", id);
+                .put(DEFAULT_ADDRESS + "/{id}", id);
     }
 
     @Then("Response body should be updated passenger")
@@ -116,7 +117,7 @@ public class PassengerEndToEndTest {
     public void i_send_a_delete_request_with_id(int id) {
         response = given()
                 .when()
-                .delete("/api/v1/passengers/{id}", id);
+                .delete(DEFAULT_ADDRESS + "/{id}", id);
     }
 
     @When("I send a GET request with offset {int} limit {int}")
@@ -125,7 +126,7 @@ public class PassengerEndToEndTest {
                 .queryParam("offset", String.valueOf(offset))
                 .queryParam("limit", String.valueOf(limit))
                 .when()
-                .get("/api/v1/passengers");
+                .get(DEFAULT_ADDRESS);
 
     }
 }

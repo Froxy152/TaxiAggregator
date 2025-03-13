@@ -1,14 +1,15 @@
 package by.shestakov.passengerservice.controller.impl;
 
-import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_ID;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.TEST_INVALID_ID;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.alreadyPassengerRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidEmailRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.invalidPhoneNumberRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updateAlreadyEmailPassengerRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updateAlreadyNumberPassengerRequest;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.updatePassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.DEFAULT_ADDRESS;
+import static by.shestakov.passengerservice.constant.TestConstants.TEST_ID;
+import static by.shestakov.passengerservice.constant.TestConstants.TEST_INVALID_ID;
+import static by.shestakov.passengerservice.constant.TestConstants.alreadyPassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.defaultRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.invalidEmailRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.invalidPhoneNumberRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updateAlreadyEmailPassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updateAlreadyNumberPassengerRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.updatePassengerRequest;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -49,7 +50,7 @@ public class PassengerControllerImplIntegrationTest {
 
     @BeforeEach
     void setup() {
-        RestAssured.baseURI = "http://localhost:" + this.port + "/api/v1/passengers";
+        RestAssured.baseURI = "http://localhost:" + this.port + DEFAULT_ADDRESS;
     }
 
     @Test

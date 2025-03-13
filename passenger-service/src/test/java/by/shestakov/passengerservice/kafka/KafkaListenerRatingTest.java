@@ -1,7 +1,7 @@
 package by.shestakov.passengerservice.kafka;
 
-import static by.shestakov.passengerservice.constant.UnitTestConstants.defaultPassenger;
-import static by.shestakov.passengerservice.constant.UnitTestConstants.ratingRequest;
+import static by.shestakov.passengerservice.constant.TestConstants.defaultPassenger;
+import static by.shestakov.passengerservice.constant.TestConstants.ratingRequest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
