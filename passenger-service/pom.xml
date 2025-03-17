@@ -24,8 +24,14 @@
 		<assured.version>5.5.1</assured.version>
 		<cucumber.version>7.14.0</cucumber.version>
 		<jackson.version>2.16.1</jackson.version>
+		<cloud.version>4.2.0</cloud.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<version>${cloud.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>io.cucumber</groupId>
 			<artifactId>cucumber-java</artifactId>

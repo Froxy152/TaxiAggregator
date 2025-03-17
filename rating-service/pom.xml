@@ -22,8 +22,14 @@
 		<lombok-mapstruct.version>0.2.0</lombok-mapstruct.version>
 		<cucumber.version>7.14.0</cucumber.version>
 		<assured.version>5.5.1</assured.version>
+		<cloud.version>4.2.0</cloud.version>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<version>${cloud.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.kafka</groupId>
 			<artifactId>spring-kafka-test</artifactId>

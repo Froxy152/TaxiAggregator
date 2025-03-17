@@ -12,6 +12,9 @@
         <module>passenger-service</module>
         <module>driver-service</module>
         <module>rides-service</module>
+        <module>rating-service</module>
+        <module>eureka-server</module>
+        <module>api-gateway</module>
     </modules>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
