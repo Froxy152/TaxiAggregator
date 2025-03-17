@@ -14,13 +14,22 @@ public enum Gender {
         this.code = code;
     }
 
-    public static Gender fromValue(int value) {
+    public static Gender fromValue(String value) {
         for (Gender gender : Gender.values()) {
-            if (gender.getCode() == value) {
+            if (gender.name().equals(value)) {
                 return gender;
             }
         }
         throw new IllegalArgumentException("Unknown value: " + value);
+    }
+
+    public static Gender fromCode(Integer code) {
+        for (Gender gender : Gender.values()) {
+            if (gender.getCode() == code) {
+                return gender;
+            }
+        }
+        throw new IllegalArgumentException("Unknown value: " + code);
     }
 
 }

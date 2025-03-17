@@ -1,5 +1,6 @@
 package by.shestakov.ratingservice.controller;
 
+import by.shestakov.ratingservice.dto.request.CommentaryDto;
 import by.shestakov.ratingservice.dto.request.RatingRequest;
 import by.shestakov.ratingservice.dto.response.AverageRatingResponse;
 import by.shestakov.ratingservice.dto.response.PageResponse;
@@ -15,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface RatingController {
 
     @GetMapping
-    ResponseEntity<PageResponse<RatingResponse>> getAllReviews(@RequestParam("offset") Integer offset,
-                                               @RequestParam("limit") Integer limit);
+    ResponseEntity<PageResponse<RatingResponse>> getAllRatings(@RequestParam("offset") Integer offset,
+                                                               @RequestParam("limit") Integer limit);
 
     @GetMapping("/{id}")
     ResponseEntity<AverageRatingResponse> getAverageRating(@PathVariable Long driverId,
@@ -26,6 +27,6 @@ public interface RatingController {
     ResponseEntity<RatingResponse> createNewReview(@RequestBody RatingRequest ratingRequest);
 
     @PatchMapping
-    ResponseEntity<RatingResponse> updateCommentUnderReview(@RequestBody String text,
-                                                                   @RequestParam(value = "id") String id);
+    ResponseEntity<RatingResponse> updateCommentUnderReview(@RequestBody CommentaryDto commentaryDto,
+                                                            @PathVariable String id);
 }
