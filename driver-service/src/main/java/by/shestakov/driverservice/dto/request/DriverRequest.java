@@ -1,15 +1,17 @@
 package by.shestakov.driverservice.dto.request;
 
 
-import by.shestakov.driverservice.util.GenderConverter;
+import by.shestakov.driverservice.entity.Gender;
 import by.shestakov.driverservice.util.RegexpConstants;
 import by.shestakov.driverservice.util.ValidationConstants;
-import jakarta.persistence.Convert;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
+@Builder
 @Valid
 public record DriverRequest(
         @NotBlank(message = ValidationConstants.MANDATORY_NAME_FIELD)
@@ -26,8 +28,7 @@ public record DriverRequest(
         @Pattern(regexp = RegexpConstants.PHONE_NUMBER_REGEXP)
         String phoneNumber,
 
-        @Convert(converter = GenderConverter.class)
-        @NotBlank(message = ValidationConstants.MANDATORY_GENDER_FIELD)
-        Integer gender
+        @NotNull(message = ValidationConstants.MANDATORY_GENDER_FIELD)
+        Gender gender
 ) {
 }

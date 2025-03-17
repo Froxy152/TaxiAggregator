@@ -10,7 +10,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,9 +46,12 @@ public class Driver {
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
+    @Column(name = "rating", nullable = false)
+    private BigDecimal rating;
+
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "driverId", cascade = CascadeType.ALL)
-    private List<Car> cars;
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL)
+    private Set<Car> cars;
 }
