@@ -1,14 +1,16 @@
-package by.shestakov.ridesservice.feign;
+package by.shestakov.ridesservice.feign.integrationTest;
 
 import by.shestakov.ridesservice.dto.response.PassengerResponse;
 import by.shestakov.ridesservice.exception.CustomErrorDecoder;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "passenger-service", configuration = {CustomErrorDecoder.class})
-public interface PassengerClient {
+@ActiveProfiles("test")
+@FeignClient(name = "passenger-service-test", configuration = {CustomErrorDecoder.class})
+public interface PassengerClientIntegration {
 
-    @GetMapping("/api/v1/passengers/{id}")
+    @GetMapping
     PassengerResponse getPassengerById(@PathVariable Long id);
 }

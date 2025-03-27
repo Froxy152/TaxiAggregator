@@ -1,0 +1,280 @@
+version: '3.8'
+
+services:
+
+  postgres-db:
+    image: postgres:17-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - cab-aggregator-network
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  mongo-db:
+    image: mongo:latest
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - rides_data:/data/db
+    networks:
+      - cab-aggregator-network
+    healthcheck:
+      test: |
+        mongosh --eval "db.runCommand({ ping: 1 }).ok"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  eureka-server:
+    build:
+      context: ../eureka-server
+      dockerfile: ../docker/Dockerfile
+      args:
+        SERVICE_NAME: eureka-server
+    container_name: eureka-server
+    ports:
+      - "8081:8081"
+    networks:
+      - cab-aggregator-network
+    healthcheck:
+      test: curl -f http://eureka-server:8081/actuator/health
+      interval: 1s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+  api-gateway:
+    build:
+      context: ../api-gateway
+      dockerfile: ../docker/Dockerfile
+      args:
+        SERVICE_NAME: api-gateway
+    container_name: api-gateway
+    environment:
+      DEFAULT_ZONE: http://eureka-server:8081/eureka/
+    ports:
+      - "8080:8080"
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    networks:
+      - cab-aggregator-network
+#    healthcheck:
+#      test: curl -f http://api-gateway:8080/actuator/health
+#      interval: 1s
+#      timeout: 10s
+#      retries: 30
+#      start_period: 60s
+
+  passenger-service:
+    build:
+      context: ../passenger-service
+      dockerfile: ../docker/Dockerfile
+      args:
+        SERVICE_NAME: passenger-service
+    container_name: passenger-service
+    environment:
+      DB_URL: jdbc:postgresql://postgres-db/passenger_db
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_DRIVER: org.postgresql.Driver
+      DEFAULT_ZONE: http://eureka-server:8081/eureka/
+      BOOTSTRAP: "kafka:9092"
+    ports:
+      - "5001:5001"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    #  api-gateway:
+   #    condition: service_healthy
+#      zookeeper:
+#        condition: service_healthy
+#      kafka:
+#        condition: service_healthy
+    networks:
+      - cab-aggregator-network
+    healthcheck:
+      test: curl -f http://passenger-service:5001/actuator/health
+      interval: 1s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+  driver-service:
+    build:
+      context: ../driver-service
+      dockerfile: ../docker/Dockerfile
+      args:
+        SERVICE_NAME: driver-service
+    container_name: driver-service
+    environment:
+      DB_URL: jdbc:postgresql://postgres-db/driverdb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DEFAULT_ZONE: http://eureka-server:8081/eureka/
+      BOOTSTRAP: "kafka:9092"
+    ports:
+      - "5002:5002"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+     # api-gateway:
+     #   condition: service_healthy
+#      zookeeper:
+#        condition: service_healthy
+#      kafka:
+#        condition: service_healthy
+    networks:
+      - cab-aggregator-network
+    healthcheck:
+      test: curl -f http://driver-service:5002/actuator/health
+      interval: 1s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+  rides-service:
+    build:
+      context: ../rides-service
+      dockerfile: ../docker/Dockerfile
+      args:
+        SERVICE_NAME: rides-service
+    container_name: rides-service
+    environment:
+      DB_URI: mongodb://mongo-db/rides_db
+      DEFAULT_ZONE: http://eureka-server:8081/eureka/
+      BOOTSTRAP: "kafka:9092"
+    ports:
+      - "5003:5003"
+    depends_on:
+      mongo-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+  #    api-gateway:
+  #    condition: service_healthy
+    networks:
+      - cab-aggregator-network
+    healthcheck:
+      test: curl -f http://rides-service:5003/actuator/health
+      interval: 1s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+  rating-service:
+    build:
+      context: ../rating-service
+      dockerfile: ../docker/Dockerfile
+      args:
+        SERVICE_NAME: rating-service
+    container_name: rating-service
+    environment:
+      DB_URI: mongodb://mongo-db/ratings_db
+      DEFAULT_ZONE: http://eureka-server:8081/eureka/
+      BOOTSTRAP: "kafka:9092"
+    ports:
+      - "5004:5004"
+    depends_on:
+      mongo-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+     # api-gateway:
+    #    condition: service_healthy
+#      zookeeper:
+#        condition: service_healthy
+#      kafka:
+#        condition: service_healthy
+    networks:
+      - cab-aggregator-network
+    healthcheck:
+      test: curl -f http://rating-service:5004/actuator/health
+      interval: 1s
+      timeout: 10s
+      retries: 30
+      start_period: 60s
+
+  zookeeper:
+    image: bitnami/zookeeper:3.9.3
+    container_name: zookeeper-1
+    ports:
+      - "2181"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+    volumes:
+      - zookeeper_data:/bitnami/zookeeper
+    networks:
+      - cab-aggregator-network
+    healthcheck:
+      test: nc -z localhost 2181 || exit -1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  kafka:
+    image: bitnami/kafka:3.8.1
+    container_name: kafka
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_BROKER_ID=1
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=INTERNAL://:9092,EXTERNAL://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka:9092,EXTERNAL://localhost:29092
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
+    volumes:
+      - kafka_data:/bitnami/kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    networks:
+      - cab-aggregator-network
+    healthcheck:
+      test: kafka-topics.sh --list --bootstrap-server localhost:9092 || exit 1
+      interval: 1s
+      timeout: 60s
+      retries: 60
+      start_period: 5s
+
+
+
+
+networks:
+  cab-aggregator-network:
+    name: cab-aggregator-network
+    driver: bridge
+
+volumes:
+  postgres_data:
+  rides_data:
+  ratings_data:
+  zookeeper_data:
+    driver: local
+    name: zookeeper_data
+  kafka_data:
+    driver: local
+    name: kafka_data

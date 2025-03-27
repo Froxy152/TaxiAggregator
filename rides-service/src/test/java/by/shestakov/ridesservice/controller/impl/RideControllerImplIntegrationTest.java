@@ -38,6 +38,7 @@ import static testConstant.TestConstant.defaultRide;
 import static testConstant.TestConstant.defaultRideDriverNotFoundRequest;
 import static testConstant.TestConstant.defaultRidePassengerNotFoundRequest;
 import static testConstant.TestConstant.defaultRideRequest;
+import static testConstant.TestConstant.defaultRideRequestWithoutCar;
 import static testConstant.TestConstant.defaultRideStatusRequest;
 import static testConstant.TestConstant.defaultRideUpdateRequest;
 import static testConstant.TestConstant.invalidRequest;
@@ -176,7 +177,7 @@ class RideControllerImplIntegrationTest {
     @Test
     void create_DriverWithoutCar_400() throws Exception {
         WireMockConfiguration.getDriverMock(wireMockServer, objectMapper, TEST_DRIVER_RESPONSE_WITHOUT_CAR);
-        RideRequest request = defaultRideRequest();
+        RideRequest request = defaultRideRequestWithoutCar();
 
         given()
                 .contentType(ContentType.JSON)

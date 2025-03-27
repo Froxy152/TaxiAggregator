@@ -25,7 +25,7 @@ public class KafkaListenerRating {
                 ExceptionConstants.NOT_FOUND_MESSAGE.formatted(updateRatingRequest.id())
             ));
         existsPassenger.setRating(updateRatingRequest.rating());
-
+        System.out.println("message recieved: " + updateRatingRequest.rating() );
         passengerRepository.save(existsPassenger);
     }
 

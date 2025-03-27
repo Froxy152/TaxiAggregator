@@ -5,7 +5,7 @@ spring:
     name: driver-service
   datasource:
     driver-class-name: ${DB-DRIVER:org.postgresql.Driver}
-    url: ${DB-URL:jdbc:postgresql://localhost:5432/DriverDB}
+    url: ${DB-URL:jdbc:postgresql://localhost:5432/driverdb}
     username: ${DB-USERNAME:root}
     password: ${DB-PASSWORD:123}
   jpa:
@@ -15,6 +15,6 @@ spring:
 
   kafka:
     consumer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: ${BOOTSTRAP:localhost:9092}
       group-id: rating-consumer
       auto-offset-reset: earliest

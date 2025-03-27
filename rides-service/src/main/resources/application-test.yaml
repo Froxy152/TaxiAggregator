@@ -11,11 +11,11 @@ spring:
     openfeign:
       client:
         config:
-          passenger-service:
+          passenger-service-test:
             url: http://localhost:8090/api/v1/passengers
-          driver-service:
+          driver-service-test:
             url: http://localhost:8090/api/v1/drivers
-          routing-service:
+          routing-service-test:
             url: http://localhost:8090//graphhopper.com/api
 
 api:

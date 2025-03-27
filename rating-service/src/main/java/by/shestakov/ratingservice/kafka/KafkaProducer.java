@@ -25,7 +25,7 @@ public class KafkaProducer {
             .id(driverId)
             .rating(rating)
             .build();
-
+        System.out.println("Message was send: " + message.rating());
         kafkaTemplate.send(driverTopic, message);
     }
 
@@ -35,7 +35,7 @@ public class KafkaProducer {
             .id(passengerId)
             .rating(rating)
             .build();
-
+        System.out.println("Message was send: " + message.rating());
         kafkaTemplate.send(passengerTopic, message);
     }
 }

@@ -1,0 +1,2 @@
+CREATE DATABASE DriverDB;
+CREATE DATABASE passenger_db;
