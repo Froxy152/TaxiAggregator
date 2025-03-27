@@ -7,6 +7,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.test.context.ActiveProfiles;
 
 
+
+
 @EnableDiscoveryClient
 @ActiveProfiles("default")
 @EnableFeignClients

@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
                 .build());
     }
 
-    @ExceptionHandler({FeignClientNotFoundDataException.class, DataNotFoundException.class})
+    @ExceptionHandler({FeignNotFoundDataException.class, DataNotFoundException.class})
     public ResponseEntity<ExceptionResponse> handleFeignClientNotFoundDataException(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ExceptionResponse.builder()
                 .status(HttpStatus.NOT_FOUND)
@@ -70,6 +70,15 @@ public class GlobalExceptionHandler {
             .time(LocalDateTime.now())
             .errors(Map.of("message", ExceptionMessage.SERVICE_UNAVAILABLE.formatted(service)))
             .build());
+    }
+
+    @ExceptionHandler(FallbackException.class)
+    public ResponseEntity<ExceptionResponse> handeFallbackException(Exception e) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(ExceptionResponse.builder()
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .time(LocalDateTime.now())
+                .errors(Map.of("message", e.getMessage()))
+                .build());
     }
 
 }

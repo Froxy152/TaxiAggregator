@@ -18,7 +18,7 @@ public class CustomErrorDecoder implements ErrorDecoder {
     public Exception decode(String s, Response response) {
 
         return switch (response.status()) {
-            case 404 -> new FeignClientNotFoundDataException(extractBody(response));
+            case 404 -> new FeignNotFoundDataException(extractBody(response));
             default -> defaultErrorDecoder.decode(s, response);
         };
     }

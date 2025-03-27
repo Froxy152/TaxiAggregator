@@ -1,5 +1,7 @@
 package by.shestakov.ridesservice.service.impl;
 
+import static by.shestakov.ridesservice.util.constant.ExceptionMessage.DRIVER_SERVICE_UNAVAILABLE_CIRCUIT_BREAKER;
+
 import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.request.RideStatusRequest;
 import by.shestakov.ridesservice.dto.request.RideUpdateRequest;
@@ -13,6 +15,8 @@ import by.shestakov.ridesservice.entity.Passenger;
 import by.shestakov.ridesservice.entity.Ride;
 import by.shestakov.ridesservice.exception.DataNotFoundException;
 import by.shestakov.ridesservice.exception.DriverWithoutCarException;
+import by.shestakov.ridesservice.exception.FallbackException;
+import by.shestakov.ridesservice.exception.FeignNotFoundDataException;
 import by.shestakov.ridesservice.feign.DriverClient;
 import by.shestakov.ridesservice.feign.PassengerClient;
 import by.shestakov.ridesservice.mapper.DriverMapper;
@@ -23,11 +27,15 @@ import by.shestakov.ridesservice.repository.RideRepository;
 import by.shestakov.ridesservice.service.RideService;
 import by.shestakov.ridesservice.service.RouteService;
 import by.shestakov.ridesservice.util.CalculatePrice;
+import feign.FeignException;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionException;
 
 
 @RequiredArgsConstructor
@@ -64,9 +72,10 @@ public class RideServiceImpl implements RideService {
         return rideMapper.toDto(existsRide);
     }
 
+    @Retry(name = "createRideRetry")
     @Override
     public RideResponse createRide(RideRequest rideRequest) {
-
+        System.out.println("create ride start");
         Driver existsDriver = getDriver(rideRequest.driverId());
 
         if (existsDriver.getCarIds().isEmpty()) {
@@ -105,6 +114,7 @@ public class RideServiceImpl implements RideService {
         return rideMapper.toDto(existsRide);
     }
 
+    @Retry(name = "createRideRetry")
     @Override
     public RideResponse updateRide(RideUpdateRequest rideUpdateRequest, String rideId) {
         Ride existsRide = rideRepository.findById(rideId).orElseThrow(DataNotFoundException::new);

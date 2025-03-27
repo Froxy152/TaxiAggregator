@@ -69,6 +69,10 @@ public final class TestConstant {
         return new RideRequest(999L, TEST_PASSENGER_ID,
                 TEST_PICKUP_ADDRESS, TEST_DESTINATION_ADDRESS, TEST_STATUS);
     }
+    public static RideRequest defaultRideDriverNotFoundRequestCircuitBreaker() {
+        return new RideRequest(9999L, TEST_PASSENGER_ID,
+                TEST_PICKUP_ADDRESS, TEST_DESTINATION_ADDRESS, TEST_STATUS);
+    }
 
     public static RideRequest defaultRidePassengerNotFoundRequest() {
         return new RideRequest(TEST_DRIVER_ID, 999L,

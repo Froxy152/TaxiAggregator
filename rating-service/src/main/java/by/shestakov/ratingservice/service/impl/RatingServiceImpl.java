@@ -17,6 +17,7 @@ import by.shestakov.ratingservice.mapper.PageMapper;
 import by.shestakov.ratingservice.mapper.RatingMapper;
 import by.shestakov.ratingservice.repository.RatingRepository;
 import by.shestakov.ratingservice.service.RatingService;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import lombok.RequiredArgsConstructor;
@@ -50,8 +51,9 @@ public class RatingServiceImpl implements RatingService {
         return pageMapper.toDto(ratingPage);
     }
 
+    @Retry(name = "newReview")
     public RatingResponse addNewReviewOnRide(RatingRequest ratingRequest) {
-
+        System.out.println("start creating new review");
         checkRide(ratingRequest.rideId());
         checkDriver(ratingRequest.driverId());
         checkPassenger(ratingRequest.passengerId());

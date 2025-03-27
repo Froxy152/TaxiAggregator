@@ -1,6 +1,7 @@
 package by.shestakov.ridesservice.exception;
 
 import by.shestakov.ridesservice.util.constant.RegexpConstant;
+import feign.FeignException;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import java.io.BufferedReader;
@@ -15,12 +16,12 @@ public class CustomErrorDecoder implements ErrorDecoder {
 
     @Override
     public Exception decode(String s, Response response) {
-
         return switch (response.status()) {
             case 404 -> new FeignNotFoundDataException(extractMessage(response));
             default -> defaultErrorDecoder.decode(s, response);
         };
     }
+
 
     private String extractMessage(Response response) {
         try {

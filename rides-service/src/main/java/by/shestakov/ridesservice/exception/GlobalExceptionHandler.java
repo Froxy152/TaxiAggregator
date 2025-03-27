@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse> handleNotValidException(MethodArgumentNotValidException  e) {
+    public ResponseEntity<ExceptionResponse> handleNotValidException(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
@@ -66,6 +66,14 @@ public class GlobalExceptionHandler {
                 .build());
     }
 
+    @ExceptionHandler(FallbackException.class)
+    public ResponseEntity<ExceptionResponse> handeFallbackException(Exception e) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(ExceptionResponse.builder()
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .time(LocalDateTime.now())
+                .errors(Map.of("message", e.getMessage()))
+                .build());
+    }
 
 
 }

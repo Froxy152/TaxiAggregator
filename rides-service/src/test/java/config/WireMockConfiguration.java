@@ -2,6 +2,7 @@ package config;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.serverError;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
 
@@ -60,6 +61,11 @@ public class WireMockConfiguration {
                         .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                         .withBody(objectMapper.writeValueAsString(response))));
     }
+    public static void error(WireMockServer wireMockServer) throws Exception {
+        wireMockServer.stubFor(get(urlPathEqualTo("/api/v1/driver/9999"))
+                .willReturn(serverError()));
+    }
+
 
 
 }

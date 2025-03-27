@@ -5,11 +5,22 @@ import by.shestakov.ridesservice.dto.request.RideStatusRequest;
 import by.shestakov.ridesservice.dto.request.RideUpdateRequest;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import config.WireMockConfiguration;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.restassured.RestAssured;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static io.restassured.RestAssured.given;
 import io.restassured.http.ContentType;
+
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+
+import java.util.stream.IntStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -17,6 +28,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -36,6 +48,7 @@ import static testConstant.TestConstant.TEST_PICKUP_ADDRESS;
 import static testConstant.TestConstant.TEST_ROUTING_RESPONSE;
 import static testConstant.TestConstant.defaultRide;
 import static testConstant.TestConstant.defaultRideDriverNotFoundRequest;
+import static testConstant.TestConstant.defaultRideDriverNotFoundRequestCircuitBreaker;
 import static testConstant.TestConstant.defaultRidePassengerNotFoundRequest;
 import static testConstant.TestConstant.defaultRideRequest;
 import static testConstant.TestConstant.defaultRideRequestWithoutCar;
