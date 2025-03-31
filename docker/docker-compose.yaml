@@ -74,12 +74,6 @@ services:
         condition: service_healthy
     networks:
       - cab-aggregator-network
-#    healthcheck:
-#      test: curl -f http://api-gateway:8080/actuator/health
-#      interval: 1s
-#      timeout: 10s
-#      retries: 30
-#      start_period: 60s
 
   passenger-service:
     build:
@@ -102,12 +96,10 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-    #  api-gateway:
-   #    condition: service_healthy
-#      zookeeper:
-#        condition: service_healthy
-#      kafka:
-#        condition: service_healthy
+      zookeeper:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
     networks:
       - cab-aggregator-network
     healthcheck:
@@ -137,12 +129,10 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-     # api-gateway:
-     #   condition: service_healthy
-#      zookeeper:
-#        condition: service_healthy
-#      kafka:
-#        condition: service_healthy
+      zookeeper:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
     networks:
       - cab-aggregator-network
     healthcheck:
@@ -170,8 +160,6 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-  #    api-gateway:
-  #    condition: service_healthy
     networks:
       - cab-aggregator-network
     healthcheck:
@@ -199,12 +187,10 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-     # api-gateway:
-    #    condition: service_healthy
-#      zookeeper:
-#        condition: service_healthy
-#      kafka:
-#        condition: service_healthy
+      zookeeper:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
     networks:
       - cab-aggregator-network
     healthcheck:

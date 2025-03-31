@@ -25,4 +25,14 @@ public record RideRequest(
         @NotNull(message = ValidationConstant.STATUS_MANDATORY)
         Status status
 ) {
+    @Override
+    public String toString() {
+        return "RideRequest{" +
+                "driverId=" + driverId +
+                ", passengerId=" + passengerId +
+                ", pickUpAddress='" + pickUpAddress + '\'' +
+                ", destinationAddress='" + destinationAddress + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
