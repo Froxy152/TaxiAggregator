@@ -17,13 +17,16 @@ import by.shestakov.ratingservice.mapper.PageMapper;
 import by.shestakov.ratingservice.mapper.RatingMapper;
 import by.shestakov.ratingservice.repository.RatingRepository;
 import by.shestakov.ratingservice.service.RatingService;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class RatingServiceImpl implements RatingService {
@@ -44,19 +47,24 @@ public class RatingServiceImpl implements RatingService {
 
     @Override
     public PageResponse<RatingResponse> getAllReviews(Integer offset, Integer limit) {
-        Page<RatingResponse> ratingPage = ratingRepository.findAll(PageRequest.of(offset, limit))
-            .map(ratingMapper::toDto);
+        log.debug("Entering in getAllReviews method. Offset: {}, Limit: {}", offset, limit);
 
+        Page<RatingResponse> ratingPage = ratingRepository.findAll(PageRequest.of(offset, limit))
+                .map(ratingMapper::toDto);
+
+        log.info("getAllReviews: Returns all reviews. Reviews: {}", ratingPage);
         return pageMapper.toDto(ratingPage);
     }
 
+    @Retry(name = "newReview")
     public RatingResponse addNewReviewOnRide(RatingRequest ratingRequest) {
-
+        log.debug("Entering in addNewReviewOnRide method. RatingRequest: {}", ratingRequest);
         checkRide(ratingRequest.rideId());
         checkDriver(ratingRequest.driverId());
         checkPassenger(ratingRequest.passengerId());
 
         if (ratingRepository.existsByRideId(ratingRequest.rideId())) {
+            log.error("addNewReviewOnRide: User can write only 1 review on ride");
             throw new OnlyOneCommentOnRideException();
         }
 
@@ -70,11 +78,14 @@ public class RatingServiceImpl implements RatingService {
             realtimePassengerUpdateRating(ratingRequest.passengerId());
         }
 
+        log.info("addNewReviewOnRide: Review successfully created. Rating: {}", newRating);
         return ratingMapper.toDto(newRating);
     }
 
     @Override
     public RatingResponse changeCommentUnderReview(String reviewId, CommentaryDto commentaryDto) {
+        log.debug("Entering in changeCommentUnderReview method. ReviewId: {}, CommentaryDto: {}",
+                reviewId, commentaryDto);
         Rating existsRating = ratingRepository.findById(reviewId)
                 .orElseThrow((DataNotFoundException::new));
 
@@ -82,12 +93,21 @@ public class RatingServiceImpl implements RatingService {
 
         ratingRepository.save(existsRating);
 
+        log.info("changeCommentUnderReview: Commentary successfully updated. Rating: {}", existsRating);
         return ratingMapper.toDto(existsRating);
     }
 
     @Override
     public AverageRatingResponse getResultForDriverWithLimit(Long driverId, Integer limit) {
+        log.debug("Entering in getResultForDrierWithLimit method. DriverId: {}, Limit: {}", driverId, limit);
+
         checkDriver(driverId);
+        if (!ratingRepository.existsByDriverId(driverId)) {
+            log.error("getResultForDriverWithLimit: Driver not exists");
+            throw new DataNotFoundException();
+        }
+
+        log.info("getResultForDriverWithLimit: Ratings get successfully");
         return ratingRepository.findAverageRatingByDriverIdByLimit(driverId, limit);
     }
 
@@ -104,25 +124,31 @@ public class RatingServiceImpl implements RatingService {
     }
 
     private void realtimeDriverUpdateRating(Long driverId) {
+        log.debug("Entering in realtimeDriverUpdateRating method. DriverId: {}", driverId);
         checkDriver(driverId);
 
         AverageRatingResponse response = ratingRepository.findAverageRatingByDriverId(driverId);
+        if (response.average() != null) {
 
-        BigDecimal rating = response.average();
-        rating = rating.setScale(2, RoundingMode.HALF_UP);
+            BigDecimal rating = BigDecimal.valueOf(response.average());
+            rating = rating.setScale(2, RoundingMode.HALF_UP);
 
-        kafkaProducer.sendMessageForDriver(driverId, rating);
+            kafkaProducer.sendMessageForDriver(driverId, rating);
+        }
     }
 
     private void realtimePassengerUpdateRating(Long passengerId) {
+        log.debug("Entering in realtimePassengerUpdateRating method. PassengerId: {}", passengerId);
+
         checkPassenger(passengerId);
 
         AverageRatingResponse response = ratingRepository.findAverageRatingByPassengerId(passengerId);
+        if (response.average() != null) {
+            BigDecimal rating = BigDecimal.valueOf(response.average());
+            rating = rating.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal rating = response.average();
-        rating = rating.setScale(2, RoundingMode.HALF_UP);
-
-        kafkaProducer.sendMessageForPassenger(passengerId, rating);
+            kafkaProducer.sendMessageForPassenger(passengerId, rating);
+        }
     }
 
 

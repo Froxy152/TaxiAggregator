@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-@FeignClient(name = "routing-service", url = "https://graphhopper.com/api/1")
+
+@FeignClient(name = "routing-service")
 public interface RoutingFeign {
     @GetMapping("/route")
     RoutingResponse requestDistance(@RequestParam("point") List<String> points,

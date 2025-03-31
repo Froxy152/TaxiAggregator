@@ -2,6 +2,7 @@ package by.shestakov.ridesservice.controller;
 
 import by.shestakov.ridesservice.dto.request.RideRequest;
 import by.shestakov.ridesservice.dto.request.RideStatusRequest;
+import by.shestakov.ridesservice.dto.request.RideUpdateRequest;
 import by.shestakov.ridesservice.dto.response.PageResponse;
 import by.shestakov.ridesservice.dto.response.RideResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,6 +52,6 @@ public interface RideController {
                       @ApiResponse(responseCode = "404", description = "Ride not found"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PutMapping
-    ResponseEntity<RideResponse> updateRide(@RequestBody RideRequest rideRequest,
+    ResponseEntity<RideResponse> updateRide(@RequestBody RideUpdateRequest rideUpdateRequest,
                                             @RequestParam(value = "rideId") String id);
 }

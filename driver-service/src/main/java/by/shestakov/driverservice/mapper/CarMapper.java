@@ -17,11 +17,11 @@ public interface CarMapper {
     @Mapping(target = "driverId", source = "id")
     CarResponse toDto(Car car);
 
-    @Mapping(target = "driverId", ignore = true)
+    @Mapping(target = "driver", ignore = true)
     Car toEntity(CarRequest carRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(target = "driverId", ignore = true)
+    @Mapping(target = "driver", ignore = true)
     void updateToExists(CarUpdateRequest carUpdateRequest, @MappingTarget Car car);
 
 

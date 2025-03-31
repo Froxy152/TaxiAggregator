@@ -1,17 +1,28 @@
 server:
-  port: 8080
+  port: 5001
 
 spring:
   application:
     name: passenger-service
 
   datasource:
-    driver-class-name: ${DB-DRIVER:org.postgresql.Driver}
-    url: ${DB-URL:jdbc:postgresql://localhost:5432/PassengerDB}
-    username: ${DB-USERNAME:postgres}
-    password: ${DB-PASSWORD:postgres}
+    driver-class-name: ${DB_DRIVER:org.postgresql.Driver}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/passenger_db}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123}
+
   jpa:
     database: ${DB:postgresql}
     hibernate:
       ddl-auto: update
 
+  kafka:
+    consumer:
+      bootstrap-servers: ${BOOTSTRAP:localhost:9092}
+      group-id: rating-consumer-1
+      auto-offset-reset: earliest
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DEFAULT_ZONE:http://localhost:8081/eureka}

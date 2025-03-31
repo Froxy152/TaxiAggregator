@@ -18,17 +18,19 @@ public interface RatingRepository extends MongoRepository<Rating, String> {
 
     @Aggregation(pipeline = {
         "{ $match: { 'driver_id': ?0, 'rated_by' : 'PASSENGER' } }",
-        "{ $group: { _id: null, average: { $avg: '$rate' } } }"
+        "{ $group: { _id: null, average: { $avg: { $toDouble: '$rate' } } } }"
     })
     AverageRatingResponse findAverageRatingByDriverId(Long driverId);
 
     @Aggregation(pipeline = {
         "{ $match: { 'passenger_id': ?0, 'rated_by' : 'DRIVER'  } }",
-        "{ $group: { _id: null, average: { $avg: '$rate' } } }"
+        "{ $group: { _id: null, average: { $avg: { $toDouble: '$rate' } } } }"
     })
     AverageRatingResponse findAverageRatingByPassengerId(Long passengerId);
 
     Page<Rating> findAll(Pageable pageable);
 
     Boolean existsByRideId(String rideId);
-}
+
+    Boolean existsByDriverId(Long driverId);
+};

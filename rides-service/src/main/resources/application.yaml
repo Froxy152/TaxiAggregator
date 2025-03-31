@@ -1,14 +1,70 @@
 spring:
   application:
     name: rides-service
+
   data:
     mongodb:
-      host: ${HOST_DB:localhost}
-      port: ${PORT_DB:27017}
-      database: ${DB_NAME:RideDB}
-      username: ${USERNAME:root}
-      password: ${PASSWORD:123}
-      authenticationDatabase: ${AUTH:admin}
+      uri: ${DB_URI:mongodb://werdiens:haduken@localhost:27017/RideDB?authSource=admin}
+
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          routing-service:
+            url: https://graphhopper.com/api/1
 
 api:
   key: ${APIKEY:2dda7d03-6d64-4f4e-85b2-e17672cb09fa}
+server:
+  port: 5003
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DEFAULT_ZONE:http://localhost:8081/eureka}
+
+#resilience4j:
+#  circuitbreaker:
+#    configs:
+#      default:
+#        slidingWindowSize: 100
+#        permittedNumberOfCallsInHalfOpenState: 10
+#        slowCallDurationThreshold: 4s
+#        slowCallRateThreshold: 2
+#        failureRateThreshold: 2
+#        waitDurationInOpenState: 10s
+#        minimumNumberOfCalls: 50
+#    instances:
+#      driver-service-breaker:
+#        baseConfig: default
+#        waitDurationInOpenState: 20s
+#      passenger-service-breaker:
+#        baseConfig: default
+#        waitDurationInOpenState: 30s
+#
+management:
+  endpoints.web.exposure.include:
+    - '*'
+  endpoint.health.show-details: always
+  health.circuitbreakers.enabled: true
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 5
+      permittedNumberOfCallsInHalfOpenState: 5
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      waitDurationInOpenState: 5s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
+
+resilience4j.retry:
+  configs:
+    default:
+      maxAttempts: 3
+      waitDuration: 4s
+      retryExceptions:
+

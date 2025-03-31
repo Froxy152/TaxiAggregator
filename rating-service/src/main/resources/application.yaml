@@ -4,15 +4,10 @@ spring:
 
   data:
     mongodb:
-      host: ${HOST_DB:localhost}
-      port: ${PORT_DB:27017}
-      database: ${DB_NAME:RatingDB}
-      username: werdiens
-      password: haduken
-      authenticationDatabase: admin
+      uri: ${DB_URI:mongodb://werdiens:haduken@localhost:27017/RatingDB?authSource=admin}
 
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${BOOTSTRAP:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
@@ -20,14 +15,37 @@ spring:
       driver-rating: update-rating-topic
       passenger-rating: update-passenger-rating-topic
 
-    spring:
-      cloud:
-        openfeign:
-          client:
-            config:
-              driver-service:
-                url: localhost:8082/api/v1/drivers
-              passenger-service:
-                url: localhost:8081/api/v1/passengers
-              rides-service:
-                url: localhost:8083/api/v1/rides
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DEFAULT_ZONE:http://localhost:8081/eureka}
+
+server:
+  port: 5004
+
+  management:
+    endpoints.web.exposure.include:
+      - '*'
+    endpoint.health.show-details: always
+    health.circuitbreakers.enabled: true
+
+  resilience4j.circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+
+  resilience4j.retry:
+    configs:
+      default:
+        maxAttempts: 3
+        waitDuration: 4s
+        retryExceptions:
+

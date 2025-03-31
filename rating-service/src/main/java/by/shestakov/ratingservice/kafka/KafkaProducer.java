@@ -3,10 +3,12 @@ package by.shestakov.ratingservice.kafka;
 import by.shestakov.ratingservice.dto.request.UpdateRatingRequest;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class KafkaProducer {
@@ -25,7 +27,7 @@ public class KafkaProducer {
             .id(driverId)
             .rating(rating)
             .build();
-
+        log.info("sendMessageForDriver: message successfully send to Kafka topic. Message: {}", message);
         kafkaTemplate.send(driverTopic, message);
     }
 
@@ -35,7 +37,7 @@ public class KafkaProducer {
             .id(passengerId)
             .rating(rating)
             .build();
-
+        log.info("sendMessageForPassenger: message successfully send to Kafka topic. Message: {}", message);
         kafkaTemplate.send(passengerTopic, message);
     }
 }
