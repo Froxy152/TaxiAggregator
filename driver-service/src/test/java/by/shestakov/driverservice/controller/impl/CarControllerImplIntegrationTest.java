@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertTrue;
 
+import by.shestakov.configuration.PostgresContainer;
 import by.shestakov.driverservice.dto.request.CarRequest;
 import by.shestakov.driverservice.dto.request.CarUpdateRequest;
 import by.shestakov.driverservice.entity.Car;
@@ -31,29 +32,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.annotation.Order;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
-import org.testcontainers.utility.DockerImageName;
 
 @ActiveProfiles("test")
-@Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class CarControllerImplIntegrationTest {
-
-    @Container
-    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>(
-            DockerImageName.parse("postgres:latest"));
-
-    @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", postgreSQLContainer::getJdbcUrl);
-        registry.add("spring.datasource.username", postgreSQLContainer::getUsername);
-        registry.add("spring.datasource.password", postgreSQLContainer::getPassword);
-    }
+class CarControllerImplIntegrationTest extends PostgresContainer {
 
     @BeforeEach
     void setup() {
