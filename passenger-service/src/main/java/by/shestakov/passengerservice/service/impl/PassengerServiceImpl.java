@@ -12,7 +12,6 @@ import by.shestakov.passengerservice.mapper.PassengerMapper;
 import by.shestakov.passengerservice.repository.PassengerRepository;
 import by.shestakov.passengerservice.service.PassengerService;
 import by.shestakov.passengerservice.util.ExceptionConstants;
-import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,7 +40,7 @@ public class PassengerServiceImpl implements PassengerService {
     public PassengerResponse getPassengerById(Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new PassengerNotFoundException(
-                        String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
+                        ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
 
         return passengerMapper.toDto(foundPassenger);
     }
@@ -57,8 +56,6 @@ public class PassengerServiceImpl implements PassengerService {
         }
 
         Passenger savedPassenger = passengerMapper.toEntity(passengerRequest);
-        savedPassenger.setRating(BigDecimal.valueOf(0.0));
-
         passengerRepository.save(savedPassenger);
 
         return passengerMapper.toDto(savedPassenger);
@@ -68,8 +65,9 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public PassengerResponse updatePassengerById(UpdatePassengerRequest updatePassengerRequest, Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new PassengerNotFoundException(
-                        String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
+            .orElseThrow(() -> new PassengerNotFoundException(
+                ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
+
         String email = updatePassengerRequest.email();
         String phoneNumber = updatePassengerRequest.phoneNumber();
 
@@ -94,8 +92,7 @@ public class PassengerServiceImpl implements PassengerService {
     public void softDeletePassenger(Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
             .orElseThrow(() -> new PassengerNotFoundException(
-                String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
-
+                ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
         foundPassenger.setIsDeleted(true);
 
         passengerRepository.save(foundPassenger);

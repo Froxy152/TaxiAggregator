@@ -1,7 +1,7 @@
 package by.shestakov.driverservice.controller;
 
 import by.shestakov.driverservice.dto.request.CarRequest;
-import by.shestakov.driverservice.dto.request.UpdateCarRequest;
+import by.shestakov.driverservice.dto.request.CarUpdateRequest;
 import by.shestakov.driverservice.dto.response.CarResponse;
 import by.shestakov.driverservice.dto.response.PageResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,7 +44,7 @@ public interface CarOperations {
                       @ApiResponse(responseCode = "409", description = "Car already exists"),
                       @ApiResponse(responseCode = "500", description = "Internal server error")})
     @PutMapping("/{id}")
-    ResponseEntity<CarResponse> updateCar(@RequestBody @Valid UpdateCarRequest carRequest,
+    ResponseEntity<CarResponse> updateCar(@RequestBody @Valid CarUpdateRequest carUpdateRequest,
                                           @PathVariable Long driverId);
 
     @Operation(summary = "soft delete car")

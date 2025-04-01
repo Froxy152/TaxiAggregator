@@ -28,9 +28,12 @@ public class Rating  {
     @Field("driver_id")
     private Long driverId;
 
-    @Field("mark")
-    private Integer mark;
+    @Field("rate")
+    private Double rate;
 
     @Field("commentary")
     private String commentary;
+
+    @Field("rated_by")
+    private RatedBy ratedBy;
 }
