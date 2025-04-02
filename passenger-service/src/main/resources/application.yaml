@@ -26,3 +26,16 @@ eureka:
   client:
     service-url:
       defaultZone: ${DEFAULT_ZONE:http://localhost:8081/eureka}
+
+management:
+  metrics:
+    export:
+      elastic:
+        enabled: true
+        host: http://localhost:9200
+        index: jvm-metrics
+        step: 30s
+  endpoints:
+    web:
+      exposure:
+        include: health, metrics
