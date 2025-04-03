@@ -7,10 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Passenger {
-    private Long id;
-    private String name;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
+public class Car {
+    Long id;
 }
