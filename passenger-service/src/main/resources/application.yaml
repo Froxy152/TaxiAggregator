@@ -15,3 +15,8 @@ spring:
     hibernate:
       ddl-auto: update
 
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: rating-consumer-1
+      auto-offset-reset: earliest

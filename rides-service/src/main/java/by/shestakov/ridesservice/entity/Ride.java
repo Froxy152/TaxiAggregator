@@ -1,5 +1,6 @@
 package by.shestakov.ridesservice.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,11 +20,11 @@ public class Ride {
     @Id
     private String id;
 
-    @Field(name = "driver_id")
-    private Long driverId;
+    @Field(name = "driver")
+    private Driver driver;
 
-    @Field(name = "passenger_id")
-    private Long passengerId;
+    @Field(name = "passenger")
+    private Passenger passenger;
 
     @Field(name = "pickup_address")
     private String pickUpAddress;
@@ -44,5 +45,6 @@ public class Ride {
     private Integer duringRide;
 
     @Field(name = "price")
-    private Double price;
+    private BigDecimal price;
+
 }

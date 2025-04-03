@@ -1,6 +1,6 @@
-package by.shestakov.ratingservice.config;
+package by.shestakov.ridesservice.config;
 
-import by.shestakov.ratingservice.exception.CustomErrorDecoder;
+import by.shestakov.ridesservice.exception.CustomErrorDecoder;
 import feign.codec.ErrorDecoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

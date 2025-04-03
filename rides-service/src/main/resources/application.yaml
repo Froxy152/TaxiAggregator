@@ -1,14 +1,26 @@
 spring:
   application:
     name: rides-service
+
   data:
     mongodb:
-      host: ${HOST_DB:localhost}
-      port: ${PORT_DB:27017}
-      database: ${DB_NAME:RideDB}
-      username: ${USERNAME:root}
-      password: ${PASSWORD:123}
-      authenticationDatabase: ${AUTH:admin}
+      uri: ${DB_URI:mongodb://werdiens:haduken@localhost:27017/RideDB?authSource=admin}
+
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          passenger-service:
+            url: http://localhost:8081/api/v1/passengers
+          driver-service:
+            url: http://localhost:8082/api/v1/drivers
+          routing-service:
+            url: https://graphhopper.com/api/1
 
 api:
   key: ${APIKEY:2dda7d03-6d64-4f4e-85b2-e17672cb09fa}
+server:
+  port: 8082
+
+

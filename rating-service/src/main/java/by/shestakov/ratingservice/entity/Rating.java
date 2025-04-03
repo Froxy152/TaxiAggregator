@@ -1,5 +1,6 @@
 package by.shestakov.ratingservice.entity;
 
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,12 @@ public class Rating  {
     @Field("driver_id")
     private Long driverId;
 
-    @Field("mark")
-    private Integer mark;
+    @Field("rate")
+    private BigDecimal rate;
 
     @Field("commentary")
     private String commentary;
+
+    @Field("rated_by")
+    private RatedBy ratedBy;
 }
