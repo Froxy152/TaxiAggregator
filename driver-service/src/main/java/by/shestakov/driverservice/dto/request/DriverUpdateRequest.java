@@ -4,6 +4,7 @@ import by.shestakov.driverservice.entity.Gender;
 import by.shestakov.driverservice.util.RegexpConstants;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
+import java.math.BigDecimal;
 
 public record DriverUpdateRequest(
 
@@ -17,7 +18,7 @@ public record DriverUpdateRequest(
         @Pattern(regexp = RegexpConstants.PHONE_NUMBER_REGEXP)
         String phoneNumber,
 
-        Double rating,
+        BigDecimal rating,
 
         Gender gender
 ) {

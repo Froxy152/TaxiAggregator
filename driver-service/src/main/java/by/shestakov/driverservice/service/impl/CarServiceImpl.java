@@ -46,11 +46,13 @@ public class CarServiceImpl implements CarService {
             throw new CarNumberAlreadyException(
                 ExceptionMessages.CONFLICT_MESSAGE.formatted("car"));
         }
-        Car newCar = carMapper.toEntity(carRequest);
-        Driver driver = driverRepository.findById(driverId)
+
+        Driver driver = driverRepository.findByIdAndIsDeletedFalse(driverId)
             .orElseThrow(() -> new DriverNotFoundException(
                 ExceptionMessages.NOT_FOUND_MESSAGE.formatted("driver", driverId)));
-        newCar.setDriverId(driver);
+
+        Car newCar = carMapper.toEntity(carRequest);
+        newCar.setDriver(driver);
         driver.getCars().add(newCar);
         newCar.setIsDeleted(false);
 
