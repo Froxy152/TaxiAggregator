@@ -8,11 +8,15 @@ spring:
   datasource:
     driver-class-name: ${DB-DRIVER:org.postgresql.Driver}
     url: ${DB-URL:jdbc:postgresql://localhost:5432/PassengerDB}
-    username: ${DB-USERNAME:root}
-    password: ${DB-PASSWORD:123}
+    username: ${DB-USERNAME:postgres}
+    password: ${DB-PASSWORD:postgres}
   jpa:
-
     database: ${DB:postgresql}
     hibernate:
       ddl-auto: update
 
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: rating-consumer-1
+      auto-offset-reset: earliest

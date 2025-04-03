@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: rating-service
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    topics:
+      driver-rating: update-rating-topic
+      passenger-rating: update-passenger-rating-topic
+
+  data:
+    mongodb:
+      database: testdb
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          passenger-service:
+            url: http://localhost:8090/api/v1/passengers
+          driver-service:
+            url: http://localhost:8090/api/v1/drivers
+          rides-service:
+            url: http://localhost:8090/api/v1/rides

@@ -1,6 +1,7 @@
 package by.shestakov.passengerservice.service.impl;
 
 import by.shestakov.passengerservice.dto.request.PassengerRequest;
+import by.shestakov.passengerservice.dto.request.UpdatePassengerRequest;
 import by.shestakov.passengerservice.dto.response.PageResponse;
 import by.shestakov.passengerservice.dto.response.PassengerResponse;
 import by.shestakov.passengerservice.entity.Passenger;
@@ -39,7 +40,7 @@ public class PassengerServiceImpl implements PassengerService {
     public PassengerResponse getPassengerById(Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
                 .orElseThrow(() -> new PassengerNotFoundException(
-                        String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
+                        ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
 
         return passengerMapper.toDto(foundPassenger);
     }
@@ -51,8 +52,9 @@ public class PassengerServiceImpl implements PassengerService {
         String phoneNumber = passengerRequest.phoneNumber();
         if (passengerRepository.existsByEmailOrPhoneNumber(email, phoneNumber)) {
             throw new PassengerAlreadyExistsException(
-                    String.format(ExceptionConstants.CONFLICT_MESSAGE, email, phoneNumber));
+                    ExceptionConstants.CONFLICT_MESSAGE.formatted(email, phoneNumber));
         }
+
         Passenger savedPassenger = passengerMapper.toEntity(passengerRequest);
         passengerRepository.save(savedPassenger);
 
@@ -61,17 +63,25 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public PassengerResponse updatePassengerById(PassengerRequest passengerRequest, Long id) {
+    public PassengerResponse updatePassengerById(UpdatePassengerRequest updatePassengerRequest, Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new PassengerNotFoundException(
-                        String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id)));
-        String email = passengerRequest.email();
-        String phoneNumber = passengerRequest.phoneNumber();
-        if (passengerRepository.existsByEmailOrPhoneNumber(email, phoneNumber)) {
+            .orElseThrow(() -> new PassengerNotFoundException(
+                ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
+
+        String email = updatePassengerRequest.email();
+        String phoneNumber = updatePassengerRequest.phoneNumber();
+
+        if (passengerRepository.existsByEmail(email)) {
             throw new PassengerAlreadyExistsException(
-                    String.format(ExceptionConstants.CONFLICT_MESSAGE, email, phoneNumber));
+                    ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED.formatted(email));
         }
-        passengerMapper.update(passengerRequest, foundPassenger);
+
+        if (passengerRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new PassengerAlreadyExistsException(
+                    ExceptionConstants.CONFLICT_DATA_ALREADY_REGISTERED.formatted(phoneNumber));
+        }
+
+        passengerMapper.update(updatePassengerRequest, foundPassenger);
         passengerRepository.save(foundPassenger);
 
         return passengerMapper.toDto(foundPassenger);
@@ -81,8 +91,8 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public void softDeletePassenger(Long id) {
         Passenger foundPassenger = passengerRepository.findByIdAndIsDeletedFalse(id)
-                .orElseThrow(() -> new PassengerNotFoundException((
-                        String.format(ExceptionConstants.NOT_FOUND_MESSAGE, id))));
+            .orElseThrow(() -> new PassengerNotFoundException(
+                ExceptionConstants.NOT_FOUND_MESSAGE.formatted(id)));
         foundPassenger.setIsDeleted(true);
 
         passengerRepository.save(foundPassenger);

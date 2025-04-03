@@ -7,9 +7,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public interface PassengerRepository extends JpaRepository<Passenger, Long> {
     Page<Passenger> findAllByIsDeletedFalse(Pageable pageable);
+
+    Boolean existsByEmail(String email);
+
+    Boolean existsByPhoneNumber(String phoneNumber);
 
     boolean existsByEmailOrPhoneNumber(String email, String phoneNumber);
 
