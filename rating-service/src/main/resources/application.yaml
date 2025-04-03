@@ -24,28 +24,28 @@ eureka:
 server:
   port: 5004
 
-  management:
-    endpoints.web.exposure.include:
-      - '*'
-    endpoint.health.show-details: always
-    health.circuitbreakers.enabled: true
+management:
+  endpoints.web.exposure.include:
+    - '*'
+  endpoint.health.show-details: always
+  health.circuitbreakers.enabled: true
 
-  resilience4j.circuitbreaker:
-    configs:
-      default:
-        registerHealthIndicator: true
-        slidingWindowSize: 10
-        minimumNumberOfCalls: 5
-        permittedNumberOfCallsInHalfOpenState: 5
-        automaticTransitionFromOpenToHalfOpenEnabled: true
-        waitDurationInOpenState: 5s
-        failureRateThreshold: 50
-        eventConsumerBufferSize: 10
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      minimumNumberOfCalls: 3
+      permittedNumberOfCallsInHalfOpenState: 3
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      waitDurationInOpenState: 5s
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
 
-  resilience4j.retry:
-    configs:
-      default:
-        maxAttempts: 3
-        waitDuration: 4s
-        retryExceptions:
+resilience4j.retry:
+  configs:
+    default:
+      maxAttempts: 3
+      waitDuration: 4s
+      retryExceptions:
 

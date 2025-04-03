@@ -11,5 +11,6 @@ public final class ExceptionMessage {
     public static final String ILLEGAL_EXCEPTION_MESSAGE = "Invalid Enum value : %s";
     public static final String DRIVER_SERVICE_UNAVAILABLE_CIRCUIT_BREAKER = "Driver service is unavailable, try later";
     public static final String PASSENGER_SERVICE_UNAVAILABLE_CIRCUIT_BREAKER = "Passenger service is unavailable, try later";
+    public static final String RIDE_SERVICE_UNAVAILABLE_CIRCUIT_BREAKER = "Ride service is unavailable, try later";
 
 }
